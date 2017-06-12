@@ -1,0 +1,7 @@
+MNIST_data
+dltk.egg-info
+.cache
+docs/build
+*.pyc
+.idea
+.ipynb_checkpoints
