@@ -29,7 +29,7 @@ pip install -e .
 ### Start playing
 1. Start a notebook server with
 ```shell
-jupyter notebook --ip=* --port $MY_PORT --no-browser
+jupyter notebook --ip=* --port $MY_PORT
 ```
  
 2. navigate to examples and run a tutorial.ipynb notebook 
@@ -52,11 +52,11 @@ Over the course of the next months we will add more content to DLTK. This road m
   * Sampling with fixed class frequencies
   * Stand-alone deploy scripts
     
-### Team
-@m_rajchl 
-@pawni
-@sk1712
-@mauinz
+### Core team
+[@mrajchl](https://github.com/mrajchl)
+[@pawni](https://github.com/pawni)
+[@sk1712](https://github.com/sk1712)
+[@mauinz](https://github.com/mauinz)
 
 ### License
 See license.md
