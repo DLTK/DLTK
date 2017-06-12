@@ -1,7 +1,7 @@
 MNIST_data
 dltk.egg-info
 .cache
-docs/build
+_docs/build
 *.pyc
 .idea
 .ipynb_checkpoints

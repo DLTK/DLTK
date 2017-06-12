@@ -1,0 +1,442 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>dltk.core.modules.summaries &mdash; DLTK 0.1a1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../../search.html"/>
+    <link rel="top" title="DLTK 0.1a1 documentation" href="../../../../index.html"/>
+        <link rel="up" title="Module code" href="../../../index.html"/> 
+
+  
+  <script src="../../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../index.html">
+          
+
+          
+            
+            <img src="../../../../_static/logo-dltk.svg" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../index.html">Home</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../notes/getting_started.html">Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../notes/module.html">Modules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../notes/model.html">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../notes/reader.html">Reader</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../notes/usage.html">Usage &amp; Further resources</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Package Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../dltk.html">dltk package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../dltk.core.html">dltk.core package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dltk.core.io.html">dltk.core.io package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../dltk.core.io.html#module-dltk.core.io.augmentation">dltk.core.io.augmentation module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../dltk.core.io.html#module-dltk.core.io.preprocessing">dltk.core.io.preprocessing module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../dltk.core.io.html#module-dltk.core.io.reader">dltk.core.io.reader module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../dltk.core.io.html#module-dltk.core.io.sliding_window">dltk.core.io.sliding_window module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../dltk.core.io.html#module-dltk.core.io">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dltk.core.modules.html">dltk.core.modules package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../dltk.core.modules.html#module-dltk.core.modules.activations">dltk.core.modules.activations module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../dltk.core.modules.html#module-dltk.core.modules.base">dltk.core.modules.base module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../dltk.core.modules.html#module-dltk.core.modules.batch_normalization">dltk.core.modules.batch_normalization module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../dltk.core.modules.html#module-dltk.core.modules.bilinear_upsample">dltk.core.modules.bilinear_upsample module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../dltk.core.modules.html#module-dltk.core.modules.convolution">dltk.core.modules.convolution module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../dltk.core.modules.html#module-dltk.core.modules.graph_convolution">dltk.core.modules.graph_convolution module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../dltk.core.modules.html#module-dltk.core.modules.linear">dltk.core.modules.linear module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../dltk.core.modules.html#module-dltk.core.modules.losses">dltk.core.modules.losses module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../dltk.core.modules.html#module-dltk.core.modules.regularization">dltk.core.modules.regularization module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../dltk.core.modules.html#module-dltk.core.modules.residual_units">dltk.core.modules.residual_units module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../dltk.core.modules.html#module-dltk.core.modules.summaries">dltk.core.modules.summaries module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../dltk.core.modules.html#module-dltk.core.modules.tranposed_convolution">dltk.core.modules.tranposed_convolution module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../dltk.core.modules.html#module-dltk.core.modules">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dltk.core.html#module-dltk.core.metrics">dltk.core.metrics module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dltk.core.html#module-dltk.core">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../dltk.models.html">dltk.models package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dltk.models.autoencoder.html">dltk.models.autoencoder package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../dltk.models.autoencoder.html#module-dltk.models.autoencoder.convolutional_autoencoder">dltk.models.autoencoder.convolutional_autoencoder module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../dltk.models.autoencoder.html#module-dltk.models.autoencoder">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dltk.models.classification.html">dltk.models.classification package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../dltk.models.classification.html#module-dltk.models.classification.lenet">dltk.models.classification.lenet module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../dltk.models.classification.html#module-dltk.models.classification.resnet">dltk.models.classification.resnet module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../dltk.models.classification.html#module-dltk.models.classification">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dltk.models.gan.html">dltk.models.gan package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../dltk.models.gan.html#module-dltk.models.gan.dcgan">dltk.models.gan.dcgan module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../dltk.models.gan.html#module-dltk.models.gan.wdcgan">dltk.models.gan.wdcgan module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../dltk.models.gan.html#module-dltk.models.gan">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dltk.models.graphical.html">dltk.models.graphical package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../dltk.models.graphical.html#module-dltk.models.graphical.cgcnn">dltk.models.graphical.cgcnn module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../dltk.models.graphical.html#module-dltk.models.graphical">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dltk.models.segmentation.html">dltk.models.segmentation package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../dltk.models.segmentation.html#module-dltk.models.segmentation.fcn">dltk.models.segmentation.fcn module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../dltk.models.segmentation.html#module-dltk.models.segmentation.unet">dltk.models.segmentation.unet module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../dltk.models.segmentation.html#module-dltk.models.segmentation">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dltk.models.html#module-dltk.models">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../dltk.html#module-dltk">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">DLTK</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+        
+      <li>dltk.core.modules.summaries</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for dltk.core.modules.summaries</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">absolute_import</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
+
+<span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">StringIO</span> <span class="k">import</span> <span class="n">StringIO</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">io</span> <span class="k">import</span> <span class="n">StringIO</span>
+
+
+<div class="viewcode-block" id="image_summary"><a class="viewcode-back" href="../../../../dltk.core.modules.html#dltk.core.modules.summaries.image_summary">[docs]</a><span class="k">def</span> <span class="nf">image_summary</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">summary_name</span><span class="p">,</span> <span class="n">collections</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Builds an image summary from a tf.Tensor or np.ndarray</span>
+
+<span class="sd">    If the image is a tf.Tensor 4D and 5D tensors of form (batch, x, y, channels) and (batch, x, y, z, channels) are</span>
+<span class="sd">    supported. For 5D tensors each middle slice is plotted if the size of the tensor is known. Otherwise the first</span>
+<span class="sd">    slice is taken.</span>
+
+<span class="sd">    If the image is a np.ndarray 3D and 4D arrays of form (x, y, channels) and (x, y, z, channels) are supported. For</span>
+<span class="sd">    4D tensors each middle slice is plotted if the size of the tensor is known. Otherwise the first slice is taken.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    img : tf.Tensor or np.ndarray</span>
+<span class="sd">        image to be plotted</span>
+<span class="sd">    summary_name : string</span>
+<span class="sd">        name of the summary to be produced</span>
+<span class="sd">    collections : list or tuple, optional</span>
+<span class="sd">        list of collections this summary should be added to additionally to `tf.GraphKeys.SUMMARIES` and</span>
+<span class="sd">        `image_summaries`</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    tf.Tensor or tf.Summary</span>
+<span class="sd">        Tensor produced from tf.summary or Summary object with the plotted image(s)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">summaries</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">Tensor</span><span class="p">):</span>
+        <span class="n">collections</span> <span class="o">=</span> <span class="p">[</span><span class="n">tf</span><span class="o">.</span><span class="n">GraphKeys</span><span class="o">.</span><span class="n">SUMMARIES</span><span class="p">,</span> <span class="s1">&#39;image_summaries&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">collections</span> <span class="k">if</span> <span class="n">collections</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">img</span><span class="o">.</span><span class="n">get_shape</span><span class="p">()</span><span class="o">.</span><span class="n">as_list</span><span class="p">())</span> <span class="o">==</span> <span class="mi">5</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">dim</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+                <span class="n">slicer</span> <span class="o">=</span> <span class="p">[</span><span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">)]</span> <span class="o">*</span> <span class="mi">4</span>
+                <span class="n">pos</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="k">if</span> <span class="n">img</span><span class="o">.</span><span class="n">get_shape</span><span class="p">()</span><span class="o">.</span><span class="n">as_list</span><span class="p">()[</span><span class="n">dim</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]:</span>
+                    <span class="n">pos</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">get_shape</span><span class="p">()</span><span class="o">.</span><span class="n">as_list</span><span class="p">()[</span><span class="n">dim</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">//</span> <span class="mi">2</span>
+                <span class="n">slicer</span><span class="p">[</span><span class="n">dim</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">pos</span>
+
+                <span class="n">summaries</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">summary</span><span class="o">.</span><span class="n">image</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1">_dim</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">summary_name</span><span class="p">,</span> <span class="n">dim</span><span class="p">),</span> <span class="n">img</span><span class="p">[</span><span class="n">slicer</span><span class="p">],</span>
+                                                  <span class="n">collections</span><span class="o">=</span><span class="n">collections</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">summaries</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">summary</span><span class="o">.</span><span class="n">image</span><span class="p">(</span><span class="n">summary_name</span><span class="p">,</span> <span class="n">img</span><span class="p">,</span> <span class="n">collections</span><span class="o">=</span><span class="n">collections</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">tf</span><span class="o">.</span><span class="n">summary</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">summaries</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+        <span class="c1"># only works on 3D and 4D arrays -&gt; batch isn&#39;t used</span>
+        <span class="c1"># see https://gist.github.com/gyglim/1f8dfb1b5c82627ae3efcfbbadb9f514#file-tensorboard_logging-py-L41</span>
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">img</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">0.</span><span class="p">:</span>
+            <span class="n">img</span> <span class="o">-=</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+            <span class="n">img</span> <span class="o">/=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">img</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">dim</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+                <span class="n">slicer</span> <span class="o">=</span> <span class="p">[</span><span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">)]</span> <span class="o">*</span> <span class="mi">3</span>
+                <span class="n">slicer</span><span class="p">[</span><span class="n">dim</span><span class="p">]</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="n">dim</span><span class="p">]</span> <span class="o">//</span> <span class="mi">2</span>
+
+                <span class="n">tmp_img</span> <span class="o">=</span> <span class="p">(</span><span class="n">img</span><span class="p">[</span><span class="n">slicer</span><span class="p">]</span> <span class="o">+</span> <span class="n">img</span><span class="p">[</span><span class="n">slicer</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">())</span>
+                <span class="n">tmp_img</span> <span class="o">/=</span> <span class="n">tmp_img</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+
+                <span class="n">s</span> <span class="o">=</span> <span class="n">StringIO</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="n">plt</span><span class="o">.</span><span class="n">imsave</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">img</span><span class="p">[</span><span class="n">slicer</span><span class="p">][:,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">],</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;png&#39;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">plt</span><span class="o">.</span><span class="n">imsave</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">img</span><span class="p">[</span><span class="n">slicer</span><span class="p">],</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;png&#39;</span><span class="p">)</span>
+
+                <span class="c1"># Create an Image object</span>
+                <span class="n">img_sum</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Summary</span><span class="o">.</span><span class="n">Image</span><span class="p">(</span><span class="n">encoded_image_string</span><span class="o">=</span><span class="n">s</span><span class="o">.</span><span class="n">getvalue</span><span class="p">(),</span>
+                                           <span class="n">height</span><span class="o">=</span><span class="n">img</span><span class="p">[</span><span class="n">slicer</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                                           <span class="n">width</span><span class="o">=</span><span class="n">img</span><span class="p">[</span><span class="n">slicer</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+                <span class="c1"># Create a Summary value</span>
+                <span class="n">summaries</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">Summary</span><span class="o">.</span><span class="n">Value</span><span class="p">(</span><span class="n">tag</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1">_dim</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">summary_name</span><span class="p">,</span> <span class="n">dim</span><span class="p">),</span>
+                                                  <span class="n">image</span><span class="o">=</span><span class="n">img_sum</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="n">StringIO</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">plt</span><span class="o">.</span><span class="n">imsave</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">img</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">],</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;png&#39;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">plt</span><span class="o">.</span><span class="n">imsave</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">img</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;png&#39;</span><span class="p">)</span>
+
+            <span class="c1"># Create an Image object</span>
+            <span class="n">img_sum</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Summary</span><span class="o">.</span><span class="n">Image</span><span class="p">(</span><span class="n">encoded_image_string</span><span class="o">=</span><span class="n">s</span><span class="o">.</span><span class="n">getvalue</span><span class="p">(),</span>
+                                       <span class="n">height</span><span class="o">=</span><span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                                       <span class="n">width</span><span class="o">=</span><span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="c1"># Create a Summary value</span>
+            <span class="n">summaries</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">Summary</span><span class="o">.</span><span class="n">Value</span><span class="p">(</span><span class="n">tag</span><span class="o">=</span><span class="n">summary_name</span><span class="p">,</span>
+                                              <span class="n">image</span><span class="o">=</span><span class="n">img_sum</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">tf</span><span class="o">.</span><span class="n">Summary</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">summaries</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;Only tf.Tensors and np.ndarrays are supported.&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="scalar_summary"><a class="viewcode-back" href="../../../../dltk.core.modules.html#dltk.core.modules.summaries.scalar_summary">[docs]</a><span class="k">def</span> <span class="nf">scalar_summary</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">summary_name</span><span class="p">,</span> <span class="n">collections</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Builds a scalar summary</span>
+
+<span class="sd">    If x is a tf.Tensor it creates the summary operation to track x</span>
+
+<span class="sd">    If x is a scalar it creates the tf.Summary object to be written be a summary writer</span>
+
+<span class="sd">    If x is a list, tuple or dict a tf.Summary object is created for each element. The key or index is used for naming</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    x : tf.Tensor or scalar or list or dict</span>
+<span class="sd">        scalar data to be plotted</span>
+<span class="sd">    summary_name : string</span>
+<span class="sd">        name of the summary to be produced</span>
+<span class="sd">    collections : list or tuple, optional</span>
+<span class="sd">        list of collections this summary should be added to additionally to `tf.GraphKeys.SUMMARIES` and</span>
+<span class="sd">        `image_summaries`</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    tf.Tensor or tf.Summary</span>
+<span class="sd">        Tensor produced from tf.summary or Summary object with the summarised data</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">Tensor</span><span class="p">):</span>
+        <span class="n">collections</span> <span class="o">=</span> <span class="p">[</span><span class="n">tf</span><span class="o">.</span><span class="n">GraphKeys</span><span class="o">.</span><span class="n">SUMMARIES</span><span class="p">,</span> <span class="s1">&#39;scalar_summaries&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">collections</span> <span class="k">if</span> <span class="n">collections</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">[]</span>
+        <span class="k">return</span> <span class="n">tf</span><span class="o">.</span><span class="n">summary</span><span class="o">.</span><span class="n">scalar</span><span class="p">(</span><span class="n">summary_name</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">collections</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">np</span><span class="o">.</span><span class="n">isscalar</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">tf</span><span class="o">.</span><span class="n">Summary</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="p">[</span><span class="n">tf</span><span class="o">.</span><span class="n">Summary</span><span class="o">.</span><span class="n">Value</span><span class="p">(</span><span class="n">tag</span><span class="o">=</span><span class="n">summary_name</span><span class="p">,</span> <span class="n">simple_value</span><span class="o">=</span><span class="n">x</span><span class="p">)])</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
+        <span class="k">return</span> <span class="n">tf</span><span class="o">.</span><span class="n">Summary</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="p">[</span><span class="n">tf</span><span class="o">.</span><span class="n">Summary</span><span class="o">.</span><span class="n">Value</span><span class="p">(</span><span class="n">tag</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1">_</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">summary_name</span><span class="p">,</span> <span class="n">i</span><span class="p">),</span> <span class="n">simple_value</span><span class="o">=</span><span class="n">xi</span><span class="p">)</span>
+                                 <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">xi</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">x</span><span class="p">)])</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">tf</span><span class="o">.</span><span class="n">Summary</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="p">[</span><span class="n">tf</span><span class="o">.</span><span class="n">Summary</span><span class="o">.</span><span class="n">Value</span><span class="p">(</span><span class="n">tag</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1">_</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">summary_name</span><span class="p">,</span> <span class="n">i</span><span class="p">),</span> <span class="n">simple_value</span><span class="o">=</span><span class="n">xi</span><span class="p">)</span>
+                                 <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">xi</span> <span class="ow">in</span> <span class="n">x</span><span class="o">.</span><span class="n">items</span><span class="p">()])</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;Only tf.Tensors and np.ndarrays are supported.&#39;</span><span class="p">)</span></div>
+</pre></div>
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, DLTK contributors.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../',
+            VERSION:'0.1a1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

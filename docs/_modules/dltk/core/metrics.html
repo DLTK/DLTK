@@ -1,0 +1,384 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>dltk.core.metrics &mdash; DLTK 0.1a1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="DLTK 0.1a1 documentation" href="../../../index.html"/>
+        <link rel="up" title="Module code" href="../../index.html"/> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html">
+          
+
+          
+            
+            <img src="../../../_static/logo-dltk.svg" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../index.html">Home</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notes/getting_started.html">Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../notes/module.html">Modules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../notes/model.html">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../notes/reader.html">Reader</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../notes/usage.html">Usage &amp; Further resources</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Package Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../dltk.html">dltk package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../dltk.core.html">dltk.core package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../dltk.core.io.html">dltk.core.io package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../dltk.core.io.html#module-dltk.core.io.augmentation">dltk.core.io.augmentation module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../dltk.core.io.html#module-dltk.core.io.preprocessing">dltk.core.io.preprocessing module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../dltk.core.io.html#module-dltk.core.io.reader">dltk.core.io.reader module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../dltk.core.io.html#module-dltk.core.io.sliding_window">dltk.core.io.sliding_window module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../dltk.core.io.html#module-dltk.core.io">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../dltk.core.modules.html">dltk.core.modules package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../dltk.core.modules.html#module-dltk.core.modules.activations">dltk.core.modules.activations module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../dltk.core.modules.html#module-dltk.core.modules.base">dltk.core.modules.base module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../dltk.core.modules.html#module-dltk.core.modules.batch_normalization">dltk.core.modules.batch_normalization module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../dltk.core.modules.html#module-dltk.core.modules.bilinear_upsample">dltk.core.modules.bilinear_upsample module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../dltk.core.modules.html#module-dltk.core.modules.convolution">dltk.core.modules.convolution module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../dltk.core.modules.html#module-dltk.core.modules.graph_convolution">dltk.core.modules.graph_convolution module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../dltk.core.modules.html#module-dltk.core.modules.linear">dltk.core.modules.linear module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../dltk.core.modules.html#module-dltk.core.modules.losses">dltk.core.modules.losses module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../dltk.core.modules.html#module-dltk.core.modules.regularization">dltk.core.modules.regularization module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../dltk.core.modules.html#module-dltk.core.modules.residual_units">dltk.core.modules.residual_units module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../dltk.core.modules.html#module-dltk.core.modules.summaries">dltk.core.modules.summaries module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../dltk.core.modules.html#module-dltk.core.modules.tranposed_convolution">dltk.core.modules.tranposed_convolution module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../dltk.core.modules.html#module-dltk.core.modules">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../dltk.core.html#module-dltk.core.metrics">dltk.core.metrics module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../dltk.core.html#module-dltk.core">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../dltk.models.html">dltk.models package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../dltk.models.autoencoder.html">dltk.models.autoencoder package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../dltk.models.autoencoder.html#module-dltk.models.autoencoder.convolutional_autoencoder">dltk.models.autoencoder.convolutional_autoencoder module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../dltk.models.autoencoder.html#module-dltk.models.autoencoder">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../dltk.models.classification.html">dltk.models.classification package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../dltk.models.classification.html#module-dltk.models.classification.lenet">dltk.models.classification.lenet module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../dltk.models.classification.html#module-dltk.models.classification.resnet">dltk.models.classification.resnet module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../dltk.models.classification.html#module-dltk.models.classification">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../dltk.models.gan.html">dltk.models.gan package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../dltk.models.gan.html#module-dltk.models.gan.dcgan">dltk.models.gan.dcgan module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../dltk.models.gan.html#module-dltk.models.gan.wdcgan">dltk.models.gan.wdcgan module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../dltk.models.gan.html#module-dltk.models.gan">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../dltk.models.graphical.html">dltk.models.graphical package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../dltk.models.graphical.html#module-dltk.models.graphical.cgcnn">dltk.models.graphical.cgcnn module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../dltk.models.graphical.html#module-dltk.models.graphical">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../dltk.models.segmentation.html">dltk.models.segmentation package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../dltk.models.segmentation.html#module-dltk.models.segmentation.fcn">dltk.models.segmentation.fcn module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../dltk.models.segmentation.html#module-dltk.models.segmentation.unet">dltk.models.segmentation.unet module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../dltk.models.segmentation.html#module-dltk.models.segmentation">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../dltk.models.html#module-dltk.models">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../dltk.html#module-dltk">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">DLTK</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>dltk.core.metrics</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for dltk.core.metrics</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+
+<div class="viewcode-block" id="dice"><a class="viewcode-back" href="../../../dltk.core.html#dltk.core.metrics.dice">[docs]</a><span class="k">def</span> <span class="nf">dice</span><span class="p">(</span><span class="n">pred</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">num_classes</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Calculates the dice score of labels and predictions</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    pred : np.ndarray</span>
+<span class="sd">        predictions</span>
+<span class="sd">    labels : np.ndarray</span>
+<span class="sd">        labels</span>
+<span class="sd">    num_classes : int</span>
+<span class="sd">        number of classes to calculate avd for</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    np.ndarray</span>
+<span class="sd">        dice per class</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">dice_scores</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">num_classes</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_classes</span><span class="p">):</span>
+        <span class="n">tmp_den</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">pred</span> <span class="o">==</span> <span class="n">i</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">labels</span> <span class="o">==</span> <span class="n">i</span><span class="p">))</span>
+        <span class="n">tmp_dice</span> <span class="o">=</span> <span class="mf">2.</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">pred</span> <span class="o">==</span> <span class="n">i</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">labels</span> <span class="o">==</span> <span class="n">i</span><span class="p">))</span> <span class="o">/</span> <span class="n">tmp_den</span> <span class="k">if</span> <span class="n">tmp_den</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mf">1.</span>
+        <span class="n">dice_scores</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">tmp_dice</span>
+    <span class="k">return</span> <span class="n">dice_scores</span></div>
+
+
+<div class="viewcode-block" id="abs_vol_difference"><a class="viewcode-back" href="../../../dltk.core.html#dltk.core.metrics.abs_vol_difference">[docs]</a><span class="k">def</span> <span class="nf">abs_vol_difference</span><span class="p">(</span><span class="n">pred</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">num_classes</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Calculates the average volume difference of labels and predictions per class</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    pred : np.ndarray</span>
+<span class="sd">        predictions</span>
+<span class="sd">    labels : np.ndarray</span>
+<span class="sd">        labels</span>
+<span class="sd">    num_classes : int</span>
+<span class="sd">        number of classes to calculate avd for</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    np.ndarray</span>
+<span class="sd">        avd per class</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">avd</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">num_classes</span><span class="p">))</span>
+    <span class="n">eps</span> <span class="o">=</span> <span class="mf">1e-6</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_classes</span><span class="p">):</span>
+        <span class="n">avd</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">pred</span> <span class="o">==</span> <span class="n">i</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">labels</span> <span class="o">==</span> <span class="n">i</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">labels</span> <span class="o">==</span> <span class="n">i</span><span class="p">))</span> <span class="o">+</span> <span class="n">eps</span><span class="p">)</span>
+        
+    <span class="k">return</span> <span class="n">avd</span></div>
+
+
+<div class="viewcode-block" id="crossentropy"><a class="viewcode-back" href="../../../dltk.core.html#dltk.core.metrics.crossentropy">[docs]</a><span class="k">def</span> <span class="nf">crossentropy</span><span class="p">(</span><span class="n">pred</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">logits</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Calculates the crossentropy loss between prediction and labels</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    pred : np.ndarray</span>
+<span class="sd">        prediction of the system</span>
+<span class="sd">    labels : np.ndarray</span>
+<span class="sd">        labels</span>
+<span class="sd">    logits : bool</span>
+<span class="sd">        flag whether pred are logits or probabilities</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float</span>
+<span class="sd">        crossentropy error</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">logits</span><span class="p">:</span>
+        <span class="n">maxes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">amax</span><span class="p">(</span><span class="n">pred</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">softexp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">pred</span> <span class="o">-</span> <span class="n">maxes</span><span class="p">)</span>
+        <span class="n">softm</span> <span class="o">=</span> <span class="n">softexp</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">softexp</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">softm</span> <span class="o">=</span> <span class="n">pred</span>
+    <span class="n">loss</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="o">-</span><span class="mf">1.</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">labels</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">softm</span><span class="p">),</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">loss</span></div>
+</pre></div>
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, DLTK contributors.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'0.1a1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
