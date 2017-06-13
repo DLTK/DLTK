@@ -16,13 +16,12 @@
 DLTK documentation
 ==================
 
-The Deep Learning Tool Kit is a library for biomedical image analysis using neural networks. It builds on Tensorflow
-and uses SimpleITK for data I/O.
+DLTK is a neural networks toolkit written in python, on top of `Tensorflow <https://github.com/tensorflow/tensorflow>`_. Its modular architecture is closely inspired by `sonnet <https://github.com/deepmind/sonnet>`_ and it was developed to enable fast prototyping and ensure reproducibility in image analysis applications, with a particular focus on medical imaging. Its goal is to provide the community with state of the art methods and models and to accelerate research in this exciting field.
 
 Installation
 ------------
 
-DLTK uses the following dependcies:
+DLTK uses the following dependencies:
 
 * numpy
 * scipy

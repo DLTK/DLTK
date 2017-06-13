@@ -1,4 +1,13 @@
-# Example usage of vanilla autoencoders on MNIST
+# Generative adverserial network examples
 
-## Usage
-Use `train.ipynb`
+
+### Run a tutorial
+1. Start a notebook server with
+```shell
+jupyter notebook --ip=* --port $MY_PORT
+```
+ 
+2. Run an .ipynb notebook 
+
+### References
+[1] I.Goodfellow, et al. "Generative adversarial nets." Advances in neural information processing systems. 2014.
