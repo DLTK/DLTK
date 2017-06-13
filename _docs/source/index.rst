@@ -4,7 +4,7 @@
    :hidden:
 
    Home <self>
-   notes/getting_started
+   user_guide/getting_started
 
 .. toctree::
    :hidden:
