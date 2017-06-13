@@ -1,0 +1,15 @@
+include *.md
+include LICENSE
+recursive-include _docs *.bat
+recursive-include _docs *.py
+recursive-include _docs *.rst
+recursive-include _docs *.svg
+recursive-include _docs Makefile
+recursive-include contrib *.gitkeep
+recursive-include data *.gitkeep
+recursive-include dltk *.py
+recursive-include examples *.MD
+recursive-include examples *.csv
+recursive-include examples *.ipynb
+recursive-include examples *.md
+recursive-include examples *.py
