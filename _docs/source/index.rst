@@ -5,13 +5,17 @@
 
    Home <self>
    user_guide/getting_started
+   user_guide/module
+   user_guide/model
+   user_guide/reader
+   user_guide/usage
 
 .. toctree::
    :hidden:
    :maxdepth: 3
    :caption: Package Reference
 
-   dltk
+   api/dltk
 
 DLTK documentation
 ==================
