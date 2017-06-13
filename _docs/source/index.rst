@@ -27,8 +27,8 @@ DLTK uses the following dependencies:
 * scipy
 * Tensorflow: `Installation Instructions <https://www.tensorflow.org/install/>`_
 
-Use *pip* to install **DLTK**:
-::
+Use *pip* to install **DLTK**::
+
   pip install dltk
 
 
