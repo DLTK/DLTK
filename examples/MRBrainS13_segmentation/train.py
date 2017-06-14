@@ -13,7 +13,6 @@ import tensorflow as tf
 
 import dltk.core.modules as modules
 from dltk.models.segmentation.unet import ResUNET
-from dltk.core import batcher as batcher
 from dltk.core import metrics as metrics
 
 # Training parameters
