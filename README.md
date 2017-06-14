@@ -1,4 +1,6 @@
 ## Deep Learning Toolkit (DLTK)
+[![Gitter](https://badges.gitter.im/DLTK/DLTK.svg)](https://gitter.im/DLTK/DLTK?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+
 DLTK is a neural networks toolkit written in python, on top of [Tensorflow](https://github.com/tensorflow/tensorflow). Its modular architecture is closely inspired by [sonnet](https://github.com/deepmind/sonnet) and it was developed to enable fast prototyping and ensure reproducibility in image analysis applications, with a particular focus on medical imaging. Its goal is  to provide the community with state of the art methods and models and to accelerate research in this exciting field.
 
 
