@@ -11,7 +11,7 @@ class SlidingWindow(object):
     Sliding window iterator which produces slice objects to slice in a sliding window. This is useful for inference.
 
     """
-    def __init__(self, img_shape, window_shape, striding=None):
+    def __init__(self, img_shape, window_shape, has_batch_dim=True, striding=None):
         """Constructs a sliding window iterator
 
         Parameters
@@ -25,9 +25,12 @@ class SlidingWindow(object):
         """
         self.img_shape = img_shape
         self.window_shape = window_shape
-        self.curr_pos = [0, 0, 0]
+        self.rank = len(img_shape)
+        self.curr_pos = [0] * self.rank
+        self.end_pos = [0] * self.rank
         self.done = False
         self.striding = window_shape
+        self.has_batch_dim = has_batch_dim
         if striding:
             self.striding = striding
 
@@ -41,7 +44,7 @@ class SlidingWindow(object):
     def __next__(self):
         if self.done:
             raise StopIteration()
-        slicer = [slice(None)] * 5
+        slicer = [slice(None)] * (self.rank + 1) if self.has_batch_dim else [slice(None)] * self.rank
         move_dim = True
         for dim, pos in enumerate(self.curr_pos):
             low = pos
@@ -56,8 +59,12 @@ class SlidingWindow(object):
             if high >= self.img_shape[dim]:
                 low = self.img_shape[dim] - self.window_shape[dim]
                 high = self.img_shape[dim]
-            slicer[dim + 1] = slice(low, high)
 
-        if (np.array(self.curr_pos) == [0, 0, 0]).all():
+            if self.has_batch_dim:
+                slicer[dim + 1] = slice(low, high)
+            else:
+                slicer[dim] = slice(low, high)
+
+        if (np.array(self.curr_pos) == self.end_pos).all():
             self.done = True
         return slicer
