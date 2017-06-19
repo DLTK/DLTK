@@ -3,6 +3,8 @@ from __future__ import division
 from __future__ import print_function
 
 import numpy as np
+from scipy.ndimage.interpolation import map_coordinates
+from scipy.ndimage.filters import gaussian_filter
 
 
 def flip(imglist, axis=1):
@@ -77,6 +79,85 @@ def gaussian_noise(img, sigma=0.05):
 
     img += np.random.normal(0, sigma, img.shape)
     return img
+
+
+def elastic_transform(image, alpha, sigma, zratio=0):
+    """Elastic deformation of images as described in [Simard2003]_.
+    .. [Simard2003] Simard, Steinkraus and Platt, "Best Practices for
+       Convolutional Neural Networks applied to Visual Document Analysis", in
+       Proc. of the International Conference on Document Analysis and
+       Recognition, 2003.
+       Based on gist https://gist.github.com/erniejunior/601cdf56d2b424757de5
+       
+       
+    Parameters
+    ----------
+    image : np.ndarray
+        image to be deformed
+    alpha : float
+        scale of transformation: larger values have more deformation
+    sigma : float
+        Gaussian window of deformation: smaller values have more localised
+        deformation
+    zratio : float
+        ratio of deformation of axis 2 vs axis 0 and 1. e.g if x and y are
+        sampled 10x more than z, zratio = 10
+        
+    Returns
+    -------
+    np.ndarray
+        deformed image
+        
+    """
+
+    dx = gaussian_filter((np.random.rand(*image.shape) * 2 - 1), sigma,
+                         mode="constant", cval=0) * alpha
+    dy = gaussian_filter((np.random.rand(*image.shape) * 2 - 1), sigma,
+                         mode="constant", cval=0) * alpha
+
+    if zratio == 0:
+        # Image is 2D
+        if image.ndim == 2:
+            # Single channel: [x,y]
+            grid = np.ogrid[0:image.shape[0], 0:image.shape[1]]
+            x, y = np.broadcast_arrays(*grid)
+            indices = np.reshape(x + dx, (-1, 1)), np.reshape(y + dy, (-1, 1))
+        else:
+            # Multiple channels: [x, y, num_channels]
+            grid = np.ogrid[0:image.shape[0],
+                            0:image.shape[1], 0:image.shape[2]]
+            x, y, chan = np.broadcast_arrays(*grid)
+            indices = np.reshape(x + dx, (-1, 1)), np.reshape(y + dy, (-1, 1)), \
+                np.reshape(chan, (-1, 1))
+    else:
+        # Image is 3D
+        if image.ndim == 3:
+            # Single channel: [x,y,z]
+            grid = np.ogrid[0:image.shape[0],
+                            0:image.shape[1], 0:image.shape[2]]
+            x, y, z = np.broadcast_arrays(*grid)
+            dz = gaussian_filter(
+                (np.random.rand(*image.shape) * 2 - 1),
+                sigma * zratio, mode="constant",
+                cval=0) * alpha * zratio
+            indices = np.reshape(x + dx, (-1, 1)), np.reshape(y + dy, (-1, 1)), \
+                np.reshape(z + dz, (-1, 1))
+        else:
+            # Multiple channels: [x, y, z, num_channels]
+            grid = np.ogrid[0:image.shape[0], 0:image.shape[1],
+                            0:image.shape[2], 0:image.shape[3]]
+            x, y, z, chan = np.broadcast_arrays(*grid)
+            dz = gaussian_filter(
+                (np.random.rand(*image.shape) * 2 - 1),
+                sigma * zratio, mode="constant",
+                cval=0) * alpha * zratio
+            indices = np.reshape(x + dx, (-1, 1)), np.reshape(y + dy, (-1, 1)), \
+                np.reshape(z + dz, (-1, 1)), np.reshape(chan, (-1, 1))
+
+    transformed_image = map_coordinates(image, indices, order=1,
+                                        mode='reflect').reshape(image.shape)
+
+    return transformed_image
 
 
 def extract_class_balanced_example_array(image, label, example_size=[1, 64, 64], n_examples=1, classes=2):
