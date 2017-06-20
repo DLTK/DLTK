@@ -48,11 +48,14 @@ class UpsampleAndConcat(AbstractModule):
         return tf.concat(axis=-1,values=[x_up, t_conv])
 
 
-class ResUNET(AbstractModule):
+class ResUNET(SaveableModule):
     """ ResUNET module with residual encoder
 
     This module builds a UNET for segmentation using a residual encoder.
     """
+
+    output_keys = ['logits', 'y_prob', 'y_']
+
     def __init__(self, num_classes, num_residual_units=3, filters=(16, 64, 128, 256, 512),
                  strides=((1, 1, 1), (2, 2, 2), (2, 2, 2), (2, 2, 2), (1, 1, 1)), relu_leakiness=0.1,
                  name='resnetfcn'):
@@ -78,7 +81,17 @@ class ResUNET(AbstractModule):
         self.filters = filters
         self.strides = strides
         self.relu_leakiness = relu_leakiness
+        self.input_filters = None
         super(ResUNET, self).__init__(name)
+
+    def _build_input_placeholder(self):
+        """Abstract function to build input placeholders
+        """
+
+        assert(self.input_filters is not None, 'self.input_filters must be defined')
+
+        self.input_placeholders = [tf.placeholder(tf.float32, shape=[None, ] * (1 + len(self.strides[0]))
+                                                                   + [self.input_filters])]
 
     def _build(self, inp, is_training=True):
         """Constructs a ResNetUNET using the input tensor
@@ -104,6 +117,11 @@ class ResUNET(AbstractModule):
         strides = self.strides
 
         assert (len(strides) == len(filters))
+
+        if self.input_filters is None:
+            self.input_filters = inp.get_shape().as_list()[-1]
+            self._build_input_placeholder()
+        assert (self.input_filters == inp.get_shape().as_list()[-1])
 
         x = inp
 
