@@ -157,7 +157,6 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='CIFAR10 classification training script')
     parser.add_argument('--run_validation', default=True)
 
-    parser.add_argument('--gpu_memory', default=None)
     parser.add_argument('--resume', default=True, action='store_true')
     parser.add_argument('--verbose', default=False, action='store_true')
     parser.add_argument('--cuda_devices', '-c', default='0')
