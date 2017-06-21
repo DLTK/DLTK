@@ -123,6 +123,9 @@ def extract_class_balanced_example_array(image, label, example_size=[1, 64, 64],
     for c in classes:
         # get valid, random center locations belonging to that class
         idx = np.argwhere(label == c)
+	
+	if len(idx) == 0:
+	    continue	
 
         # extract random locations
         r_idx_idx = np.random.choice(len(idx), size=min(n_ex_per_class, len(idx)), replace=False).astype(int)
