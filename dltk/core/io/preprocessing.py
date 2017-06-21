@@ -107,7 +107,7 @@ def resize_image_with_crop_or_pad(image, img_size=[64,64,64], **kwargs):
 
     for i in range(rank):
         # for each dimensions find whether it is supposed to be cropped or padded
-        if image.shape[i + 1] <= img_size[i]:
+        if image.shape[i] <= img_size[i]:
             to_padding[i][0] = (img_size[i] - image.shape[i]) // 2
             to_padding[i][1] = img_size[i] - image.shape[i] - to_padding[i][0]
         else:
