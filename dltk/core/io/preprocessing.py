@@ -4,6 +4,7 @@ from __future__ import division
 
 import numpy as np
 
+epsilon = 1e-8
 
 def whitening(image):
     """Whitening
@@ -21,7 +22,7 @@ def whitening(image):
         whitened image
 
     """
-    ret = (image - np.mean(image)) / np.std(image)
+    ret = (image - np.mean(image)) / (np.std(image) + epsilon)
     return ret
 
 
@@ -43,7 +44,7 @@ def normalise_zero_one(image):
     """
     image = image.astype(np.float32)
     ret = (image - np.min(image))
-    ret /= np.max(image)
+    ret /= (np.max(image) + epsilon)
 
     return ret
 
