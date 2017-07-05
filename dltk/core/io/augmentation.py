@@ -81,7 +81,7 @@ def gaussian_noise(img, sigma=0.05):
     return img
 
 
-def elastic_transform(image, alpha, sigma, zratio=0):
+def elastic_transform(image, alpha, sigma):
     """Elastic deformation of images as described in [Simard2003]_.
     .. [Simard2003] Simard, Steinkraus and Platt, "Best Practices for
        Convolutional Neural Networks applied to Visual Document Analysis", in
@@ -94,14 +94,12 @@ def elastic_transform(image, alpha, sigma, zratio=0):
     ----------
     image : np.ndarray
         image to be deformed
-    alpha : float
-        scale of transformation: larger values have more deformation
-    sigma : float
-        Gaussian window of deformation: smaller values have more localised
-        deformation
-    zratio : float
-        ratio of deformation of axis 2 vs axis 0 and 1. e.g if x and y are
-        sampled 10x more than z, zratio = 10
+    alpha : list
+        scale of transformation for each dimension
+        larger values have more deformation
+    sigma : list
+        Gaussian window of deformation for each dimension
+        smaller values have more localised deformation
         
     Returns
     -------
@@ -110,50 +108,22 @@ def elastic_transform(image, alpha, sigma, zratio=0):
         
     """
 
-    dx = gaussian_filter((np.random.rand(*image.shape) * 2 - 1), sigma,
-                         mode="constant", cval=0) * alpha
-    dy = gaussian_filter((np.random.rand(*image.shape) * 2 - 1), sigma,
-                         mode="constant", cval=0) * alpha
-
-    if zratio == 0:
-        # Image is 2D
-        if image.ndim == 2:
-            # Single channel: [x,y]
-            grid = np.ogrid[0:image.shape[0], 0:image.shape[1]]
-            x, y = np.broadcast_arrays(*grid)
-            indices = np.reshape(x + dx, (-1, 1)), np.reshape(y + dy, (-1, 1))
-        else:
-            # Multiple channels: [x, y, num_channels]
-            grid = np.ogrid[0:image.shape[0],
-                            0:image.shape[1], 0:image.shape[2]]
-            x, y, chan = np.broadcast_arrays(*grid)
-            indices = np.reshape(x + dx, (-1, 1)), np.reshape(y + dy, (-1, 1)), \
-                np.reshape(chan, (-1, 1))
-    else:
-        # Image is 3D
-        if image.ndim == 3:
-            # Single channel: [x,y,z]
-            grid = np.ogrid[0:image.shape[0],
-                            0:image.shape[1], 0:image.shape[2]]
-            x, y, z = np.broadcast_arrays(*grid)
-            dz = gaussian_filter(
-                (np.random.rand(*image.shape) * 2 - 1),
-                sigma * zratio, mode="constant",
-                cval=0) * alpha * zratio
-            indices = np.reshape(x + dx, (-1, 1)), np.reshape(y + dy, (-1, 1)), \
-                np.reshape(z + dz, (-1, 1))
-        else:
-            # Multiple channels: [x, y, z, num_channels]
-            grid = np.ogrid[0:image.shape[0], 0:image.shape[1],
-                            0:image.shape[2], 0:image.shape[3]]
-            x, y, z, chan = np.broadcast_arrays(*grid)
-            dz = gaussian_filter(
-                (np.random.rand(*image.shape) * 2 - 1),
-                sigma * zratio, mode="constant",
-                cval=0) * alpha * zratio
-            indices = np.reshape(x + dx, (-1, 1)), np.reshape(y + dy, (-1, 1)), \
-                np.reshape(z + dz, (-1, 1)), np.reshape(chan, (-1, 1))
-
+    assert len(alpha) == len(sigma) , "Dimensions of alpha and sigma are different"
+    
+    channelbool = image.ndim - len(alpha)
+    out = np.zeros( (len(alpha)+channelbool,) + image.shape )
+ 
+    # Generate gausian filter, leaving channel dimensions zero
+    for jj in range(len(alpha)):
+        array = (np.random.rand(*image.shape) * 2 - 1)
+        out[jj] = gaussian_filter(array, sigma[jj], mode="constant", cval=0) * alpha[jj]
+        
+    # Map mask to indices
+    shapes = list(map( lambda x: slice(0, x, None), image.shape ) )
+    grid = np.broadcast_arrays(*np.ogrid[ shapes ] )
+    indices = list( map((lambda x:  np.reshape( x , (-1, 1)) ), grid + np.array(out) ) )
+  
+    # Transform image based on masked indices
     transformed_image = map_coordinates(image, indices, order=1,
                                         mode='reflect').reshape(image.shape)
 
