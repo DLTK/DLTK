@@ -118,7 +118,14 @@ class AbstractReader(object):
 
                 tf.train.queue_runner.add_queue_runner(tf.train.queue_runner.QueueRunner(examples_queue, enqueue_ops))
 
-                ex = examples_queue.dequeue()
+                ex_tensors = examples_queue.dequeue()
+
+                ex = []
+
+                for t, s in zip(ex_tensors, self.dshapes):
+                    t.set_shape(list(s))
+                    t = tf.expand_dims(t, 0)
+                    ex.append(t)
             else:
                 # Use a single reader for population
                 ex = self._read_wrapper(id_queue, **kwargs)
