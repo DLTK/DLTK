@@ -79,5 +79,5 @@ def crossentropy(pred, labels, logits=True):
         softm = softexp / np.sum(softexp, axis=-1, keepdims=True)
     else:
         softm = pred
-    loss = np.mean(-1. * np.sum(labels * np.log(softm), axis=-1))
+    loss = np.mean(-1. * np.sum(labels * np.log(softm + 1e-8), axis=-1))
     return loss
