@@ -61,7 +61,8 @@ def mse(x, y, name='mse', collections=['losses']):
     return loss
 
 
-def dice_loss(logits, labels, num_classes, smooth=1e-5, include_background=False, name='dice_loss', collections=['losses']):
+def dice_loss(logits, labels, num_classes, smooth=1e-5, include_background=True, only_present=False,
+              name='dice_loss', collections=['losses']):
     """ Smooth dice loss
 
         Calculates the smooth dice loss and builds a scalar summary.
@@ -101,8 +102,16 @@ def dice_loss(logits, labels, num_classes, smooth=1e-5, include_background=False
 
     flat_per_sample_per_class_dice = tf.reshape(per_sample_per_class_dice if include_background
                                                 else per_sample_per_class_dice[:, 1:] , (-1, ))
-    dice = tf.reduce_mean(tf.boolean_mask(flat_per_sample_per_class_dice,
-                                          tf.logical_not(tf.is_nan(flat_per_sample_per_class_dice))))
+
+    if only_present:
+        flat_label = tf.reshape(label_sum if include_background
+                                else label_sum[:, 1:] , (-1, ))
+        masked_dice = tf.boolean_mask(flat_per_sample_per_class_dice,
+                                      tf.logical_not(tf.equal(flat_label, 0)))
+    else:
+        masked_dice = tf.boolean_mask(flat_per_sample_per_class_dice,
+                                      tf.logical_not(tf.is_nan(flat_per_sample_per_class_dice)))
+    dice = tf.reduce_mean(masked_dice)
 
     loss = 1. - dice
     
