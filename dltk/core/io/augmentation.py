@@ -114,6 +114,8 @@ def extract_class_balanced_example_array(image, label, example_size=[1, 64, 64],
 
     n_ex_per_class = int(np.round(n_examples / n_classes))
 
+    assert(n_examples > n_classes, 'n_examples need to be bigger than n_classes')
+
     # compute an example radius as we are extracting centered around locations
     ex_rad = np.array(list(zip(np.floor(np.array(example_size) / 2.0), np.ceil(np.array(example_size) / 2.0))),
                       dtype=np.int)
@@ -124,17 +126,18 @@ def extract_class_balanced_example_array(image, label, example_size=[1, 64, 64],
         # get valid, random center locations belonging to that class
         idx = np.argwhere(label == c)
 	
-	if len(idx) == 0:
-	    continue	
+        if len(idx) == 0:
+            continue
 
         # extract random locations
         r_idx_idx = np.random.choice(len(idx), size=min(n_ex_per_class, len(idx)), replace=False).astype(int)
         r_idx = idx[r_idx_idx]
 
+
         # add a random shift them to avoid learning a centre bias - IS THIS REALLY TRUE?
         r_shift = np.array([list(a) for a in zip(
                     *[np.random.randint(-ex_rad[i][0], ex_rad[i][1], size=min(n_ex_per_class, len(idx))) for i in range(rank)]
-                  )])
+                  )]).astype(int)
 
         r_idx += r_shift
 
