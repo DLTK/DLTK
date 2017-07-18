@@ -61,7 +61,7 @@ def mse(x, y, name='mse', collections=['losses']):
     return loss
 
 
-def dice_loss(logits, labels, num_classes, include_background=False, name='dice_loss', collections=['losses']):
+def dice_loss(logits, labels, num_classes, smooth=1e-5, include_background=False, name='dice_loss', collections=['losses']):
     """ Smooth dice loss
 
         Calculates the smooth dice loss and builds a scalar summary.
@@ -92,16 +92,20 @@ def dice_loss(logits, labels, num_classes, include_background=False, name='dice_
     onehot_labels = tf.one_hot(labels, num_classes, dtype=tf.float32, name='onehot_labels')
     
     label_sum = tf.reduce_sum(onehot_labels, axis=[1, 2, 3], name='label_sum')
+
     pred_sum = tf.reduce_sum(probs, axis=[1, 2, 3], name='pred_sum')
     
     intersection = tf.reduce_sum(onehot_labels * probs, axis=[1, 2, 3], name='intersection')
-    per_class_dice = tf.reduce_mean((2. * intersection + 1.) / (label_sum + pred_sum + 1.), axis=0)
 
-    dice = tf.reduce_mean(per_class_dice) if include_background else tf.reduce_mean(per_class_dice[1:])
+    per_sample_per_class_dice = (2. * intersection + smooth) / (label_sum + pred_sum + smooth)
+
+    flat_per_sample_per_class_dice = tf.reshape(per_sample_per_class_dice if include_background
+                                                else per_sample_per_class_dice[:, 1:] , (-1, ))
+    dice = tf.reduce_mean(tf.boolean_mask(flat_per_sample_per_class_dice,
+                                          tf.logical_not(tf.is_nan(flat_per_sample_per_class_dice))))
+
     loss = 1. - dice
     
     scalar_summary(loss, name, collections)
 
     return loss
-
-
