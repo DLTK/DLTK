@@ -3,6 +3,8 @@ from __future__ import division
 from __future__ import print_function
 
 import numpy as np
+from scipy.ndimage.interpolation import map_coordinates
+from scipy.ndimage.filters import gaussian_filter
 
 
 def flip(imglist, axis=1):
@@ -77,6 +79,55 @@ def gaussian_noise(img, sigma=0.05):
 
     img += np.random.normal(0, sigma, img.shape)
     return img
+
+
+def elastic_transform(image, alpha, sigma):
+    """Elastic deformation of images as described in [Simard2003]_.
+    .. [Simard2003] Simard, Steinkraus and Platt, "Best Practices for
+       Convolutional Neural Networks applied to Visual Document Analysis", in
+       Proc. of the International Conference on Document Analysis and
+       Recognition, 2003.
+       Based on gist https://gist.github.com/erniejunior/601cdf56d2b424757de5
+       
+       
+    Parameters
+    ----------
+    image : np.ndarray
+        image to be deformed
+    alpha : list
+        scale of transformation for each dimension
+        larger values have more deformation
+    sigma : list
+        Gaussian window of deformation for each dimension
+        smaller values have more localised deformation
+        
+    Returns
+    -------
+    np.ndarray
+        deformed image
+        
+    """
+
+    assert len(alpha) == len(sigma) , "Dimensions of alpha and sigma are different"
+    
+    channelbool = image.ndim - len(alpha)
+    out = np.zeros( (len(alpha)+channelbool,) + image.shape )
+ 
+    # Generate gausian filter, leaving channel dimensions zero
+    for jj in range(len(alpha)):
+        array = (np.random.rand(*image.shape) * 2 - 1)
+        out[jj] = gaussian_filter(array, sigma[jj], mode="constant", cval=0) * alpha[jj]
+        
+    # Map mask to indices
+    shapes = list(map( lambda x: slice(0, x, None), image.shape ) )
+    grid = np.broadcast_arrays(*np.ogrid[ shapes ] )
+    indices = list( map((lambda x:  np.reshape( x , (-1, 1)) ), grid + np.array(out) ) )
+  
+    # Transform image based on masked indices
+    transformed_image = map_coordinates(image, indices, order=1,
+                                        mode='reflect').reshape(image.shape)
+
+    return transformed_image
 
 
 def extract_class_balanced_example_array(image, label, example_size=[1, 64, 64], n_examples=1, classes=2):
