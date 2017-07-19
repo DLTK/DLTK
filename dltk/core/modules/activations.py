@@ -34,11 +34,11 @@ class PReLU(AbstractModule):
     def _build(self, inp):
         if self._rank is None:
             self._rank = len(inp.get_shape().as_list())
-        assert(self._rank == len(inp.get_shape().as_list()), 'Module was initilialised for a different input')
+        assert self._rank == len(inp.get_shape().as_list()), 'Module was initilialised for a different input'
         if self._rank > 2:
             if self._shape is None:
                 self._shape = [inp.get_shape().as_list()[-1]]
-            assert (self._shape[0] == inp.get_shape().as_list()[-1], 'Module was initilialised for a different input')
+            assert self._shape[0] == inp.get_shape().as_list()[-1], 'Module was initilialised for a different input'
         else:
             self._shape = []
 

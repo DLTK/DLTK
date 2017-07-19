@@ -153,10 +153,10 @@ def extract_class_balanced_example_array(image, label, example_size=[1, 64, 64],
         ex_imgs, ex_lbls
             class-balanced patches extracted from bigger images with shape [batch, example_size..., image_channels]
     """
-    assert(image.shape[:-1] == label.shape), 'Image and label shape must match'
-    assert(image.ndim - 1 == len(example_size), 'Example size doesnt fit image size')
-    assert(all([i_s > e_s for i_s, e_s in zip(image.shape, example_size)]),
-           'Image must be bigger than example shape')
+    assert image.shape[:-1] == label.shape, 'Image and label shape must match'
+    assert image.ndim - 1 == len(example_size), 'Example size doesnt fit image size'
+    assert all([i_s > e_s for i_s, e_s in zip(image.shape, example_size)]), \
+        'Image must be bigger than example shape'
     rank = len(example_size)
 
     if isinstance(classes, int):
@@ -165,7 +165,7 @@ def extract_class_balanced_example_array(image, label, example_size=[1, 64, 64],
 
     n_ex_per_class = int(np.round(n_examples / n_classes))
 
-    assert(n_examples > n_classes, 'n_examples need to be bigger than n_classes')
+    assert n_examples > n_classes, 'n_examples need to be bigger than n_classes'
 
     # compute an example radius as we are extracting centered around locations
     ex_rad = np.array(list(zip(np.floor(np.array(example_size) / 2.0), np.ceil(np.array(example_size) / 2.0))),
@@ -237,17 +237,17 @@ def extract_random_example_array(image_list, example_size=[1, 64, 64], n_example
         image_list = [image_list]
         was_singular = True
 
-    assert (all([i_s > e_s for i_s, e_s in zip(image_list[0].shape, example_size)]),
-            'Image must be bigger than example shape')
-    assert ((image_list[0].ndim - 1 == len(example_size) or image_list[0].ndim == len(example_size)),
-            'Example size doesnt fit image size')
+    assert all([i_s > e_s for i_s, e_s in zip(image_list[0].shape, example_size)]), \
+        'Image must be bigger than example shape'
+    assert (image_list[0].ndim - 1 == len(example_size) or image_list[0].ndim == len(example_size)), \
+        'Example size doesnt fit image size'
 
     for i in image_list:
         if len(image_list) > 1:
-            assert ((i.ndim - 1 == image_list[0].ndim or i.ndim == image_list[0].ndim),
-                    'Example size doesnt fit image size')
-            assert (all([i0_s == i_s for i0_s, i_s in zip(image_list[0].shape, i.shape)]),
-                    'Image shapes must match')
+            assert (i.ndim - 1 == image_list[0].ndim or i.ndim == image_list[0].ndim), \
+                'Example size doesnt fit image size'
+            assert all([i0_s == i_s for i0_s, i_s in zip(image_list[0].shape, i.shape)]), \
+                'Image shapes must match'
 
     rank = len(example_size)
 

@@ -77,8 +77,8 @@ class WDCGAN(DCGAN):
 
         if self.in_filter is None:
             self.in_filter = samples.get_shape().as_list()[-1]
-        assert(self.in_filter == samples.get_shape().as_list()[-1], 'Network was built for a different input shape')
-        assert(self.in_filter == self.generator_filters[-1], 'Generator was built for a different sample shape')
+        assert self.in_filter == samples.get_shape().as_list()[-1], 'Network was built for a different input shape'
+        assert self.in_filter == self.generator_filters[-1], 'Generator was built for a different sample shape'
 
         out = {}
 

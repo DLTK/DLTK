@@ -46,13 +46,13 @@ class Linear(AbstractModule):
             transformed tensor
 
         """
-        assert(len(inp.get_shape().as_list())  == 2, 'Layer needs 2D input.')
+        assert len(inp.get_shape().as_list())  == 2, 'Layer needs 2D input.'
 
         self.in_shape = tuple(inp.get_shape().as_list())
         if self.in_units is None:
             self.in_units = self.in_shape[-1]
 
-        assert(self.in_units == self.in_shape[-1], 'Layer was initialised for a different number of input units.')
+        assert self.in_units == self.in_shape[-1], 'Layer was initialised for a different number of input units.'
 
         w_shape = (self.in_units, self.out_units)
 

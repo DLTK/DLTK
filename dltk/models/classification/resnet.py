@@ -64,7 +64,7 @@ class ResNet(AbstractModule):
         filters = self.filters
         strides = self.strides
 
-        assert (len(strides) == len(filters))
+        assert len(strides) == len(filters)
 
         x = inp
 

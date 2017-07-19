@@ -64,13 +64,13 @@ class BatchNorm(AbstractModule):
 
         if self.param_shape is None:
             self.param_shape = inp.get_shape().as_list()[-1]
-        assert(self.param_shape == inp.get_shape().as_list()[-1],
-               'Input shape must match parameter shape - was initialised for another shape')
+        assert self.param_shape == inp.get_shape().as_list()[-1], \
+            'Input shape must match parameter shape - was initialised for another shape'
 
         if self.axis is None:
             self.axis = list(np.arange(len(inp.get_shape().as_list()) - 1))
-        assert (len(self.axis) == len(inp.get_shape().as_list()) - 1,
-                'Input shape must match axis - was initialised for another shape')
+        assert len(self.axis) == len(inp.get_shape().as_list()) - 1, \
+            'Input shape must match axis - was initialised for another shape'
 
         use_batch_stats = is_training | test_local_stats
 

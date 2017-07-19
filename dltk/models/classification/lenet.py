@@ -47,7 +47,7 @@ class LeNet5(AbstractModule):
         """
         if self._rank is None:
             self._rank = len(inp.get_shape().as_list()) - 2
-        assert(self._rank == len(inp.get_shape().as_list()) - 2, 'Net was built for a different input size')
+        assert self._rank == len(inp.get_shape().as_list()) - 2, 'Net was built for a different input size'
 
         outputs = {}
         pool_op = tf.nn.max_pool if len(inp.get_shape().as_list()) == 4 else tf.nn.max_pool3d

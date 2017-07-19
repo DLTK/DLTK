@@ -46,7 +46,7 @@ class DCGAN(AbstractModule):
         self.generator_activation = generator_activation
         self.in_filter = None
 
-        assert (len(discriminator_filters) == len(discriminator_strides))
+        assert len(discriminator_filters) == len(discriminator_strides)
 
         super(DCGAN, self).__init__(name)
 
@@ -70,14 +70,14 @@ class DCGAN(AbstractModule):
             self.relu_leakiness = relu_leakiness
             self.in_filter = None
 
-            assert (len(strides) == len(filters))
+            assert len(strides) == len(filters)
 
             super(DCGAN.Discriminator, self).__init__(name)
 
         def _build(self, x, is_training=True):
             if self.in_filter is None:
                 self.in_filter = x.get_shape().as_list()[-1]
-            assert (self.in_filter == x.get_shape().as_list()[-1], 'Network was built for a different input shape')
+            assert self.in_filter == x.get_shape().as_list()[-1], 'Network was built for a different input shape'
 
             out = {}
             for i in range(len(self.filters) -1):
@@ -113,14 +113,14 @@ class DCGAN(AbstractModule):
             self.strides = strides
             self.in_filter = None
             self.output_activation = output_activation
-            assert (len(strides) == len(filters))
+            assert len(strides) == len(filters)
 
             super(DCGAN.Generator, self).__init__(name)
 
         def _build(self, x, is_training=True):
             if self.in_filter is None:
                 self.in_filter = x.get_shape().as_list()[-1]
-            assert (self.in_filter == x.get_shape().as_list()[-1], 'Network was built for a different input shape')
+            assert self.in_filter == x.get_shape().as_list()[-1], 'Network was built for a different input shape'
 
             x = tf.reshape(x, [tf.shape(x)[0]] + [1,] * len(self.strides[0]) + [self.in_filter])
 
@@ -165,8 +165,8 @@ class DCGAN(AbstractModule):
 
         if self.in_filter is None:
             self.in_filter = samples.get_shape().as_list()[-1]
-        assert(self.in_filter == samples.get_shape().as_list()[-1], 'Network was built for a different input shape')
-        assert(self.in_filter == self.generator_filters[-1], 'Generator was built for a different sample shape')
+        assert self.in_filter == samples.get_shape().as_list()[-1], 'Network was built for a different input shape'
+        assert self.in_filter == self.generator_filters[-1], 'Generator was built for a different sample shape'
 
         out = {}
 

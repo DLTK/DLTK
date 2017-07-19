@@ -32,7 +32,7 @@ class GraphConvolution(AbstractModule):
             name of the module
         """
 
-        assert (bias == 'b1' or bias == 'b2', 'Bias type must be either b1 or b2')
+        assert bias == 'b1' or bias == 'b2', 'Bias type must be either b1 or b2'
 
         self.in_filters = None
         self.out_filters = out_filters
@@ -64,12 +64,12 @@ class GraphConvolution(AbstractModule):
             convolved tensor
 
         """
-        assert (len(inp.get_shape().as_list()) == 3, 'Graph Convolutional Layer needs 3D input.')
+        assert len(inp.get_shape().as_list()) == 3, 'Graph Convolutional Layer needs 3D input.'
 
         self.in_shape = tuple(inp.get_shape().as_list())
         if self.in_filters is None:
             self.in_filters = self.in_shape[-1]
-        assert(self.in_filters == self.in_shape[-1], 'Convolution was built for different number of input filters')
+        assert self.in_filters == self.in_shape[-1], 'Convolution was built for different number of input filters'
 
         N, M, self.in_filters = inp.get_shape()
         N, M, Fin = int(N), int(M), int(self.in_filters)
