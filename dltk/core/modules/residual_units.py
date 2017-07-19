@@ -70,7 +70,7 @@ class VanillaResidualUnit(AbstractModule):
         orig_x = x
         if self.in_filters is None:
             self.in_filters = x.get_shape().as_list()[-1]
-        assert(self.in_filters == x.get_shape().as_list()[-1], 'Module was initialised for a different input shape')
+        assert self.in_filters == x.get_shape().as_list()[-1], 'Module was initialised for a different input shape'
 
         pool_op = tf.nn.max_pool if len(x.get_shape().as_list()) == 4 else tf.nn.max_pool3d
 

@@ -39,7 +39,7 @@ class TransposedConvolution(AbstractModule):
         self.full_strides =[1,] + list(self.strides) + [1,]
 
         self._rank = len(list(self.strides))
-        assert(1 < self._rank < 4, 'Transposed convolutions are only supported in 2D and 3D')
+        assert 1 < self._rank < 4, 'Transposed convolutions are only supported in 2D and 3D'
 
         super(TransposedConvolution, self).__init__(name=name)
 
@@ -73,14 +73,14 @@ class TransposedConvolution(AbstractModule):
             output of transposed convolution
 
         """
-        assert((len(inp.get_shape().as_list()) - 2)  == self._rank,
-               'The input has {} dimensions but this is a {}D convolution'.format(len(inp.get_shape().as_list()),
-                                                                                  self._rank))
+        assert (len(inp.get_shape().as_list()) - 2)  == self._rank, \
+            'The input has {} dimensions but this is a {}D convolution'.format(
+                len(inp.get_shape().as_list()), self._rank)
 
         self.in_shape = tuple(inp.get_shape().as_list())
         if self.in_filters is None:
             self.in_filters = self.in_shape[-1]
-        assert (self.in_filters == self.in_shape[-1], 'Convolution was built for different number of channels')
+        assert self.in_filters == self.in_shape[-1], 'Convolution was built for different number of channels'
 
         inp_shape = tf.shape(inp)
 

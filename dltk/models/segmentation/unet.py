@@ -116,7 +116,7 @@ class ResUNET(SaveableModule):
         filters = self.filters
         strides = self.strides
 
-        assert (len(strides) == len(filters))
+        assert len(strides) == len(filters)
 
         if self.input_filters is None:
             self.input_filters = inp.get_shape().as_list()[-1]

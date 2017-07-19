@@ -58,10 +58,10 @@ class Convolution(AbstractModule):
             raise Exception('Could not infer the dimensionality of the operation or both strides and dilation was'
                             'passed as list or tuple')
 
-        assert(len(strides) == len(filter_shape), 'Stride len must match len of filter shape')
-        assert(len(strides) == len(dilation_rate), 'Dilation rate and stride len must match')
-        assert(np.prod(dilation_rate) == 1 or np.prod(strides) == 1, 'Dilation rate or strides must be 1')
-        assert(padding == 'SAME' or padding == 'VALID', 'Padding must be either SAME or VALID')
+        assert len(strides) == len(filter_shape), 'Stride len must match len of filter shape'
+        assert len(strides) == len(dilation_rate), 'Dilation rate and stride len must match'
+        assert np.prod(dilation_rate) == 1 or np.prod(strides) == 1, 'Dilation rate or strides must be 1'
+        assert padding == 'SAME' or padding == 'VALID', 'Padding must be either SAME or VALID'
 
         self.filter_shape = filter_shape
         self.in_shape = None
@@ -91,9 +91,9 @@ class Convolution(AbstractModule):
             convolved tensor
 
         """
-        assert((len(inp.get_shape().as_list()) - 2)  == self._rank,
-               'The input has {} dimensions but this is a {}D convolution'.format(len(inp.get_shape().as_list()),
-                                                                                  self._rank))
+        assert len(inp.get_shape().as_list()) - 2  == self._rank, \
+            'The input has {} dimensions but this is a {}D convolution'.format(
+                len(inp.get_shape().as_list()), self._rank)
 
         self.in_shape = tuple(inp.get_shape().as_list())
         if self.in_filters is None:

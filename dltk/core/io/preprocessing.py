@@ -94,8 +94,8 @@ def resize_image_with_crop_or_pad(image, img_size=[64,64,64], **kwargs):
     """
 
     assert isinstance(image, (np.ndarray, np.generic))
-    assert ((image.ndim - 1 == len(img_size) or image.ndim == len(img_size)),
-            'Example size doesnt fit image size')
+    assert (image.ndim - 1 == len(img_size) or image.ndim == len(img_size)), \
+        'Example size doesnt fit image size'
 
     # find image dimensionality
     rank = len(img_size)

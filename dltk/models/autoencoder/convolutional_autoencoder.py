@@ -38,7 +38,7 @@ class ConvolutionalAutoencoder(AbstractModule):
         self.relu_leakiness = relu_leakiness
         self.in_filter = None
 
-        assert (len(strides) == len(filters))
+        assert len(strides) == len(filters)
 
         super(ConvolutionalAutoencoder, self).__init__(name)
 
@@ -63,7 +63,7 @@ class ConvolutionalAutoencoder(AbstractModule):
 
         if self.in_filter is None:
             self.in_filter = inp.get_shape().as_list()[-1]
-        assert(self.in_filter == inp.get_shape().as_list()[-1], 'Network was built for a different input shape')
+        assert self.in_filter == inp.get_shape().as_list()[-1], 'Network was built for a different input shape'
 
         out = {}
 
