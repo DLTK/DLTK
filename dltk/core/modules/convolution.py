@@ -73,7 +73,7 @@ class Convolution(AbstractModule):
         self.padding = padding
 
         self._rank = len(list(self.filter_shape))
-        assert (self._rank < 4, 'Convolutions are only supported up to 3D')
+        assert self._rank < 4, 'Convolutions are only supported up to 3D'
 
         super(Convolution, self).__init__(name=name)
 
@@ -98,7 +98,7 @@ class Convolution(AbstractModule):
         self.in_shape = tuple(inp.get_shape().as_list())
         if self.in_filters is None:
             self.in_filters = self.in_shape[-1]
-        assert(self.in_filters == self.in_shape[-1], 'Convolution was built for different number of channels')
+        assert self.in_filters == self.in_shape[-1], 'Convolution was built for different number of channels'
 
         self.in_filters = self.in_shape[-1]
 

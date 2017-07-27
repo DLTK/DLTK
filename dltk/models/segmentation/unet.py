@@ -82,6 +82,7 @@ class ResUNET(SaveableModule):
         self.strides = strides
         self.relu_leakiness = relu_leakiness
         self.input_filters = None
+        self.rank = None
         super(ResUNET, self).__init__(name)
 
     def _build_input_placeholder(self):
@@ -121,7 +122,13 @@ class ResUNET(SaveableModule):
         if self.input_filters is None:
             self.input_filters = inp.get_shape().as_list()[-1]
             self._build_input_placeholder()
-        assert (self.input_filters == inp.get_shape().as_list()[-1])
+        assert self.input_filters == inp.get_shape().as_list()[-1]
+
+        if self.rank is None:
+            self.rank = len(strides[0])
+        assert len(inp.get_shape().as_list()) == self.rank + 2, \
+            'Stride gives rank {} input is rank {}'.format(self.rank, len(inp.get_shape().as_list()) - 2)
+
 
         x = inp
 
@@ -137,7 +144,7 @@ class ResUNET(SaveableModule):
             saved_strides.append(strides[scale])
             for i in range(1, self.num_residual_units):
                 with tf.variable_scope('unit_%d_%d' % (scale, i)):
-                    x = VanillaResidualUnit(filters[scale])(x, is_training=is_training)
+                    x = VanillaResidualUnit(filters[scale], stride=[1] * self.rank)(x, is_training=is_training)
             scales.append(x)
             tf.logging.info('feat_scale_%d shape %s', scale, x.get_shape())
             print(x.get_shape())
@@ -150,12 +157,12 @@ class ResUNET(SaveableModule):
                                    saved_strides[scale]))
                 x = UpsampleAndConcat(saved_strides[scale])(x, scales[scale])
             with tf.variable_scope('up_unit_%d_0' % (scale)):
-                x = VanillaResidualUnit(filters[scale])(x, is_training=is_training)
+                x = VanillaResidualUnit(filters[scale], stride=[1] * self.rank)(x, is_training=is_training)
             tf.logging.info('up_%d shape %s', scale, x.get_shape())
             print(x.get_shape())
 
         with tf.variable_scope('last'):
-            x = Convolution(self.num_classes, 1)(x)
+            x = Convolution(self.num_classes, 1, strides=[1] * self.rank)(x)
 
         outputs['logits'] = x
         tf.logging.info('last conv shape %s', x.get_shape())
@@ -163,7 +170,7 @@ class ResUNET(SaveableModule):
         with tf.variable_scope('pred'):
             y_prob = tf.nn.softmax(x)
             outputs['y_prob'] = y_prob
-            y_ = tf.argmax(x, axis=-1)
+            y_ = tf.argmax(x, axis=-1) if self.num_classes > 1 else tf.cast(tf.greater_equal(x[..., 0], 0.5), tf.int32)
             outputs['y_'] = y_
 
         return outputs
