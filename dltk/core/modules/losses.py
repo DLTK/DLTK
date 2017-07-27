@@ -88,30 +88,45 @@ def dice_loss(logits, labels, num_classes, smooth=1e-5, include_background=True,
             Tensor representing the loss
 
     """
-    
-    probs = tf.nn.softmax(logits)
-    onehot_labels = tf.one_hot(labels, num_classes, dtype=tf.float32, name='onehot_labels')
-    
-    label_sum = tf.reduce_sum(onehot_labels, axis=[1, 2, 3], name='label_sum')
+    reduction_dims = list(range(1, len(logits.get_shape().as_list()) - 1))
 
-    pred_sum = tf.reduce_sum(probs, axis=[1, 2, 3], name='pred_sum')
-    
-    intersection = tf.reduce_sum(onehot_labels * probs, axis=[1, 2, 3], name='intersection')
+    if num_classes == 1:
+        probs = tf.nn.sigmoid(logits)[..., 0]
 
-    per_sample_per_class_dice = (2. * intersection + smooth) / (label_sum + pred_sum + smooth)
+        labels = tf.cast(labels, tf.float32)
 
-    flat_per_sample_per_class_dice = tf.reshape(per_sample_per_class_dice if include_background
-                                                else per_sample_per_class_dice[:, 1:] , (-1, ))
+        label_sum = tf.reduce_sum(labels, axis=reduction_dims, name='label_sum')
+        pred_sum = tf.reduce_sum(probs, axis=reduction_dims, name='pred_sum')
+        intersection = tf.reduce_sum(labels * probs, axis=reduction_dims, name='intersection')
 
-    if only_present:
-        flat_label = tf.reshape(label_sum if include_background
-                                else label_sum[:, 1:] , (-1, ))
-        masked_dice = tf.boolean_mask(flat_per_sample_per_class_dice,
-                                      tf.logical_not(tf.equal(flat_label, 0)))
+        per_sample_per_class_dice = (2. * intersection + smooth) / (label_sum + pred_sum + smooth)
+
+        dice = tf.reduce_mean(per_sample_per_class_dice)
     else:
-        masked_dice = tf.boolean_mask(flat_per_sample_per_class_dice,
-                                      tf.logical_not(tf.is_nan(flat_per_sample_per_class_dice)))
-    dice = tf.reduce_mean(masked_dice)
+        probs = tf.nn.softmax(logits)
+        onehot_labels = tf.one_hot(labels, num_classes, dtype=tf.float32, name='onehot_labels')
+
+        label_sum = tf.reduce_sum(onehot_labels, axis=reduction_dims, name='label_sum')
+
+        pred_sum = tf.reduce_sum(probs, axis=reduction_dims, name='pred_sum')
+
+        intersection = tf.reduce_sum(onehot_labels * probs, axis=reduction_dims, name='intersection')
+
+        per_sample_per_class_dice = (2. * intersection + smooth) / (label_sum + pred_sum + smooth)
+
+        flat_per_sample_per_class_dice = tf.reshape(per_sample_per_class_dice if include_background
+                                                    else per_sample_per_class_dice[:, 1:] , (-1, ))
+
+        if only_present:
+            flat_label = tf.reshape(label_sum if include_background
+                                    else label_sum[:, 1:] , (-1, ))
+            masked_dice = tf.boolean_mask(flat_per_sample_per_class_dice,
+                                          tf.logical_not(tf.equal(flat_label, 0)))
+        else:
+            masked_dice = tf.boolean_mask(flat_per_sample_per_class_dice,
+                                          tf.logical_not(tf.is_nan(flat_per_sample_per_class_dice)))
+
+        dice = tf.reduce_mean(masked_dice)
 
     loss = 1. - dice
     
