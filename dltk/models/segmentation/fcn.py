@@ -29,6 +29,7 @@ class Upscore(AbstractModule):
         self.out_filters = out_filters
         self.strides = strides
         self.in_filters = None
+        self.rank = None
         super(Upscore, self).__init__(name)
 
     def _build(self, x, x_up, is_training=True):
@@ -52,15 +53,20 @@ class Upscore(AbstractModule):
         # Compute an up-conv shape dynamically from the input tensor. Input filters are required to be static.
         if self.in_filters is None:
             self.in_filters = x.get_shape().as_list()[-1]
-        assert(self.in_filters == x.get_shape().as_list()[-1], 'Module was initialised for a different input shape')
+        assert self.in_filters == x.get_shape().as_list()[-1], 'Module was initialised for a different input shape'
+
+        if self.rank is None:
+            self.rank = len(self.strides)
+        assert len(x.get_shape().as_list()) == self.rank + 2, \
+            'Stride gives rank {} input is rank {}'.format(self.rank, len(x.get_shape().as_list()) - 2)
 
         # Account for differences in input and output filters
         if self.in_filters != self.out_filters:
-            x = Convolution(self.out_filters, name='up_score_filter_conv')(x)
+            x = Convolution(self.out_filters, name='up_score_filter_conv', strides=[1] * self.rank)(x)
 
         t_conv = BilinearUpsample(strides=self.strides)(x)
 
-        conv = Convolution(self.out_filters, 1)(x_up)
+        conv = Convolution(self.out_filters, 1, strides=[1] * self.rank)(x_up)
         conv = BatchNorm()(conv, is_training)
 
         return tf.add(t_conv, conv)
@@ -96,6 +102,7 @@ class ResNetFCN(AbstractModule):
         self.filters = filters
         self.strides = strides
         self.relu_leakiness = relu_leakiness
+        self.rank = None
         super(ResNetFCN, self).__init__(name)
 
     def _build(self, inp, is_training=True):
@@ -123,6 +130,11 @@ class ResNetFCN(AbstractModule):
 
         assert len(strides) == len(filters)
 
+        if self.rank is None:
+            self.rank = len(strides[0])
+        assert len(inp.get_shape().as_list()) == self.rank + 2, \
+            'Stride gives rank {} input is rank {}'.format(self.rank, len(inp.get_shape().as_list()) - 2)
+
         x = inp
 
         x = Convolution(filters[0], strides=strides[0])(x)
@@ -137,7 +149,7 @@ class ResNetFCN(AbstractModule):
             saved_strides.append(strides[scale])
             for i in range(1, self.num_residual_units):
                 with tf.variable_scope('unit_%d_%d' % (scale, i)):
-                    x = VanillaResidualUnit(filters[scale])(x, is_training=is_training)
+                    x = VanillaResidualUnit(filters[scale], stride=[1] * self.rank)(x, is_training=is_training)
             scales.append(x)
             tf.logging.info('feat_scale_%d shape %s', scale, x.get_shape())
             print(x.get_shape())
@@ -153,7 +165,7 @@ class ResNetFCN(AbstractModule):
             print(x.get_shape())
 
         with tf.variable_scope('last'):
-            x = Convolution(self.num_classes, 1)(x)
+            x = Convolution(self.num_classes, 1, strides=[1] * self.rank)(x)
 
         outputs['logits'] = x
         tf.logging.info('last conv shape %s', x.get_shape())
