@@ -173,7 +173,7 @@ class ResNetFCN(AbstractModule):
         with tf.variable_scope('pred'):
             y_prob = tf.nn.softmax(x)
             outputs['y_prob'] = y_prob
-            y_ = tf.argmax(x, axis=-1)
+            y_ = tf.argmax(x, axis=-1) if self.num_classes > 1 else tf.cast(tf.greater_equal(x[..., 0], 0.5), tf.int32)
             outputs['y_'] = y_
 
         return outputs
