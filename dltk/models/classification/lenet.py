@@ -81,10 +81,10 @@ class LeNet5(AbstractModule):
                     strides=[1] + [2] * self._rank + [1],
                     padding='VALID')
 
-        print(x.get_shape().as_list())
+        tf.logging.info(x.get_shape().as_list())
         # First fully connected layer
         x = tf.reshape(x, [tf.shape(x)[0], np.prod(x.get_shape().as_list()[1:])])
-        print(x.get_shape().as_list())
+        tf.logging.info(x.get_shape().as_list())
 
         x = tf.layers.dense(inputs=x, units=self.filters[2], activation=tf.nn.tanh)
 

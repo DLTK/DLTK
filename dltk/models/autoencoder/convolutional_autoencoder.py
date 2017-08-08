@@ -74,7 +74,7 @@ class ConvolutionalAutoencoder(AbstractModule):
                 x = Convolution(self.filters[scale], strides=self.strides[scale])(x)
                 x = BatchNorm()(x, is_training)
                 x = leaky_relu(x, self.relu_leakiness)
-                print(x.get_shape().as_list())
+                tf.logging.info(x.get_shape().as_list())
 
         x_shape = x.get_shape().as_list()
 
@@ -92,7 +92,7 @@ class ConvolutionalAutoencoder(AbstractModule):
                 x = BatchNorm()(x, is_training)
                 x = leaky_relu(x, self.relu_leakiness)
                 x = TransposedConvolution(f, strides=self.strides[scale])(x)
-                print(x.get_shape().as_list())
+                tf.logging.info(x.get_shape().as_list())
 
         out['x_'] = x
 

@@ -75,7 +75,7 @@ class ResNet(AbstractModule):
         x = inp
 
         x = Convolution(filters[0], strides=strides[0])(x)
-        print(x.get_shape())
+        tf.logging.info(x.get_shape())
 
         for scale in range(1, len(filters)):
             with tf.variable_scope('unit_%d_0' % (scale)):
@@ -85,15 +85,13 @@ class ResNet(AbstractModule):
                     x = VanillaResidualUnit(filters[scale],
                                             stride=[1,] * self.rank)(x, is_training=is_training)
             tf.logging.info('feat_scale_%d shape %s', scale, x.get_shape())
-            print(x.get_shape())
 
         with tf.variable_scope('unit_last'):
             x = BatchNorm()(x)
             x = leaky_relu(x, self.relu_leakiness)
             axis = tuple(range(len(x.get_shape().as_list())))[1:-1]
-            print(axis)
             x = tf.reduce_mean(x, axis=axis, name='global_avg_pool')
-            print(x.get_shape())
+            tf.logging.info('unit_last axis %s shape %s',axis,x.get_shape())
 
         with tf.variable_scope('logits'):
             x = tf.reshape(x, (tf.shape(x)[0], filters[-1]))
