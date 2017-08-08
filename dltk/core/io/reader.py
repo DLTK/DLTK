@@ -5,7 +5,7 @@ from __future__ import division
 import tensorflow as tf
 import numpy as np
 import SimpleITK as sitk
-
+import warnings
 
 class AbstractReader(object):
     """Abstract reader
@@ -184,7 +184,7 @@ class AbstractReader(object):
                     tensors.append(t.astype(self._map_dtype(d)))
                 elif isinstance(t, (float, int)):
                     if d is tf.float32 and isinstance(t, int):
-                        print('Warning: Losing accuracy by converting int to float')
+                        warnings.warn('Losing accuracy by converting int to float')
                     tensors.append(self._map_dtype(d)(t))
                 elif isinstance(t, bool):
                     tensors.append(t)
@@ -226,7 +226,7 @@ class SimpleSITKReader(AbstractReader):
             elif isinstance(p, (float, int)):
                 # load label
                 if d is tf.float32 and isinstance(p, int):
-                    print('Warning: Losing accuracy by converting int to float')
+                    warnings.warn('Losing accuracy by converting int to float')
                 data.append(self._map_dtype(d)(p))
             else:
                 raise Exception('Not sure how to interpret "{}"'.format(p))

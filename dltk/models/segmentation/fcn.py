@@ -138,7 +138,7 @@ class ResNetFCN(AbstractModule):
         x = inp
 
         x = Convolution(filters[0], strides=strides[0])(x)
-        print(x.get_shape())
+        tf.logging.info(x.get_shape())
 
         # residual feature encoding blocks with num_residual_units at different scales defined via strides
         scales = [x]
@@ -152,7 +152,6 @@ class ResNetFCN(AbstractModule):
                     x = VanillaResidualUnit(filters[scale], stride=[1] * self.rank)(x, is_training=is_training)
             scales.append(x)
             tf.logging.info('feat_scale_%d shape %s', scale, x.get_shape())
-            print(x.get_shape())
 
         # Decoder / upscore
         for scale in range(len(filters) - 2, -1, -1):
@@ -162,7 +161,6 @@ class ResNetFCN(AbstractModule):
                                    saved_strides[scale]))
                 x = Upscore(self.num_classes, saved_strides[scale])(x, scales[scale], is_training=is_training)
             tf.logging.info('up_%d shape %s', scale, x.get_shape())
-            print(x.get_shape())
 
         with tf.variable_scope('last'):
             x = Convolution(self.num_classes, 1, strides=[1] * self.rank)(x)
