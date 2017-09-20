@@ -111,8 +111,8 @@ class SaveableModule(AbstractModule):
         """
         g = tf.get_default_graph()
 
-        assert(not g.finalized, 'Graph cannot be finalized')
-        assert(self.input_placeholders is not None, 'Input placeholders need to be built')
+        assert not g.finalized, 'Graph cannot be finalized'
+        assert self.input_placeholders is not None, 'Input placeholders need to be built'
 
         self.saved_inputs = self.input_placeholders
 
@@ -154,7 +154,7 @@ class SaveableModule(AbstractModule):
             Tensorflow Sessions holding the current variable states
         """
 
-        assert(self.saver is not None, 'Meta graph must be saved first')
+        assert self.saver is not None, 'Meta graph must be saved first'
 
         self.saver.save(session, path, write_meta_graph=False)
 
