@@ -4,6 +4,7 @@ from __future__ import print_function
 
 import tensorflow as tf
 import re
+import os
 
 
 class AbstractModule(object):
@@ -59,6 +60,7 @@ class AbstractModule(object):
 
         """
         out = self._template(*args, **kwargs)
+
         return out
 
     @property
@@ -81,3 +83,106 @@ class AbstractModule(object):
         """
         scope_name = re.escape(self.variable_scope.name) + "/"
         return tuple(tf.get_collection(collection, scope_name))
+
+
+class SaveableModule(AbstractModule):
+    output_keys = []
+
+    def __init__(self, name=None):
+        self.input_placeholders = None
+        self.saver = None
+        super(SaveableModule, self).__init__(name)
+
+    def _build_input_placeholder(self):
+        raise NotImplementedError('Not implemented in abstract class')
+
+    def save_metagraph(self, path, clear_devices=False, **kwargs):
+        """
+
+        Parameters
+        ----------
+        path : string
+            path to save the metagraph to
+        clear_devices : bool
+            flag to toggle whether meta graph saves device placement of tensors
+        kwargs
+            additional arguments to the module build function
+
+        """
+        g = tf.get_default_graph()
+
+        assert not g.finalized, 'Graph cannot be finalized'
+        assert self.input_placeholders is not None, 'Input placeholders need to be built'
+
+        self.saved_inputs = self.input_placeholders
+
+        out = self._template(*self.saved_inputs, **kwargs)
+
+        self.saved_outputs = out.values() if isinstance(out, dict) else [out]
+
+        self.saved_var_list = list(self.get_variables(tf.GraphKeys.GLOBAL_VARIABLES))
+
+        self.saver = tf.train.Saver(var_list=self.saved_var_list)
+
+        g.clear_collection('saved_network')
+        g.clear_collection('saved_inputs')
+        g.clear_collection('saved_outputs')
+
+        for i in self.saved_inputs:
+            g.add_to_collections(['saved_inputs', 'saved_network'], i)
+
+        for o in self.saved_outputs:
+            g.add_to_collections(['saved_outputs', 'saved_network'], o)
+
+        for tensor in self.saved_var_list:
+            g.add_to_collection('saved_network', tensor)
+
+        self.saver.export_meta_graph('{}.meta'.format(path), clear_devices=clear_devices)
+
+        g.clear_collection('saved_network')
+        g.clear_collection('saved_inputs')
+        g.clear_collection('saved_outputs')
+
+    def save_model(self, path, session):
+        """Saves the network to a given path
+
+        Parameters
+        ----------
+        path : string
+            Path to the file to save the network in
+        session : tf.Session
+            Tensorflow Sessions holding the current variable states
+        """
+
+        assert self.saver is not None, 'Meta graph must be saved first'
+
+        self.saver.save(session, path, write_meta_graph=False)
+
+    @classmethod
+    def load(cls, path, session):
+        """
+
+        Parameters
+        ----------
+        path : string
+            Path to load the network from
+        session : tf.Session
+            Tensorflow Sessions to load the variables into
+
+        Returns
+        -------
+        list : list of input placeholders saved
+        list : list of outputs produced by the network
+
+        """
+
+        saver = tf.train.import_meta_graph('{}.meta'.format(path))
+
+        saver.restore(session, path)
+
+        inputs = tf.get_collection('saved_inputs')
+        loaded_outputs = tf.get_collection('saved_outputs')
+
+        outputs = {key: output for key, output in zip(cls.output_keys, loaded_outputs)}
+
+        return inputs, outputs
