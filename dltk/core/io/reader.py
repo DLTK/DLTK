@@ -5,11 +5,8 @@ from __future__ import division
 import tensorflow as tf
 import numpy as np
 import SimpleITK as sitk
-<<<<<<< HEAD
 import warnings
-=======
 import traceback
->>>>>>> 3ce7f91e1b7d334b236e314467ddd3e1a8b0a188
 
 class AbstractReader(object):
     """Abstract reader
