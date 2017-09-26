@@ -45,7 +45,7 @@ class VanillaResidualUnit(AbstractModule):
 
         self.out_filters = out_filters
         self.kernel_size = kernel_size
-        self.stride = list(stride)
+        self.stride = stride
         self.relu_leakiness = relu_leakiness
         self.in_filters = None
 

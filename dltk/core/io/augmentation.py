@@ -130,7 +130,7 @@ def elastic_transform(image, alpha, sigma):
     return transformed_image
 
 
-def extract_class_balanced_example_array(image, label, example_size=[1, 64, 64], n_examples=1, classes=2):
+def extract_class_balanced_example_array(image, label, example_size=[1, 64, 64], n_examples=1, classes=2, class_weights=None):
     """
         Extract training examples from an image (and corresponding label) subject to class balancing.
         Returns an image example array and the corresponding label array.
@@ -163,31 +163,42 @@ def extract_class_balanced_example_array(image, label, example_size=[1, 64, 64],
         classes = tuple(range(classes))
     n_classes = len(classes)
 
-    n_ex_per_class = int(np.round(n_examples / n_classes))
+    assert n_examples >= n_classes, 'n_examples need to be bigger than n_classes'
 
-    assert n_examples > n_classes, 'n_examples need to be bigger than n_classes'
+    if class_weights is None:
+        n_ex_per_class = np.ones(n_classes).astype(int) * int(np.round(n_examples / n_classes))
+    else:
+        assert len(class_weights) == n_classes, 'class_weights must match number of classes'
+        class_weights = np.array(class_weights)
+        n_ex_per_class = np.round((class_weights / class_weights.sum()) * n_examples).astype(int)
 
     # compute an example radius as we are extracting centered around locations
     ex_rad = np.array(list(zip(np.floor(np.array(example_size) / 2.0), np.ceil(np.array(example_size) / 2.0))),
                       dtype=np.int)
 
-    ex_imgs = []
-    ex_lbls = []
-    for c in classes:
+    class_ex_imgs = []
+    class_ex_lbls = []
+    min_ratio = 1.
+    for c_idx, c in enumerate(classes):
         # get valid, random center locations belonging to that class
         idx = np.argwhere(label == c)
+
+        ex_imgs = []
+        ex_lbls = []
 	
-        if len(idx) == 0:
+        if len(idx) == 0 or n_ex_per_class[c_idx] == 0:
+            class_ex_imgs.append([])
+            class_ex_lbls.append([])
             continue
 
         # extract random locations
-        r_idx_idx = np.random.choice(len(idx), size=min(n_ex_per_class, len(idx)), replace=False).astype(int)
+        r_idx_idx = np.random.choice(len(idx), size=min(n_ex_per_class[c_idx], len(idx)), replace=False).astype(int)
         r_idx = idx[r_idx_idx]
 
 
         # add a random shift them to avoid learning a centre bias - IS THIS REALLY TRUE?
         r_shift = np.array([list(a) for a in zip(
-                    *[np.random.randint(-ex_rad[i][0], ex_rad[i][1], size=min(n_ex_per_class, len(idx))) for i in range(rank)]
+                    *[np.random.randint(-ex_rad[i][0] // 2, ex_rad[i][1] // 2, size=len(r_idx_idx)) for i in range(rank)]
                   )]).astype(int)
 
         r_idx += r_shift
@@ -206,6 +217,23 @@ def extract_class_balanced_example_array(image, label, example_size=[1, 64, 64],
             # concatenate and return the examples
             ex_imgs = np.concatenate((ex_imgs, ex_img), axis=0) if (len(ex_imgs) != 0) else ex_img
             ex_lbls = np.concatenate((ex_lbls, ex_lbl), axis=0) if (len(ex_lbls) != 0) else ex_lbl
+
+        class_ex_imgs.append(ex_imgs)
+        class_ex_lbls.append(ex_lbls)
+
+        ratio = n_ex_per_class[c_idx] / len(ex_imgs)
+        min_ratio = ratio if ratio < min_ratio else min_ratio
+
+    indices = np.floor(n_ex_per_class * min_ratio).astype(int)
+
+    ex_imgs = np.concatenate([cimg[:idxs] for cimg, idxs in zip(class_ex_imgs, indices) if len(cimg) > 0], axis=0)
+    ex_lbls = np.concatenate([clbl[:idxs] for clbl, idxs in zip(class_ex_lbls, indices) if len(clbl) > 0], axis=0)
+
+    # print('returning {} samples with classes:'.format(len(ex_imgs)))
+    # print(' - '.join(['{}: {} samples'.format(i, len(cimg[:idxs])) for i, (cimg, idxs) in
+    #                  enumerate(zip(class_ex_imgs, indices))]))
+
+    # print('returning {} {}'.format(ex_imgs.shape, ex_lbls.shape))
 
     return ex_imgs, ex_lbls
 
@@ -244,7 +272,7 @@ def extract_random_example_array(image_list, example_size=[1, 64, 64], n_example
 
     for i in image_list:
         if len(image_list) > 1:
-            assert (i.ndim - 1 == image_list[0].ndim or i.ndim == image_list[0].ndim), \
+            assert (i.ndim - 1 == image_list[0].ndim or i.ndim == image_list[0].ndim or i.ndim + 1 == image_list[0].ndim), \
                 'Example size doesnt fit image size'
             assert all([i0_s == i_s for i0_s, i_s in zip(image_list[0].shape, i.shape)]), \
                 'Image shapes must match'

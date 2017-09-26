@@ -66,8 +66,8 @@ def image_summary(img, summary_name, collections=None):
                 slicer = [slice(None)] * 3
                 slicer[dim] = img.shape[dim] // 2
 
-                tmp_img = (img[slicer] + img[slicer].min())
-                tmp_img /= tmp_img.max()
+                tmp_img = (img[slicer] - img[slicer].min())
+                tmp_img /= tmp_img.max() if tmp_img.max() > 0. else 1.
 
                 s = StringIO()
                 if img.shape[-1] == 1:

@@ -5,7 +5,11 @@ from __future__ import division
 import tensorflow as tf
 import numpy as np
 import SimpleITK as sitk
+<<<<<<< HEAD
 import warnings
+=======
+import traceback
+>>>>>>> 3ce7f91e1b7d334b236e314467ddd3e1a8b0a188
 
 class AbstractReader(object):
     """Abstract reader
@@ -175,7 +179,12 @@ class AbstractReader(object):
             list
                 list of things just read
             """
-            ex = self._read_sample(id_queue, **kwargs)
+            try:
+                ex = self._read_sample(id_queue, ** kwargs)
+            except Exception as e:
+                print('got error `{} from `_read_sample`:'.format(e))
+                print(traceback.format_exc())
+                raise
 
             # eventually fix data types of read objects
             tensors = []
