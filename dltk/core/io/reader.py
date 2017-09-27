@@ -7,7 +7,6 @@ import numpy as np
 import SimpleITK as sitk
 import warnings
 import traceback
-import warnings
 
 class AbstractReader(object):
     """Abstract reader
