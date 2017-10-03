@@ -89,7 +89,7 @@ class ResUNET(SaveableModule):
         """Abstract function to build input placeholders
         """
 
-        assert(self.input_filters is not None, 'self.input_filters must be defined')
+        assert self.input_filters is not None, 'self.input_filters must be defined'
 
         self.input_placeholders = [tf.placeholder(tf.float32, shape=[None, ] * (1 + len(self.strides[0]))
                                                                    + [self.input_filters])]
