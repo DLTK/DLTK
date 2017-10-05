@@ -107,6 +107,7 @@ class Convolution(AbstractModule):
         self._k = tf.get_variable("k", shape=kernel_shape, initializer=tf.uniform_unit_scaling_initializer(),
                                   collections=self.WEIGHT_COLLECTIONS)
         self.variables.append(self._k)
+        
         outp = tf.nn.convolution(inp, self._k, padding=self.padding, strides=self.strides,
                                  dilation_rate=self.dilation_rate, name='conv')
 
