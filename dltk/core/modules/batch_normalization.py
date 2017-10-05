@@ -8,6 +8,9 @@ from tensorflow.python.training import moving_averages
 
 from dltk.core.modules.base import AbstractModule
 
+# From TF version 1.3.0 on, tf.nn.fused_batch_norm is available,
+# which is considerably faster than using tf.nn.batch_normalization
+USE_FUSED_BN = [int(v) for v in tf.__version__.split('.')] >= [1, 3, 0]
 
 class BatchNorm(AbstractModule):
     """Batch normalization module.
@@ -61,7 +64,6 @@ class BatchNorm(AbstractModule):
             normalized tensor
 
         """
-
         if self.param_shape is None:
             self.param_shape = inp.get_shape().as_list()[-1]
         assert self.param_shape == inp.get_shape().as_list()[-1], \
@@ -93,6 +95,9 @@ class BatchNorm(AbstractModule):
                                    initializer=tf.ones_initializer(), trainable=False,
                                    collections=self.MOVING_COLLECTIONS)
 
+        if USE_FUSED_BN:
+            return self._build_fused_bn(inp, is_training, use_batch_stats)
+
         if use_batch_stats:
             mean, variance = tf.nn.moments(inp, self.axis, name='moments')
 
@@ -100,26 +105,53 @@ class BatchNorm(AbstractModule):
             variance = tf.maximum(variance, tf.constant(0.))
 
             if is_training:
-                update_mean_op = moving_averages.assign_moving_average(
-                    variable=self._mm,
-                    value=mean,
-                    decay=self.decay_rate,
-                    zero_debias=False,
-                    name="update_moving_mean").op
-                update_variance_op = moving_averages.assign_moving_average(
-                    variable=self._mv,
-                    value=variance,
-                    decay=self.decay_rate,
-                    zero_debias=False,
-                    name="update_moving_variance").op
-
+                update_mean_op, update_variance_op = self._get_update_ops(mean,
+                                                                          variance) 
                 with tf.control_dependencies([update_mean_op, update_variance_op]):
                     mean = tf.identity(mean)
                     variance = tf.identity(variance)
         else:
             mean = tf.identity(self._mm)
             variance = tf.identity(self._mv)
-
+                   
         outp = tf.nn.batch_normalization(inp, mean, variance, self._beta, self._gamma, self.eps, name="bn")
-
         return outp
+
+    def _get_update_ops(self, mean, variance):
+        update_mean_op = moving_averages.assign_moving_average(
+            variable=self._mm,
+            value=mean,
+            decay=self.decay_rate,
+            zero_debias=False,
+            name="update_moving_mean").op
+        update_variance_op = moving_averages.assign_moving_average(
+            variable=self._mv,
+            value=variance,
+            decay=self.decay_rate,
+            zero_debias=False,
+            name="update_moving_variance").op
+        return update_mean_op, update_variance_op
+
+    def _build_fused_bn(self, inp, is_training, use_batch_stats):
+        if use_batch_stats:
+            outp, mean, variance = tf.nn.fused_batch_norm(inp,
+                                                          scale=self._gamma,
+                                                          offset=self._beta,
+                                                          epsilon=self.eps,
+                                                          name="bn")
+            if is_training:
+                update_mean_op, update_variance_op = self._get_update_ops(mean,
+                                                                          variance) 
+                with tf.control_dependencies([update_mean_op, update_variance_op]):
+                    outp = tf.identity(outp)
+        else:
+            outp, _, _ = tf.nn.fused_batch_norm(inp,
+                                                scale=self._gamma,
+                                                offset=self._beta,
+                                                mean=self._mm,
+                                                variance=self._mv,
+                                                epsilon=self.eps,
+                                                is_training=False,
+                                                name="bn")
+        return outp
+
