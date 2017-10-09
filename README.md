@@ -20,8 +20,8 @@ CUDA_HOME=MY_CUDA_PATH; export CUDA_HOME
 2. Setup a virtual environment and activate it:
 
 ```shell
-virtualenv venv_tf1.1
-source venv_tf1.1/bin/activate
+virtualenv venv_tf
+source venv_tf/bin/activate
 ```
 
 3. Install all DLTK dependencies (including tensorflow) via pip:
