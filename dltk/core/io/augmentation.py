@@ -124,7 +124,7 @@ def elastic_transform(image, alpha, sigma):
     indices = list( map((lambda x:  np.reshape( x , (-1, 1)) ), grid + np.array(out) ) )
   
     # Transform image based on masked indices
-    transformed_image = map_coordinates(image, indices, order=1,
+    transformed_image = map_coordinates(image, indices, order=0,
                                         mode='reflect').reshape(image.shape)
 
     return transformed_image
