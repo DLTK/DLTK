@@ -155,7 +155,7 @@ def extract_class_balanced_example_array(image, label, example_size=[1, 64, 64],
     """
     assert image.shape[:-1] == label.shape, 'Image and label shape must match'
     assert image.ndim - 1 == len(example_size), 'Example size doesnt fit image size'
-    assert all([i_s > e_s for i_s, e_s in zip(image.shape, example_size)]), \
+    assert all([i_s >= e_s for i_s, e_s in zip(image.shape, example_size)]), \
         'Image must be bigger than example shape'
     rank = len(example_size)
 
@@ -185,7 +185,7 @@ def extract_class_balanced_example_array(image, label, example_size=[1, 64, 64],
 
         ex_imgs = []
         ex_lbls = []
-	
+
         if len(idx) == 0 or n_ex_per_class[c_idx] == 0:
             class_ex_imgs.append([])
             class_ex_lbls.append([])
