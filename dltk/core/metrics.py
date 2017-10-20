@@ -22,9 +22,13 @@ def dice(pred, labels, num_classes):
 
     dice_scores = np.zeros((num_classes))
     for i in range(num_classes):
-        tmp_den = (np.sum(pred == i) + np.sum(labels == i))
-        tmp_dice = 2. * np.sum((pred == i) * (labels == i)) / tmp_den if tmp_den > 0 else 1.
-        dice_scores[i] = tmp_dice
+        idx = np.argwhere(labels == i)
+        if len(idx) == 0:
+            dice_scores[i] = float('nan')
+        else: 
+            tmp_den = (np.sum(pred == i) + np.sum(labels == i))
+            tmp_dice = 2. * np.sum((pred == i) * (labels == i)) / tmp_den if tmp_den > 0 else 1.
+            dice_scores[i] = tmp_dice
     return dice_scores
 
 
