@@ -138,7 +138,7 @@ class ResNetFCN(AbstractModule):
         x = inp
 
         x = Convolution(filters[0], strides=strides[0])(x)
-        tf.logging.info(x.get_shape())
+        tf.logging.info('Init conv tensor shape %s', x.get_shape())
 
         # residual feature encoding blocks with num_residual_units at different scales defined via strides
         scales = [x]
@@ -151,22 +151,19 @@ class ResNetFCN(AbstractModule):
                 with tf.variable_scope('unit_%d_%d' % (scale, i)):
                     x = VanillaResidualUnit(filters[scale], stride=[1] * self.rank)(x, is_training=is_training)
             scales.append(x)
-            tf.logging.info('feat_scale_%d shape %s', scale, x.get_shape())
+            tf.logging.info('Encoder at scale %d tensor shape: %s', scale, x.get_shape())
 
         # Decoder / upscore
         for scale in range(len(filters) - 2, -1, -1):
             with tf.variable_scope('upscore_%d' % scale):
-                tf.logging.info('Building upsampling for scale %d with x (%s) x_up (%s) stride (%s)'
-                                % (scale, x.get_shape().as_list(), scales[scale].get_shape().as_list(),
-                                   saved_strides[scale]))
                 x = Upscore(self.num_classes, saved_strides[scale])(x, scales[scale], is_training=is_training)
-            tf.logging.info('up_%d shape %s', scale, x.get_shape())
+            tf.logging.info('Decoder at scale %d tensor shape: %s', scale, x.get_shape())
 
         with tf.variable_scope('last'):
             x = Convolution(self.num_classes, 1, strides=[1] * self.rank)(x)
 
         outputs['logits'] = x
-        tf.logging.info('last conv shape %s', x.get_shape())
+        tf.logging.info('Logits tensor shape %s', x.get_shape())
 
         with tf.variable_scope('pred'):
             y_prob = tf.nn.softmax(x)
