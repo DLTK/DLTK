@@ -25,7 +25,7 @@ def dice(pred, labels, num_classes):
         tmp_den = (np.sum(pred == i) + np.sum(labels == i))
         tmp_dice = 2. * np.sum((pred == i) * (labels == i)) / tmp_den if tmp_den > 0 else 1.
         dice_scores[i] = tmp_dice
-    return dice_scores
+    return dice_scores.astype(np.float32)
 
 
 def abs_vol_difference(pred, labels, num_classes):
@@ -52,7 +52,7 @@ def abs_vol_difference(pred, labels, num_classes):
     for i in range(num_classes):
         avd[i] = np.abs(np.sum(pred == i) - np.sum(labels == i)) / (np.float(np.sum(labels == i)) + eps)
         
-    return avd
+    return avd.astype(np.float32)
 
 
 def crossentropy(pred, labels, logits=True):
@@ -80,4 +80,4 @@ def crossentropy(pred, labels, logits=True):
     else:
         softm = pred
     loss = np.mean(-1. * np.sum(labels * np.log(softm + 1e-8), axis=-1))
-    return loss
+    return loss.astype(np.float32)
