@@ -17,7 +17,6 @@ DLTK API and user guides can be found [here](https://dltk.github.io/)
 - json config?
 - CI / pytest
 - in notebook training
-- tensorboard as dependency into setup.py
 - setting the example shape globally (i.e. for summaries and for the reader)
 
 ### Installation
