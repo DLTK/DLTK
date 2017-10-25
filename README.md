@@ -61,7 +61,7 @@ jupyter notebook --ip=* --port $MY_PORT
 [@mrajchl](https://github.com/mrajchl)
 [@pawni](https://github.com/pawni)
 
-### Contributors
+### Contributors (many thanks)
 #### v0.1 [@ericspod](https://github.com/ericspod) [@ghisvail](https://github.com/ghisvail) [@mauinz](https://github.com/mauinz) [@michaeld123](https://github.com/michaeld123) [@sk1712](https://github.com/sk1712)
 
 ### License
