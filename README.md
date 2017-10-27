@@ -8,16 +8,33 @@ DLTK API and user guides can be found [here](https://dltk.github.io/)
 
 
 ### TODO v0.2:
-- deploy
-- fine tuning
+1. portation of 0.1 features:
+  - core: graph convolutions
+  - io: sliding window
+  - misc: utils
+  - models:
+    - segm: deep medic
+    - ae: all
+    - classification: all
+    - regression: all
+    - gan: all
+    - graphical: all
+  - examples:
+    - all
+  - hi level: 
+    - deploy
+    - fine tuning
+    - validation/inference on full volumes
+    - in notebook training
+    - setting the example shape globally (i.e. for summaries and for the reader)
+    
+2. new features:
 - histogram estimation mit moving averages session hook domain adaption
 - hooks for sampling
 - resampling etc
-- validation/inference on full volumes
 - json config?
 - CI / pytest
-- in notebook training
-- setting the example shape globally (i.e. for summaries and for the reader)
+
 
 ### Installation
 1. Install CUDA with cuDNN and add its path in ~/.bashrc by sourcing setup.sh:
