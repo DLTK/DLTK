@@ -43,11 +43,9 @@ def model_fn(features, labels, mode, params):
     Returns:
         TYPE: Description
     """
-    
-    features = features['x']
 
     # 1. create a model and its outputs
-    net_output_ops = residual_fcn_3D(features, NUM_CLASSES, num_res_units=1, filters=(16, 32, 64),
+    net_output_ops = residual_fcn_3D(features['x'], NUM_CLASSES, num_res_units=1, filters=(16, 32, 64),
                     strides=((1, 1, 1), (1, 2, 2), (1, 2, 2)), mode=mode)
     
     # 1.1 Generate predictions only (for `ModeKeys.PREDICT`)
@@ -71,9 +69,9 @@ def model_fn(features, labels, mode, params):
     
     # 4.1 (optional) create custom image summaries for tensorboard
     my_image_summaries = {}
-    my_image_summaries['feat_t1'] = features[0,0,:,:,0]
-    my_image_summaries['feat_t1_ir'] = features[0,0,:,:,1]
-    my_image_summaries['feat_t2_flair'] = features[0,0,:,:,2]
+    my_image_summaries['feat_t1'] = features['x'][0,0,:,:,0]
+    my_image_summaries['feat_t1_ir'] = features['x'][0,0,:,:,1]
+    my_image_summaries['feat_t2_flair'] = features['x'][0,0,:,:,2]
     my_image_summaries['labels'] = tf.cast(labels['y'], tf.float32)[0,0,:,:]
     my_image_summaries['predictions'] = tf.cast(net_output_ops['y_'], tf.float32)[0,0,:,:]
         
@@ -133,7 +131,6 @@ def train(args):
             serving_input_receiver_fn=reader.serving_input_receiver_fn(reader_example_shapes))
         print('Model saved to {}.'.format(export_dir))
 
-            
         
 if __name__ == '__main__':
 
@@ -144,7 +141,7 @@ if __name__ == '__main__':
     parser.add_argument('--verbose', default=False, action='store_true')
     parser.add_argument('--cuda_devices', '-c', default='0')
     
-    parser.add_argument('--save_path', '-p', default='/tmp/mrbrains_model/')
+    parser.add_argument('--save_path', '-p', default='/tmp/mrbrains_segmentation/')
     parser.add_argument('--train_csv', default='train.csv')
     parser.add_argument('--val_csv', default='val.csv')
     
