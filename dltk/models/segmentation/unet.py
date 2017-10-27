@@ -29,7 +29,7 @@ def upsample_and_concat(inputs, inputs2, strides=(2, 2, 2), name='up_and_concat'
     assert len(inputs.get_shape().as_list()) == len(inputs2.get_shape().as_list()), 'Ranks of input and input2 differ'
         
     # Upsample inputs
-    inputs = bilinear_upsample_3D(inputs, strides) 
+    inputs = linear_upsample_3D(inputs, strides) 
     
     return tf.concat(axis=-1,values=[inputs2, inputs])
 

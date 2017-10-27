@@ -47,7 +47,7 @@ def model_fn(features, labels, mode, params):
     features = features['x']
 
     # 1. create a model and its outputs
-    net_output_ops = residual_unet_3D(features, NUM_CLASSES, num_res_units=1, filters=(16, 32, 64),
+    net_output_ops = residual_fcn_3D(features, NUM_CLASSES, num_res_units=1, filters=(16, 32, 64),
                     strides=((1, 1, 1), (1, 2, 2), (1, 2, 2)), mode=mode)
     
     # 1.1 Generate predictions only (for `ModeKeys.PREDICT`)

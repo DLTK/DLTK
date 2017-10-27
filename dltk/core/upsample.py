@@ -7,9 +7,9 @@ from __future__ import print_function
 import tensorflow as tf
 import numpy as np
 
-def get_bilinear_upsampling_kernel(up_spatial_shape, out_filters, in_filters, trainable=False):
+def get_linear_upsampling_kernel(up_spatial_shape, out_filters, in_filters, trainable=False):
     
-        """builds kernel for bilinear upsampling
+        """builds kernel for linear upsampling
         
         Args:
             up_spatial_shape (TYPE): Description
@@ -61,7 +61,7 @@ def get_bilinear_upsampling_kernel(up_spatial_shape, out_filters, in_filters, tr
         return tf.get_variable(name="bilinear_up_kernel", initializer=init, shape=weights.shape, trainable=trainable)
 
 
-def bilinear_upsample_3D(inputs, strides=(2, 2, 2), use_bias=False, trainable=False, name='bilinear_upsampling'):
+def linear_upsample_3D(inputs, strides=(2, 2, 2), use_bias=False, trainable=False, name='linear_upsampling'):
     """Summary
     
     Args:
@@ -82,7 +82,7 @@ def bilinear_upsample_3D(inputs, strides=(2, 2, 2), use_bias=False, trainable=Fa
     strides_5D = [1,] + list(strides) + [1,]
     kernel_size = [2 * s if s > 1 else 1 for s in strides]
 
-    kernel = get_bilinear_upsampling_kernel(kernel_size, num_filters, num_filters, trainable)
+    kernel = get_linear_upsampling_kernel(kernel_size, num_filters, num_filters, trainable)
 
     dyn_out_shape = [dyn_inp_shape[i] * strides_5D[i] for i in range(rank)]
     dyn_out_shape[-1] = num_filters
