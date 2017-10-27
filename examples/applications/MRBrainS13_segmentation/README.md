@@ -19,10 +19,10 @@ val.csv:
 5,$MY_DATA_PATH/MRBrainS13DataNii/TrainingData/5/
 ```
 
-These are parsed and extract tf.Tensor examples for training and evaluation in `reader.py` using a [SimpleITK](http://www.simpleitk.org/) i/o to read the .nii files:
+These are parsed and extract tf.Tensor examples for training and evaluation in `reader.py` using a [SimpleITK](http://www.simpleitk.org/) for  i/o of the .nii files:
 
 ```
-....
+...
 t1 = sitk.GetArrayFromImage(sitk.ReadImage(os.path.join(str(img_fn), 'T1.nii')))
 t1_ir = sitk.GetArrayFromImage(sitk.ReadImage(os.path.join(str(img_fn), 'T1_IR.nii')))
 ...
@@ -30,16 +30,16 @@ t1_ir = sitk.GetArrayFromImage(sitk.ReadImage(os.path.join(str(img_fn), 'T1_IR.n
 ```
 
 ### Usage
-To train a new model, run the train.py script:
+- To train a new model, run the train.py script:
 
-```python -u train.py $MY_OPTIONS```
+  ```python -u train.py $MY_OPTIONS```
 
-The model and training events will be saved to a temporary folder: `/tmp/mrbrains_segmentation`.
+  The model and training events will be saved to a temporary folder: `/tmp/mrbrains_segmentation`.
 
-For monitoring, spawn a tensorboard webserver and point the log directory to the model save_path:
+- For monitoring and metric tracking, spawn a tensorboard webserver and point the log directory to the model save_path:
 
-```tensorboard --logdir=/tmp/mrbrains_segmentation/```
+  ```tensorboard --logdir=/tmp/mrbrains_segmentation/```
 
-To deploy a model and run inference, run the deploy.py script and point to the model save_path:
+- To deploy a model and run inference, run the deploy.py script and point to the model save_path:
 
-```python -u deploy.py --save_path=/tmp/mrbrains_segmentation $MY_OPTIONS```
+  ```python -u deploy.py --save_path=/tmp/mrbrains_segmentation $MY_OPTIONS```
