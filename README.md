@@ -13,6 +13,7 @@ DLTK API and user guides can be found [here](https://dltk.github.io/)
   - io: sliding window
   - misc: utils
   - models:
+    - all: check meaningfulness of saved_strides, regularisation
     - segm: deep medic
     - ae: all
     - classification: all
