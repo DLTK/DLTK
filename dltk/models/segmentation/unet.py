@@ -7,7 +7,8 @@ from __future__ import print_function
 import tensorflow as tf
 import numpy as np
 
-from dltk.core.common import *
+from dltk.core.residual_unit import *
+from dltk.core.upsample import *
 
 def upsample_and_concat(inputs, inputs2, strides=(2, 2, 2), name='up_and_concat'):
     """Summary

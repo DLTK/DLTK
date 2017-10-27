@@ -7,7 +7,8 @@ from __future__ import print_function
 import tensorflow as tf
 import numpy as np
 
-from dltk.core.common import *
+from dltk.core.residual_unit import *
+from dltk.core.upsample import *
 
 def upscore_layer_3D(inputs, inputs2, out_filters, in_filters=None, strides=(2, 2, 2), mode=tf.estimator.ModeKeys.EVAL, name='upscore'):
     """Summary
