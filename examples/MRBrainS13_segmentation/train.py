@@ -13,6 +13,7 @@ import pandas as pd
 import tensorflow as tf
 
 from dltk.core.metrics import *
+from dltk.core.losses import *
 from dltk.models.segmentation.fcn import residual_fcn_3D
 from dltk.models.segmentation.unet import residual_unet_3D
 from dltk.io.abstract_reader import Reader
@@ -55,8 +56,10 @@ def model_fn(features, labels, mode, params):
                                           export_outputs={'out': tf.estimator.export.PredictOutput(net_output_ops)})
     
     # 2. set up a loss function
-    ce = tf.nn.sparse_softmax_cross_entropy_with_logits(logits=net_output_ops['logits'], labels=labels['y'])
-    loss = tf.reduce_mean(ce)
+    #ce = tf.nn.sparse_softmax_cross_entropy_with_logits(logits=net_output_ops['logits'], labels=labels['y'])
+    #loss = tf.reduce_mean(ce)
+    loss = dice_loss(logits=net_output_ops['logits'], labels=labels['y'], num_classes=NUM_CLASSES)
+    
     
     # 3. define a training op and ops for updating moving averages (i.e. for batch normalisation)  
     global_step = tf.train.get_global_step()
