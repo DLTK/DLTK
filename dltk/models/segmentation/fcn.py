@@ -36,7 +36,8 @@ def upscore_layer_3D(inputs, inputs2, out_filters, in_filters=None, strides=(2, 
     if in_filters is None:
         in_filters = inputs.get_shape().as_list()[-1]
         
-    assert in_filters == inputs.get_shape().as_list()[-1], 'Module was initialised for a different input shape'
+    assert len(inputs.get_shape().as_list()) == 5, 'inputs are required to have a rank of 5.
+    assert len(inputs.get_shape().as_list()) == len(inputs2.get_shape().as_list()), 'Ranks of input and input2 differ'
     
     # Account for differences in the number of input and output filters
     if in_filters != out_filters:
@@ -77,6 +78,7 @@ def residual_fcn_3D(inputs, num_classes, num_res_units=1, filters=(16, 32, 64, 1
     """
     outputs = {}
     assert len(strides) == len(filters)
+    assert len(inputs.get_shape().as_list()) == 5, 'inputs are required to have a rank of 5.
 
     conv_params = {'padding' : 'same',
                   'use_bias' : False,

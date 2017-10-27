@@ -26,6 +26,7 @@ def upsample_and_concat(inputs, inputs2, strides=(2, 2, 2), name='up_and_concat'
         TYPE: Description
     """
 
+    assert len(inputs.get_shape().as_list()) == 5, 'inputs are required to have a rank of 5.
     assert len(inputs.get_shape().as_list()) == len(inputs2.get_shape().as_list()), 'Ranks of input and input2 differ'
         
     # Upsample inputs
@@ -56,6 +57,7 @@ def residual_unet_3D(inputs, num_classes, num_res_units=1, filters=(16, 32, 64, 
     """
     outputs = {}
     assert len(strides) == len(filters)
+    assert len(inputs.get_shape().as_list()) == 5, 'inputs are required to have a rank of 5.
 
     conv_params = {'padding' : 'same',
                   'use_bias' : False,
