@@ -24,6 +24,7 @@ SAVE_SUMMARY_STEPS = 10
 SAVE_EVERY_N_STEPS = 10
 
 NUM_CLASSES = 9
+NUM_CHANNELS = 4
 
 STEPS_EVAL = 1000
 MAX_STEPS = 100000
@@ -64,13 +65,15 @@ def model_fn(features, labels, mode, params):
     # 4.1 (optional) create custom image summaries for tensorboard
     my_image_summaries = {}
     my_image_summaries['feat_t1'] = features['x'][0,0,:,:,0]
-    my_image_summaries['feat_t1_ir'] = features['x'][0,0,:,:,1]
-    my_image_summaries['feat_t2_flair'] = features['x'][0,0,:,:,2]
+    my_image_summaries['feat_t2'] = features['x'][0,0,:,:,1]
+    my_image_summaries['feat_pd'] = features['x'][0,0,:,:,2]
+    my_image_summaries['feat_mra'] = features['x'][0,0,:,:,3]
     my_image_summaries['pred_t1'] = tf.cast(net_output_ops['x_'], tf.float32)[0,0,:,:,0]
-    my_image_summaries['pred_t1_ir'] = tf.cast(net_output_ops['x_'], tf.float32)[0,0,:,:,1]
-    my_image_summaries['pred_t2_flair'] = tf.cast(net_output_ops['x_'], tf.float32)[0,0,:,:,2]
+    my_image_summaries['pred_t2'] = tf.cast(net_output_ops['x_'], tf.float32)[0,0,:,:,1]
+    my_image_summaries['pred_pd'] = tf.cast(net_output_ops['x_'], tf.float32)[0,0,:,:,2]
+    my_image_summaries['pred_mra'] = tf.cast(net_output_ops['x_'], tf.float32)[0,0,:,:,3]
         
-    expected_output_size = [1, 240, 240, 1] # [B, W, H, C]
+    expected_output_size = [1, 256, 256, 1] # [B, W, H, C]
     [tf.summary.image(name, tf.reshape(image, expected_output_size)) for name, image in my_image_summaries.items()]
     
     # 5. Return EstimatorSpec object
@@ -85,14 +88,15 @@ def train(args):
     print('Setting up...')
 
     # Parse csv files for file names
-    train_filenames = pd.read_csv(args.train_csv, dtype=object, keep_default_na=False, na_values=[]).as_matrix()
-    val_filenames = pd.read_csv(args.val_csv, dtype=object, keep_default_na=False, na_values=[]).as_matrix()
+    all_filenames = pd.read_csv(args.data_csv, dtype=object, keep_default_na=False, na_values=[]).as_matrix()
+    
+    train_filenames = all_filenames[:100]
+    val_filenames = all_filenames[100:]
     
     # Set up a data reader to handle the file i/o. 
-    reader_params = {'n_examples': 18, 'example_size': [8, 240, 240], 'extract_examples': True}
-    reader_example_shapes = {'features': {'x': reader_params['example_size'] + [3,]},
-                             'labels': {'y': reader_params['example_size']}}
-    reader = Reader(receiver, save_fn, {'features': {'x': tf.float32}, 'labels': {'y': tf.int32}})
+    reader_params = {'n_examples': 10, 'example_size': [16, 256, 256], 'extract_examples': True}
+    reader_example_shapes = {'features': {'x': reader_params['example_size'] + [NUM_CHANNELS,]}}
+    reader = Reader(receiver, save_fn, {'features': {'x': tf.float32}})
 
     # Get input functions and queue initialisation hooks for training and validation data
     train_input_fn, train_qinit_hook = reader.get_inputs(train_filenames, tf.estimator.ModeKeys.TRAIN,
@@ -126,15 +130,14 @@ def train(args):
 if __name__ == '__main__':
 
     # Set up argument parser
-    parser = argparse.ArgumentParser(description='Example: generic training script')
+    parser = argparse.ArgumentParser(description='Example: IXI HH convolutional autoencoder training script')
     parser.add_argument('--run_validation', default=True)
     parser.add_argument('--resume', default=False, action='store_true')
     parser.add_argument('--verbose', default=False, action='store_true')
     parser.add_argument('--cuda_devices', '-c', default='0')
     
-    parser.add_argument('--save_path', '-p', default='/tmp/mrbrains_autoencoder/')
-    parser.add_argument('--train_csv', default='train.csv')
-    parser.add_argument('--val_csv', default='val.csv')
+    parser.add_argument('--save_path', '-p', default='/tmp/IXI_autoencoder/')
+    parser.add_argument('--data_csv', default='../../../data/IXI_HH/demographic_HH.csv')
     
     args = parser.parse_args()
         

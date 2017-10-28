@@ -12,7 +12,7 @@ import tarfile
 import pandas as pd
 import glob
 
-EXTRACT_IMAGES = True
+EXTRACT_IMAGES = False
 PROCESS_OTHER = True 
 
 urls = {}

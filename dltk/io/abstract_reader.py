@@ -1,4 +1,5 @@
 import tensorflow as tf
+import traceback
 
 
 class IteratorInitializerHook(tf.train.SessionRunHook):
@@ -50,7 +51,18 @@ class Reader(object):
         iterator_initializer_hook = IteratorInitializerHook()
 
         def train_inputs():
-            dataset = tf.contrib.data.Dataset.from_generator(lambda: self.read_fn(file_references, mode, params),
+            def f():
+                fn = self.read_fn(file_references, mode, params)
+                while True:
+                    try:
+                        ex = next(fn)
+                        yield ex
+                    except Exception as e:
+                        print('got error `{} from `_read_sample`:'.format(e))
+                        print(traceback.format_exc())
+                        raise
+
+            dataset = tf.contrib.data.Dataset.from_generator(f,
                                                              self.dtypes, example_shapes)
             dataset = dataset.repeat(None)
             dataset = dataset.shuffle(shuffle_cache_size)
@@ -63,7 +75,7 @@ class Reader(object):
             iterator_initializer_hook.iterator_initializer_func = lambda sess: sess.run(iterator.initializer)
 
             # Return batched (features, labels)
-            return next_dict['features'], next_dict['labels']
+            return next_dict['features'], next_dict.get('labels')
 
         # Return function and hook
         return train_inputs, iterator_initializer_hook
