@@ -18,12 +18,12 @@ def receiver(file_references, mode, params=None):
         TYPE: Description
     """
     
-    def _augment(img):
+    def _augment(images):
         
-        img = add_gaussian_noise(img, sigma=0.1)
-        img = flip(img, axis=1)
+        images = add_gaussian_noise(images, sigma=0.1)
+        images = flip(images, axis=1)
         
-        return img
+        return images
 
     i = 0
     while True:
@@ -33,30 +33,23 @@ def receiver(file_references, mode, params=None):
         if i == len(file_references):
             i = 0
             
-        data_path = '../../../data/IXI_HH/'
+        data_path = '../../../data/IXI_HH/1mm'
         
-        t1_fn = glob.glob(data_path + 't1/{}*.nii.gz'.format(subject_id))[0]
-        t2_fn = glob.glob(data_path + 't2/{}*.nii.gz'.format(subject_id))[0]
-        pd_fn = glob.glob(data_path + 'pd/{}*.nii.gz'.format(subject_id))[0]
-        mra_fn = glob.glob(data_path + 'mra/{}*.nii.gz'.format(subject_id))[0]
+        t1_fn = os.path.join(data_path, '{}/T1_1mm.nii.gz'.format(subject_id))
+        t2_fn = os.path.join(data_path, '{}/T2_1mm.nii.gz'.format(subject_id))
+        pd_fn = os.path.join(data_path, '{}/PD_1mm.nii.gz'.format(subject_id))
         
-        
-
         t1 = sitk.GetArrayFromImage(sitk.ReadImage(t1_fn))
         t2 = sitk.GetArrayFromImage(sitk.ReadImage(t2_fn))
         pd = sitk.GetArrayFromImage(sitk.ReadImage(pd_fn))
-        mra = sitk.GetArrayFromImage(sitk.ReadImage(mra_fn))
-        
-        print(t1.shape, t2.shape, pd.shape, mra.shape)
 
         # Normalise volume images
         t1 = whitening(t1)
         t2 = whitening(t2)
         pd = whitening(pd)
-        mra = whitening(mra)
 
         # Create a 4D multi-sequence image (i.e. [channels, x, y, z])
-        images = np.asarray([t1, t2, pd, mra]).astype(np.float32)
+        images = np.asarray([t1, t2, pd]).astype(np.float32)
 
         # Transpose to [batch, x, y, z, channel] as required input by the network
         images = np.transpose(images, (1, 2, 3, 0))
@@ -66,11 +59,11 @@ def receiver(file_references, mode, params=None):
 
         # Augment if used in training mode
         if mode == tf.estimator.ModeKeys.TRAIN:
-            images, _ = _augment(images)
+            images = _augment(images)
         
         # Check if the reader is supposed to return training examples or full images
         if params['extract_examples']:
-            images, _ = extract_random_example_array(images, example_size=params['example_size'], n_examples=params['n_examples'])
+            images = extract_random_example_array(images, example_size=params['example_size'], n_examples=params['n_examples'])
             
             for e in range(params['n_examples']):
                 yield {'features': {'x': images[e].astype(np.float32)}}
