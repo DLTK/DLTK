@@ -11,9 +11,51 @@ import os.path
 import tarfile
 import pandas as pd
 import glob
+import SimpleITK as sitk
+import numpy as np
 
 EXTRACT_IMAGES = False
 PROCESS_OTHER = True 
+RESAMPLE_IMAGES = True
+CLEAN_UP = False
+
+def resample_image(itk_image, out_spacing=[1.0, 1.0, 1.0], is_label=False):
+    
+    original_spacing = itk_image.GetSpacing()
+    original_size = itk_image.GetSize()
+    
+    out_size = [int(np.round(original_size[0]*(original_spacing[0]/out_spacing[0]))),
+                int(np.round(original_size[1]*(original_spacing[1]/out_spacing[1]))),
+                int(np.round(original_size[2]*(original_spacing[2]/out_spacing[2])))]
+
+    resample = sitk.ResampleImageFilter()
+    resample.SetOutputSpacing(out_spacing)
+    resample.SetSize(out_size)
+    resample.SetOutputDirection(itk_image.GetDirection())
+    resample.SetOutputOrigin(itk_image.GetOrigin())
+    resample.SetTransform(sitk.Transform())
+    resample.SetDefaultPixelValue(itk_image.GetPixelIDValue())
+    
+    if is_label:
+        resample.SetInterpolator(sitk.sitkNearestNeighbor)
+    else:
+        resample.SetInterpolator(sitk.sitkBSpline)
+    
+    return resample.Execute(itk_image)
+
+def reslice_image(itk_image, itk_ref, is_label=False):
+
+    resample = sitk.ResampleImageFilter()
+    resample.SetReferenceImage(itk_ref)
+    
+    if is_label:
+        resample.SetInterpolator(sitk.sitkNearestNeighbor)
+    else:
+        resample.SetInterpolator(sitk.sitkBSpline)
+    
+    return resample.Execute(itk_image)
+
+
 
 urls = {}
 urls['t1'] = 'http://biomedic.doc.ic.ac.uk/brain-development/downloads/IXI/IXI-T1.tar'
@@ -46,21 +88,20 @@ if EXTRACT_IMAGES:
 
         if (fname.endswith('.tar')):
             print('Extracting IXI HH data from {}.'.format(fnames[key]))
+            output_dir = os.path.join('./orig/', key)
 
-            if not os.path.exists(key):
-                os.makedirs(key)
+            if not os.path.exists(output_dir):
+                os.makedirs(output_dir)
 
             t = tarfile.open(fname, 'r')
             for member in t.getmembers():
                 if '-HH-' in member.name:
-                    t.extract(member, key)   
+                    t.extract(member, output_dir)   
 
-    # Clean up .tar files
-    for key, fname in fnames.items():
-        if (fname.endswith('.tar')):
-            os.remove(fname)
+
 
 if PROCESS_OTHER:
+    # Process the demographic xls data and save to csv
     xls = pd.ExcelFile('demographic.xls')
     print(xls.sheet_names)
     
@@ -69,12 +110,86 @@ if PROCESS_OTHER:
         IXI_id = 'IXI{:03d}'.format(row['IXI_ID'])
         df.loc[index, 'IXI_ID'] = IXI_id
         
-        t1_exists = len(glob.glob('./t1/{}*.nii.gz'.format(IXI_id)))
-        t2_exists = len(glob.glob('./t2/{}*.nii.gz'.format(IXI_id)))
-        pd_exists = len(glob.glob('./pd/{}*.nii.gz'.format(IXI_id)))
-        mra_exists = len(glob.glob('./mra/{}*.nii.gz'.format(IXI_id)))
+        t1_exists = len(glob.glob('./orig/t1/{}*.nii.gz'.format(IXI_id)))
+        t2_exists = len(glob.glob('./orig/t2/{}*.nii.gz'.format(IXI_id)))
+        pd_exists = len(glob.glob('./orig/pd/{}*.nii.gz'.format(IXI_id)))
+        mra_exists = len(glob.glob('./orig/mra/{}*.nii.gz'.format(IXI_id)))
         
-        if not t1_exists and not t2_exists and not pd_exists and not mra_exists:
+        # Check if each entry is complete and drop if not
+        #if not t1_exists and not t2_exists and not pd_exists and not mra_exists:
+        if not (t1_exists and t2_exists and pd_exists and mra_exists):
             df.drop(index, inplace=True)
     
-    df.to_csv('demographic_HH.csv', index=False)         
+    # Write to csv file
+    df.to_csv('demographic_HH.csv', index=False)   
+    
+if RESAMPLE_IMAGES:
+    # Resample the IXI HH T2 images to 1mm isotropic and reslice all others to it
+    df = pd.read_csv('demographic_HH.csv', dtype=object, keep_default_na=False, na_values=[]).as_matrix()
+    
+    for i in df:
+        IXI_id = i[0]
+        print ('Resampling {}'.format(IXI_id))
+        
+        t1_fn = glob.glob('./orig/t1/{}*.nii.gz'.format(IXI_id))[0]
+        t2_fn = glob.glob('./orig/t2/{}*.nii.gz'.format(IXI_id))[0]
+        pd_fn = glob.glob('./orig/pd/{}*.nii.gz'.format(IXI_id))[0]
+        mra_fn = glob.glob('./orig/mra/{}*.nii.gz'.format(IXI_id))[0]
+        
+        t1 = sitk.ReadImage(t1_fn)
+        t2 = sitk.ReadImage(t2_fn)
+        pd = sitk.ReadImage(pd_fn)
+        mra = sitk.ReadImage(mra_fn)
+        
+        #t1_1mm = resample_image(t1)
+        t2_1mm = resample_image(t2)
+        t1_1mm = reslice_image(t1, t2_1mm)
+        pd_1mm = reslice_image(pd, t2_1mm)
+        mra_1mm = reslice_image(mra, t2_1mm)
+        
+        output_dir = os.path.join('./1mm/', IXI_id)
+
+        if not os.path.exists(output_dir):
+            os.makedirs(output_dir)
+            
+        print ('T1: {} {}'.format(t1_1mm.GetSize(), t1_1mm.GetSpacing()))
+        print ('T2: {} {}'.format(t2_1mm.GetSize(), t2_1mm.GetSpacing()))
+        print ('PD: {} {}'.format(pd_1mm.GetSize(), pd_1mm.GetSpacing()))
+        print ('MRA: {} {}'.format(mra_1mm.GetSize(), mra_1mm.GetSpacing()))
+            
+        sitk.WriteImage(t1_1mm, os.path.join(output_dir, 'T1_1mm.nii.gz'))
+        sitk.WriteImage(t2_1mm, os.path.join(output_dir, 'T2_1mm.nii.gz'))
+        sitk.WriteImage(pd_1mm, os.path.join(output_dir, 'PD_1mm.nii.gz'))
+        sitk.WriteImage(mra_1mm, os.path.join(output_dir, 'MRA_1mm.nii.gz'))
+        
+        
+if CLEAN_UP:
+    
+    # Remove the .tar files
+    for key, fname in fnames.items():
+        if (fname.endswith('.tar')):
+            os.remove(fname)
+    
+    # Remove all data in original resolution 
+    
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
