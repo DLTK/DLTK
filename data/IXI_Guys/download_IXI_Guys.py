@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Download and extract the IXI Hammersmith Hospital 3T dataset 
+"""Download and extract the IXI Guy's Hospital 1.5T dataset 
 
 url: http://brain-development.org/ixi-dataset/
 ref: IXI – Information eXtraction from Images (EPSRC GR/S21533/02)
@@ -84,12 +84,12 @@ if DOWNLOAD_IMAGES:
         else:
             print('File {} already exists. Skipping download.'.format(fnames[key]))
 
-if EXTRACT_IMAGES:            
-    # Extract the HH subset of IXI
+if EXTRACT_IMAGES:
+    # Extract the Guys subset of IXI
     for key, fname in fnames.items():
 
         if (fname.endswith('.tar')):
-            print('Extracting IXI HH data from {}.'.format(fnames[key]))
+            print('Extracting IXI Guys data from {}.'.format(fnames[key]))
             output_dir = os.path.join('./orig/', key)
 
             if not os.path.exists(output_dir):
@@ -97,7 +97,7 @@ if EXTRACT_IMAGES:
 
             t = tarfile.open(fname, 'r')
             for member in t.getmembers():
-                if '-HH-' in member.name:
+                if '-Guys-' in member.name:
                     t.extract(member, output_dir)   
 
 
@@ -123,11 +123,11 @@ if PROCESS_OTHER:
             df.drop(index, inplace=True)
     
     # Write to csv file
-    df.to_csv('demographic_HH.csv', index=False)   
+    df.to_csv('demographic_Guys.csv', index=False)   
     
 if RESAMPLE_IMAGES:
-    # Resample the IXI HH T2 images to 1mm isotropic and reslice all others to it
-    df = pd.read_csv('demographic_HH.csv', dtype=object, keep_default_na=False, na_values=[]).as_matrix()
+    # Resample the IXI Guys T2 images to 1mm isotropic and reslice all others to it
+    df = pd.read_csv('demographic_Guys.csv', dtype=object, keep_default_na=False, na_values=[]).as_matrix()
     
     for i in df:
         IXI_id = i[0]
@@ -165,7 +165,7 @@ if RESAMPLE_IMAGES:
         sitk.WriteImage(mra_1mm, os.path.join(output_dir, 'MRA_1mm.nii.gz'))
         
         
-if CLEAN_UP:
+if CLEAN_UP:  
     # Remove the .tar files
     for key, fname in fnames.items():
         if (fname.endswith('.tar')):
