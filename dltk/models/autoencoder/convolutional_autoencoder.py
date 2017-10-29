@@ -79,6 +79,7 @@ def convolutional_autoencoder_3D(inputs, num_convolutions=1, num_hidden_units=12
     
     x = tf.layers.dense(x,
                         np.prod(x_shape[1:]),
+                        activation=relu_op,
                         use_bias=conv_params['use_bias'],
                         kernel_initializer=conv_params['kernel_initializer'],
                         bias_initializer=conv_params['bias_initializer'],
