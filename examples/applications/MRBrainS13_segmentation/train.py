@@ -115,6 +115,7 @@ def train(args):
     # Hooks for training and validation summaries
     train_summary_hook  = tf.contrib.training.SummaryAtEndHook(args.save_path)
     val_summary_hook  = tf.contrib.training.SummaryAtEndHook(os.path.join(args.save_path, 'eval'))
+    step_cnt_hook = tf.train.StepCounterHook(output_dir=args.save_path)
     
     print('Starting training...')
     try:
@@ -122,7 +123,7 @@ def train(args):
             nn.train(input_fn=train_input_fn, hooks=[train_qinit_hook, train_summary_hook], steps=10)
 
             if args.run_validation:
-                results_val = nn.evaluate(input_fn=val_input_fn, hooks=[val_qinit_hook, val_summary_hook], steps=1)
+                results_val = nn.evaluate(input_fn=val_input_fn, hooks=[val_qinit_hook, val_summary_hook, step_cnt_hook], steps=1)
                 print('Step = {}; val loss = {:.5f};'.format(results_val['global_step'], results_val['loss']) )
 
     except KeyboardInterrupt:
