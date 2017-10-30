@@ -46,9 +46,9 @@ def model_fn(features, labels, mode, params):
     """
 
     # 1. create a model and its outputs
-    net_output_ops = convolutional_autoencoder_3D(features['x'], num_convolutions=3, num_hidden_units=512, 
-                                                  filters=(16, 32, 64, 128),
-                                                  strides=((1, 2, 2), (1, 2, 2), (1, 2, 2), (1, 2, 2)), 
+    net_output_ops = convolutional_autoencoder_3D(features['x'], num_convolutions=2, num_hidden_units=1024, 
+                                                  filters=(16, 32, 64, 128, 256),
+                                                  strides=((1, 2, 2), (1, 2, 2), (1, 2, 2), (1, 2, 2), (1, 2, 2)), 
                                                   mode=mode)
     
     # 1.1 Generate predictions only (for `ModeKeys.PREDICT`)
@@ -75,7 +75,7 @@ def model_fn(features, labels, mode, params):
     my_image_summaries['pred_t2'] = tf.cast(net_output_ops['x_'], tf.float32)[0,0,:,:,1]
     my_image_summaries['pred_pd'] = tf.cast(net_output_ops['x_'], tf.float32)[0,0,:,:,2]
         
-    expected_output_size = [1, 192, 192, 1] # [B, W, H, C]
+    expected_output_size = [1, 224, 224, 1] # [B, W, H, C]
     [tf.summary.image(name, tf.reshape(image, expected_output_size)) for name, image in my_image_summaries.items()]
     
     # 5. Return EstimatorSpec object
@@ -96,7 +96,7 @@ def train(args):
     val_filenames = all_filenames[100:]
     
     # Set up a data reader to handle the file i/o. 
-    reader_params = {'n_examples': 10, 'example_size': [1, 192, 192], 'extract_examples': True}
+    reader_params = {'n_examples': 10, 'example_size': [1, 224, 224], 'extract_examples': True}
     reader_example_shapes = {'features': {'x': reader_params['example_size'] + [NUM_CHANNELS,]}}
     reader = Reader(receiver, save_fn, {'features': {'x': tf.float32}})
 

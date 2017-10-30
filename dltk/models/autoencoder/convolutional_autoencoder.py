@@ -56,7 +56,11 @@ def convolutional_autoencoder_3D(inputs, num_convolutions=1, num_hidden_units=12
         
         # Employ strided convolutions to downsample
         with tf.variable_scope('enc_unit_{}_{}'.format(res_scale, num_convolutions)):
-            x = conv_op(x, filters[res_scale], (3, 3, 3), strides[res_scale], **conv_params)
+            
+            # Adjust the strided conv kernel size to prevent losing information
+            k_size = [s * 2 if s > 1 else 3 for s in strides[res_scale]]
+            
+            x = conv_op(x, filters[res_scale], k_size, strides[res_scale], **conv_params)
             x = tf.layers.batch_normalization(x, training=mode==tf.estimator.ModeKeys.TRAIN)
             x = relu_op(x)  
             tf.logging.info('Encoder at res_scale {} tensor shape: {}'.format(res_scale, x.get_shape()))
@@ -94,7 +98,11 @@ def convolutional_autoencoder_3D(inputs, num_convolutions=1, num_hidden_units=12
         
         # Employ strided transpose convolutions to upsample
         with tf.variable_scope('dec_unit_{}_0'.format(res_scale)):
-            x = tp_conv_op(x, filters[res_scale], (3, 3, 3), strides[res_scale], **conv_params)
+            
+            # Adjust the strided tp conv kernel size to prevent losing information
+            k_size = [s * 2 if s > 1 else 3 for s in strides[res_scale]]
+            
+            x = tp_conv_op(x, filters[res_scale], k_size, strides[res_scale], **conv_params)
             x = tf.layers.batch_normalization(x, training=mode==tf.estimator.ModeKeys.TRAIN)
             x = relu_op(x)
             tf.logging.info('Decoder at res_scale {} tensor shape: {}'.format(res_scale, x.get_shape()))
