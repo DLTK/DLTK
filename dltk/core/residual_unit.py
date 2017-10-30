@@ -42,14 +42,17 @@ def vanilla_residual_unit_3D(inputs, out_filters, in_filters=None, kernel_size=(
     
     # Handle strided convolutions
     if np.prod(strides) != 1:
-        kernel_size = strides
         orig_x = pool_op(orig_x, strides, strides, 'valid')
     
     # Sub unit 0
     with tf.variable_scope('sub_unit0'):
+        
+        # Adjust the strided conv kernel size to prevent losing information
+        k = [s * 2 if s > 1 else 3 for s in strides]
+        
         x = tf.layers.batch_normalization(x, training=mode==tf.estimator.ModeKeys.TRAIN)
         x = relu_op(x)
-        x = tf.layers.conv3d(x, out_filters, kernel_size, strides, **conv_params)
+        x = tf.layers.conv3d(x, out_filters, k, strides, **conv_params)
         
     # Sub unit 1
     with tf.variable_scope('sub_unit1'):
