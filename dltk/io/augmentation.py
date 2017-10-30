@@ -217,7 +217,7 @@ def extract_random_example_array(image_list, example_size=[1, 64, 64], n_example
         image_list = [image_list]
         was_singular = True
 
-    assert all([i_s > e_s for i_s, e_s in zip(image_list[0].shape, example_size)]), \
+    assert all([i_s >= e_s for i_s, e_s in zip(image_list[0].shape, example_size)]), \
         'Image must be bigger than example shape'
     assert (image_list[0].ndim - 1 == len(example_size) or image_list[0].ndim == len(example_size)), \
         'Example size doesnt fit image size'
