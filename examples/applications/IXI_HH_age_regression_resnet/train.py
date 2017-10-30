@@ -47,9 +47,9 @@ def model_fn(features, labels, mode, params):
     """
 
     # 1. create a model and its outputs
-    net_output_ops = resnet_3D(features['x'], num_res_units=1, num_classes=NUM_CLASSES, 
+    net_output_ops = resnet_3D(features['x'], num_res_units=2, num_classes=NUM_CLASSES, 
                               filters=(16, 32, 64, 128, 256),
-                              strides=((1, 2, 2), (2, 2, 2), (2, 2, 2), (2, 2, 2), (2, 2, 2)), 
+                              strides=((1, 1, 1), (2, 2, 2), (2, 2, 2), (2, 2, 2), (2, 2, 2)), 
                               mode=mode)
     
     # 1.1 Generate predictions only (for `ModeKeys.PREDICT`)
@@ -118,7 +118,7 @@ def train(args):
                                                      params=reader_params)
         
     # Instantiate the neural network estimator
-    nn = tf.estimator.Estimator(model_fn=model_fn, model_dir=args.save_path, params={"learning_rate": 0.001})
+    nn = tf.estimator.Estimator(model_fn=model_fn, model_dir=args.save_path, params={"learning_rate": 0.01})
     
     # Hooks for training and validation summaries
     train_summary_hook  = tf.contrib.training.SummaryAtEndHook(args.save_path)
