@@ -1,5 +1,5 @@
-## Age regression from 3T multi-channel brain MR images
-Exemplary training and evaluation scripts for regression from multi-sequence (T1w, T2w, PD) brain MR images, based on the [IXI dataset](http://brain-development.org/ixi-dataset/) [1]. 
+## Sex classification from 3T multi-channel brain MR images
+Exemplary training and evaluation scripts for classification from multi-sequence (T1w, T2w, PD) brain MR images, based on the [IXI dataset](http://brain-development.org/ixi-dataset/) [1]. 
 
 [1] IXI – Information eXtraction from Images (EPSRC GR/S21533/02)
 
@@ -32,12 +32,12 @@ pd = sitk.GetArrayFromImage(sitk.ReadImage(pd_fn))
 
   ```python -u train.py $MY_OPTIONS```
 
-  The model and training events will be saved to a temporary folder: `/tmp/IXI_regression`.
+  The model and training events will be saved to a temporary folder: `/tmp/IXI_sex_classification`.
 
 - For monitoring and metric tracking, spawn a tensorboard webserver and point the log directory to the model save_path:
 
-  ```tensorboard --logdir=/tmp/IXI_regression/```
+  ```tensorboard --logdir=/tmp/IXI_sex_classification/```
 
 - To deploy a model and run inference, run the deploy.py script and point to the model save_path:
 
-  ```python -u deploy.py --save_path=/tmp/IXI_regression $MY_OPTIONS```
+  ```python -u deploy.py --save_path=/tmp/IXI_sex_classification $MY_OPTIONS```
