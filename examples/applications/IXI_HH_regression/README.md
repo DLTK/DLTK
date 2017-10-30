@@ -1,44 +1,43 @@
-## Representation learning on multi-channel brain MR images
-Exemplary training and deploy scripts for representation learning from multi-sequence (T1w, T1 inversion recovery, T2 Flair) brain MR images, based on the [MRBrainS13](http://mrbrains13.isi.uu.nl/) challenge data [1]. 
+## Age regression from 3T multi-channel brain MR images
+Exemplary training and evaluation scripts for regression from multi-sequence (T1w, T2w, PD) brain MR images, based on the [IXI dataset](http://brain-development.org/ixi-dataset/) [1]. 
 
-[1] AM Mendrik et al, (2015). MRBrainS challenge: online evaluation framework for brain image segmentation in 3T MRI scans. Computational intelligence and neuroscience.
+[1] IXI – Information eXtraction from Images (EPSRC GR/S21533/02)
 
 ### Data
-The data can be downloaded [here](http://mrbrains13.isi.uu.nl/download.php) and requires registration. It includes 5 datasets and corresponding segmentations. CSV files contain the paths to the folders for the training and validation splits, respectively:
+The data can be downloaded via the script in $DLTK_SRC/data/IXI_HH/. It includes 177 datasets and corresponding demographic information. The download script
+ - produces a CSV file containing demographic information
+ - validates the completeness of all imaging data for each database entry
+ - resamples the images to 1mm isotropic resolution
+ - removes .tar files and original images
 
-train.csv:
-```id, subj_folder
-1,$MY_DATA_PATH/MRBrainS13DataNii/TrainingData/1/
-2,$MY_DATA_PATH/MRBrainS13DataNii/TrainingData/2/
-3,$MY_DATA_PATH/MRBrainS13DataNii/TrainingData/3/
-4,$MY_DATA_PATH/MRBrainS13DataNii/TrainingData/4/
+demographic_HH.csv:
+```IXI_ID,"SEX_ID (1=m, 2=f)",HEIGHT,WEIGHT,ETHNIC_ID,MARITAL_ID,OCCUPATION_ID,QUALIFICATION_ID,DOB,DATE_AVAILABLE,STUDY_DATE,AGE
+IXI012,1,175,70,1,2,1,5,1966-08-20,1,2005-06-01,38.7816563997
+IXI013,1,182,70,1,2,1,5,1958-09-15,1,2005-06-01,46.7104722793
+...
 ```
 
-val.csv:
-```id, subj_folder
-5,$MY_DATA_PATH/MRBrainS13DataNii/TrainingData/5/
-```
-
-These are parsed and extract tf.Tensor examples for training and evaluation in `reader.py` using a [SimpleITK](http://www.simpleitk.org/) for  i/o of the .nii files:
+In `train.py`, the CSV is parsed and split into a training and validation set. A custom `reader.py` extracts tf.Tensor examples for training and evaluation in using a [SimpleITK](http://www.simpleitk.org/) for  i/o of the .nii files:
 
 ```...
-t1 = sitk.GetArrayFromImage(sitk.ReadImage(os.path.join(str(img_fn), 'T1.nii')))
-t1_ir = sitk.GetArrayFromImage(sitk.ReadImage(os.path.join(str(img_fn), 'T1_IR.nii')))
+t1 = sitk.GetArrayFromImage(sitk.ReadImage(t1_fn))
+t2 = sitk.GetArrayFromImage(sitk.ReadImage(t2_fn))
+pd = sitk.GetArrayFromImage(sitk.ReadImage(pd_fn))
 ...
 
 ```
 
 ### Usage
-- To train a new autoencoder model, run the train.py script:
+- To train a new model, run the train.py script:
 
   ```python -u train.py $MY_OPTIONS```
 
-  The model and training events will be saved to a temporary folder: `/tmp/mrbrains_convolutional_autoencoder`.
+  The model and training events will be saved to a temporary folder: `/tmp/IXI_regression`.
 
 - For monitoring and metric tracking, spawn a tensorboard webserver and point the log directory to the model save_path:
 
-  ```tensorboard --logdir=/tmp/mrbrains_convolutional_autoencoder/```
+  ```tensorboard --logdir=/tmp/IXI_regression/```
 
 - To deploy a model and run inference, run the deploy.py script and point to the model save_path:
 
-  ```python -u deploy.py --save_path=/tmp/mrbrains_convolutional_autoencoder $MY_OPTIONS```
+  ```python -u deploy.py --save_path=/tmp/IXI_regression $MY_OPTIONS```
