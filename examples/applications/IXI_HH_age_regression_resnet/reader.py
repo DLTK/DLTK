@@ -58,7 +58,7 @@ def receiver(file_references, mode, params=None):
             yield {'features': {'x': images}}
 
         # Parse the regression targets from the file_references
-        age = np.float(file_references[i][1])
+        age = np.float(file_references[i][11])
         y = np.expand_dims(age, axis=0).astype(np.float32)
             
         # Augment if used in training mode
