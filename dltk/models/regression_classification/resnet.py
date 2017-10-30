@@ -45,7 +45,8 @@ def resnet_3D(inputs, num_classes, num_res_units=1, filters=(16, 32, 64, 128),
     x = inputs
     
     # Inital convolution with filters[0]
-    x = tf.layers.conv3d(x, filters[0], (3, 3, 3), strides[0], **conv_params)
+    k = [s * 2 if s > 1 else 3 for s in strides[0]]
+    x = tf.layers.conv3d(x, filters[0], k, strides[0], **conv_params)
     tf.logging.info('Init conv tensor shape {}'.format(x.get_shape()))
 
     # Residual feature encoding blocks with num_res_units at different resolution scales res_scales
