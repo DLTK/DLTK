@@ -33,26 +33,29 @@ def receiver(file_references, mode, params=None):
         if i == len(file_references):
             i = 0
             
-        data_path = '../../../data/IXI_HH/1mm'
+        data_path = '../../../data/IXI_HH/2mm'
         
-        t1_fn = os.path.join(data_path, '{}/T1_1mm.nii.gz'.format(subject_id))
-        t2_fn = os.path.join(data_path, '{}/T2_1mm.nii.gz'.format(subject_id))
-        pd_fn = os.path.join(data_path, '{}/PD_1mm.nii.gz'.format(subject_id))
+        t1_fn = os.path.join(data_path, '{}/T1_2mm.nii.gz'.format(subject_id))
+        #t2_fn = os.path.join(data_path, '{}/T2_1mm.nii.gz'.format(subject_id))
+        #pd_fn = os.path.join(data_path, '{}/PD_1mm.nii.gz'.format(subject_id))
         
         t1 = sitk.GetArrayFromImage(sitk.ReadImage(t1_fn))
-        t2 = sitk.GetArrayFromImage(sitk.ReadImage(t2_fn))
-        pd = sitk.GetArrayFromImage(sitk.ReadImage(pd_fn))
+        #t2 = sitk.GetArrayFromImage(sitk.ReadImage(t2_fn))
+        #pd = sitk.GetArrayFromImage(sitk.ReadImage(pd_fn))
 
         # Normalise volume images
         t1 = whitening(t1)
-        t2 = whitening(t2)
-        pd = whitening(pd)
+        #t2 = whitening(t2)
+        #pd = whitening(pd)
 
         # Create a 4D multi-sequence image (i.e. [channels, x, y, z])
-        images = np.asarray([t1, t2, pd]).astype(np.float32)
-
+        #images = np.asarray([t1, t2, pd]).astype(np.float32)
+        
         # Transpose to [batch, x, y, z, channel] as required input by the network
-        images = np.transpose(images, (1, 2, 3, 0))
+        #images = np.transpose(images, (1, 2, 3, 0))
+        
+        images = np.expand_dims(t1, axis=-1).astype(np.float32)
+
         
         if mode == tf.estimator.ModeKeys.PREDICT:
             yield {'features': {'x': images}}
