@@ -143,14 +143,13 @@ if RESAMPLE_IMAGES:
         pd = sitk.ReadImage(pd_fn)
         mra = sitk.ReadImage(mra_fn)
         
-        #t1_1mm = resample_image(t1)
+        ## Resample to 1mm isotropic resolution
         t2_1mm = resample_image(t2)
         t1_1mm = reslice_image(t1, t2_1mm)
         pd_1mm = reslice_image(pd, t2_1mm)
         mra_1mm = reslice_image(mra, t2_1mm)
         
         output_dir = os.path.join('./1mm/', IXI_id)
-
         if not os.path.exists(output_dir):
             os.makedirs(output_dir)
             
@@ -163,6 +162,26 @@ if RESAMPLE_IMAGES:
         sitk.WriteImage(t2_1mm, os.path.join(output_dir, 'T2_1mm.nii.gz'))
         sitk.WriteImage(pd_1mm, os.path.join(output_dir, 'PD_1mm.nii.gz'))
         sitk.WriteImage(mra_1mm, os.path.join(output_dir, 'MRA_1mm.nii.gz'))
+        
+        # Resample to 2mm isotropic resolution
+        t2_2mm = resample_image(t2, out_spacing=[2.0, 2.0, 2.0])
+        t1_2mm = reslice_image(t1, t2_2mm)
+        pd_2mm = reslice_image(pd, t2_2mm)
+        mra_2mm = reslice_image(mra, t2_2mm)
+        
+        output_dir = os.path.join('./2mm/', IXI_id)
+        if not os.path.exists(output_dir):
+            os.makedirs(output_dir)
+            
+        print ('T1: {} {}'.format(t2_2mm.GetSize(), t1_2mm.GetSpacing()))
+        print ('T2: {} {}'.format(t2_2mm.GetSize(), t2_2mm.GetSpacing()))
+        print ('PD: {} {}'.format(pd_2mm.GetSize(), pd_2mm.GetSpacing()))
+        print ('MRA: {} {}'.format(mra_2mm.GetSize(), mra_2mm.GetSpacing()))
+            
+        sitk.WriteImage(t1_2mm, os.path.join(output_dir, 'T1_2mm.nii.gz'))
+        sitk.WriteImage(t2_2mm, os.path.join(output_dir, 'T2_2mm.nii.gz'))
+        sitk.WriteImage(pd_2mm, os.path.join(output_dir, 'PD_2mm.nii.gz'))
+        sitk.WriteImage(mra_2mm, os.path.join(output_dir, 'MRA_2mm.nii.gz'))
         
         
 if CLEAN_UP:
