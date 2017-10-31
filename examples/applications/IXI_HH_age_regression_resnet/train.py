@@ -77,7 +77,8 @@ def model_fn(features, labels, mode, params):
     [tf.summary.image(name, tf.reshape(image, expected_output_size)) for name, image in my_image_summaries.items()]
     
     # 4.2 (optional) track the rmse (scaled back by 100, see reader.py)
-    eval_metric_ops = {"rmse": tf.metrics.root_mean_squared_error(labels['y'], net_output_ops['logits'])}
+    eval_metric_ops = {"rmse": tf.metrics.root_mean_squared_error(labels['y'], net_output_ops['logits']),
+                      "mae": tf.metrics.mean_absolute_error(labels['y'], net_output_ops['logits'])}
     
     # 5. Return EstimatorSpec object
     return tf.estimator.EstimatorSpec(mode=mode, predictions=net_output_ops, loss=loss, train_op=train_op, eval_metric_ops=eval_metric_ops)
