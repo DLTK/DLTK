@@ -11,8 +11,10 @@ from dltk.core.residual_unit import *
 
 
 def resnet_3D(inputs, num_classes, num_res_units=1, filters=(16, 32, 64, 128), 
-                    strides=((1, 1, 1), (2, 2, 2), (2, 2, 2), (2, 2, 2)), 
-                    mode=tf.estimator.ModeKeys.EVAL, name='resnet_3D'):
+              strides=((1, 1, 1), (2, 2, 2), (2, 2, 2), (2, 2, 2)),
+              mode=tf.estimator.ModeKeys.EVAL, name='resnet_3D', use_bias=False,
+              kernel_initializer=tf.uniform_unit_scaling_initializer(), bias_initializer=tf.zeros_initializer(),
+              kernel_regularizer=None, bias_regularizer=None):
     """Regression/classification network based on a resnet architecture [1]. 
 
     [1] K. He et al. Deep residual learning for image recognition. CVPR 2016.
@@ -34,13 +36,13 @@ def resnet_3D(inputs, num_classes, num_res_units=1, filters=(16, 32, 64, 128),
     assert len(inputs.get_shape().as_list()) == 5, 'inputs are required to have a rank of 5.'
 
     relu_op = tf.nn.relu6
-    
-    conv_params = {'padding' : 'same',
-                  'use_bias' : False,
-                  'kernel_initializer' : tf.uniform_unit_scaling_initializer(),
-                  'bias_initializer' : tf.zeros_initializer(),
-                  'kernel_regularizer' : None,
-                  'bias_regularizer' : None}
+
+    conv_params = {'padding': 'same',
+                   'use_bias': use_bias,
+                   'kernel_initializer': kernel_initializer,
+                   'bias_initializer': bias_initializer,
+                   'kernel_regularizer': kernel_regularizer,
+                   'bias_regularizer': bias_regularizer}
     
     x = inputs
     

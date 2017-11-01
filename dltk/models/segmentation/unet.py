@@ -26,7 +26,7 @@ def upsample_and_concat(inputs, inputs2, strides=(2, 2, 2), name='up_and_concat'
         TYPE: Description
     """
 
-    assert len(inputs.get_shape().as_list()) == 5, 'inputs are required to have a rank of 5.
+    assert len(inputs.get_shape().as_list()) == 5, 'inputs are required to have a rank of 5.'
     assert len(inputs.get_shape().as_list()) == len(inputs2.get_shape().as_list()), 'Ranks of input and input2 differ'
         
     # Upsample inputs
@@ -36,8 +36,10 @@ def upsample_and_concat(inputs, inputs2, strides=(2, 2, 2), name='up_and_concat'
 
 
 def residual_unet_3D(inputs, num_classes, num_res_units=1, filters=(16, 32, 64, 128), 
-                    strides=((1, 1, 1), (2, 2, 2), (2, 2, 2), (2, 2, 2)), 
-                    mode=tf.estimator.ModeKeys.EVAL, name='residual_fcn_3D'):
+                     strides=((1, 1, 1), (2, 2, 2), (2, 2, 2), (2, 2, 2)),
+                     mode=tf.estimator.ModeKeys.EVAL, name='residual_fcn_3D', use_bias=False,
+                     kernel_initializer=tf.uniform_unit_scaling_initializer(), bias_initializer=tf.zeros_initializer(),
+                     kernel_regularizer=None, bias_regularizer=None):
     """Image segmentation network based on an UNET architecture [1] using residual units [2] as feature extractors. 
 
     [1] O. Ronneberger et al. U-Net: Convolutional Networks for Biomedical Image Segmentation. MICCAI 2015.
@@ -57,14 +59,14 @@ def residual_unet_3D(inputs, num_classes, num_res_units=1, filters=(16, 32, 64, 
     """
     outputs = {}
     assert len(strides) == len(filters)
-    assert len(inputs.get_shape().as_list()) == 5, 'inputs are required to have a rank of 5.
+    assert len(inputs.get_shape().as_list()) == 5, 'inputs are required to have a rank of 5.'
 
-    conv_params = {'padding' : 'same',
-                  'use_bias' : False,
-                  'kernel_initializer' : tf.uniform_unit_scaling_initializer(),
-                  'bias_initializer' : tf.zeros_initializer(),
-                  'kernel_regularizer' : None,
-                  'bias_regularizer' : None}
+    conv_params = {'padding': 'same',
+                   'use_bias': use_bias,
+                   'kernel_initializer': kernel_initializer,
+                   'bias_initializer': bias_initializer,
+                   'kernel_regularizer': kernel_regularizer,
+                   'bias_regularizer': bias_regularizer}
     
     x = inputs
     

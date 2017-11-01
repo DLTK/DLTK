@@ -10,7 +10,9 @@ import numpy as np
 
 def convolutional_autoencoder_3D(inputs, num_convolutions=1, num_hidden_units=128, filters=(16, 32, 64), 
                     strides=((2, 2, 2), (2, 2, 2), (2, 2, 2)), 
-                    mode=tf.estimator.ModeKeys.EVAL, use_bias=False, name='conv_autoencoder_3D'):
+                    mode=tf.estimator.ModeKeys.EVAL, use_bias=False, name='conv_autoencoder_3D',
+                    kernel_initializer=tf.uniform_unit_scaling_initializer(), bias_initializer=tf.zeros_initializer(),
+                    kernel_regularizer=None, bias_regularizer=None):
     """Convolutional autoencoder with num_convolutions on len(filters) resolution scales. Downsampling features is done via strided convolutions. 
     
     Args:
@@ -36,10 +38,10 @@ def convolutional_autoencoder_3D(inputs, num_convolutions=1, num_hidden_units=12
     
     conv_params = {'padding' : 'same',
                   'use_bias' : use_bias,
-                  'kernel_initializer' : tf.uniform_unit_scaling_initializer(),
-                  'bias_initializer' : tf.zeros_initializer(),
-                  'kernel_regularizer' : None,
-                  'bias_regularizer' : None}
+                  'kernel_initializer' : kernel_initializer,
+                  'bias_initializer' : bias_initializer,
+                  'kernel_regularizer' : kernel_regularizer,
+                  'bias_regularizer' : bias_regularizer}
 
     x = inputs
     tf.logging.info('Input tensor shape {}'.format(x.get_shape()))
