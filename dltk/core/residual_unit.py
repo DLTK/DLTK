@@ -7,7 +7,10 @@ from __future__ import print_function
 import tensorflow as tf
 import numpy as np
 
-def vanilla_residual_unit_3D(inputs, out_filters, in_filters=None, kernel_size=(3, 3, 3), strides=(1, 1, 1), mode=tf.estimator.ModeKeys.EVAL, name='res_unit'):
+def vanilla_residual_unit_3D(inputs, out_filters, in_filters=None, kernel_size=(3, 3, 3), strides=(1, 1, 1),
+                             mode=tf.estimator.ModeKeys.EVAL, name='res_unit', use_bias=False,
+                             kernel_initializer=tf.uniform_unit_scaling_initializer(), bias_initializer=tf.zeros_initializer(),
+                             kernel_regularizer=None, bias_regularizer=None):
     """Summary
     
     Args:
@@ -25,13 +28,13 @@ def vanilla_residual_unit_3D(inputs, out_filters, in_filters=None, kernel_size=(
 
     relu_op = tf.nn.relu6 #or tf.nn.relu
     pool_op = tf.layers.max_pooling3d
-    
+
     conv_params = {'padding': 'same',
-                  'use_bias' : False,
-                  'kernel_initializer' : tf.uniform_unit_scaling_initializer(),
-                  'bias_initializer' : tf.zeros_initializer(),
-                  'kernel_regularizer' : None,
-                  'bias_regularizer' : None}
+                   'use_bias': use_bias,
+                   'kernel_initializer': kernel_initializer,
+                   'bias_initializer': bias_initializer,
+                   'kernel_regularizer': kernel_regularizer,
+                   'bias_regularizer': bias_regularizer}
     
     if in_filters is None:
         in_filters = inputs.get_shape().as_list()[-1]

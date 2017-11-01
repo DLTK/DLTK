@@ -10,7 +10,10 @@ import numpy as np
 from dltk.core.residual_unit import *
 from dltk.core.upsample import *
 
-def upscore_layer_3D(inputs, inputs2, out_filters, in_filters=None, strides=(2, 2, 2), mode=tf.estimator.ModeKeys.EVAL, name='upscore'):
+def upscore_layer_3D(inputs, inputs2, out_filters, in_filters=None, strides=(2, 2, 2), mode=tf.estimator.ModeKeys.EVAL,
+                     name='upscore', use_bias=False,
+                     kernel_initializer=tf.uniform_unit_scaling_initializer(), bias_initializer=tf.zeros_initializer(),
+                     kernel_regularizer=None, bias_regularizer=None):
     """Summary
     
     Args:
@@ -25,18 +28,18 @@ def upscore_layer_3D(inputs, inputs2, out_filters, in_filters=None, strides=(2, 
     Returns:
         TYPE: Description
     """
-    conv_params = {'padding' : 'same',
-                  'use_bias' : False,
-                  'kernel_initializer' : tf.uniform_unit_scaling_initializer(),
-                  'bias_initializer' : tf.zeros_initializer(),
-                  'kernel_regularizer' : None,
-                  'bias_regularizer' : None}
+    conv_params = {'padding': 'same',
+                   'use_bias': use_bias,
+                   'kernel_initializer': kernel_initializer,
+                   'bias_initializer': bias_initializer,
+                   'kernel_regularizer': kernel_regularizer,
+                   'bias_regularizer': bias_regularizer}
 
     # Compute an upsampling shape dynamically from the input tensor. Input filters are required to be static.
     if in_filters is None:
         in_filters = inputs.get_shape().as_list()[-1]
         
-    assert len(inputs.get_shape().as_list()) == 5, 'inputs are required to have a rank of 5.
+    assert len(inputs.get_shape().as_list()) == 5, 'inputs are required to have a rank of 5.'
     assert len(inputs.get_shape().as_list()) == len(inputs2.get_shape().as_list()), 'Ranks of input and input2 differ'
     
     # Account for differences in the number of input and output filters
@@ -57,8 +60,10 @@ def upscore_layer_3D(inputs, inputs2, out_filters, in_filters=None, strides=(2, 
 
 
 def residual_fcn_3D(inputs, num_classes, num_res_units=1, filters=(16, 32, 64, 128), 
-                    strides=((1, 1, 1), (2, 2, 2), (2, 2, 2), (2, 2, 2)), 
-                    mode=tf.estimator.ModeKeys.EVAL, name='residual_fcn_3D'):
+                     strides=((1, 1, 1), (2, 2, 2), (2, 2, 2), (2, 2, 2)),
+                     mode=tf.estimator.ModeKeys.EVAL, name='residual_fcn_3D', use_bias=False,
+                     kernel_initializer=tf.uniform_unit_scaling_initializer(), bias_initializer=tf.zeros_initializer(),
+                     kernel_regularizer=None, bias_regularizer=None):
     """Image segmentation network based on an FCN architecture [1] using residual units [2] as feature extractors. 
 
     [1] J. Long et al. Fully convolutional networks for semantic segmentation. CVPR 2015.
@@ -78,14 +83,14 @@ def residual_fcn_3D(inputs, num_classes, num_res_units=1, filters=(16, 32, 64, 1
     """
     outputs = {}
     assert len(strides) == len(filters)
-    assert len(inputs.get_shape().as_list()) == 5, 'inputs are required to have a rank of 5.
+    assert len(inputs.get_shape().as_list()) == 5, 'inputs are required to have a rank of 5.'
 
-    conv_params = {'padding' : 'same',
-                  'use_bias' : False,
-                  'kernel_initializer' : tf.uniform_unit_scaling_initializer(),
-                  'bias_initializer' : tf.zeros_initializer(),
-                  'kernel_regularizer' : None,
-                  'bias_regularizer' : None}
+    conv_params = {'padding': 'same',
+                   'use_bias': use_bias,
+                   'kernel_initializer': kernel_initializer,
+                   'bias_initializer': bias_initializer,
+                   'kernel_regularizer': kernel_regularizer,
+                   'bias_regularizer': bias_regularizer}
     
     x = inputs
     
@@ -112,7 +117,8 @@ def residual_fcn_3D(inputs, num_classes, num_res_units=1, filters=(16, 32, 64, 1
     # Upscore layers [2] reconstruct the predictions to higher resolution scales
     for res_scale in range(len(filters) - 2, -1, -1):
         with tf.variable_scope('upscore_{}'.format(res_scale)):
-            x = upscore_layer_3D(x, res_scales[res_scale], num_classes, strides=saved_strides[res_scale], mode=mode)
+            x = upscore_layer_3D(x, res_scales[res_scale], num_classes, strides=saved_strides[res_scale], mode=mode,
+                                 **conv_params)
         tf.logging.info('Decoder at res_scale {} tensor shape: {}'.format(res_scale, x.get_shape()))
 
     # Last convolution

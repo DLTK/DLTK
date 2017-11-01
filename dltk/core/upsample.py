@@ -87,8 +87,9 @@ def linear_upsample_3D(inputs, strides=(2, 2, 2), use_bias=False, trainable=Fals
     dyn_out_shape = [dyn_inp_shape[i] * strides_5D[i] for i in range(rank)]
     dyn_out_shape[-1] = num_filters
 
-    static_out_shape = [static_inp_shape[i] * strides_5D[i] if isinstance(static_inp_shape, int) else None for i in range(rank)]
+    static_out_shape = [static_inp_shape[i] * strides_5D[i] if isinstance(static_inp_shape[i], int) else None for i in range(rank)]
     static_out_shape[-1] = num_filters
+    tf.logging.info('Upsampling from {} to {}'.format(static_inp_shape, static_out_shape))
 
     upsampled = tf.nn.conv3d_transpose(inputs, filter=kernel, output_shape=dyn_out_shape, strides=strides_5D, padding='SAME', name='upsample')
     upsampled.set_shape(static_out_shape)
