@@ -18,15 +18,16 @@ from dltk.models.regression_classification.resnet import resnet_3D
 from dltk.io.abstract_reader import Reader
 from reader import receiver, save_fn
 
-
 # PARAMS
-SAVE_SUMMARY_STEPS = 10
 EVAL_EVERY_N_STEPS = 100
+EVAL_STEPS = 10
 
 NUM_CLASSES = 1
 NUM_CHANNELS = 1
 
-BATCH_SIZE = 4
+NUM_FEATURES_IN_SUMMARIES = min(4, NUM_CHANNELS)
+
+BATCH_SIZE = 8
 SHUFFLE_CACHE_SIZE = 64
 
 MAX_STEPS = 100000
@@ -117,23 +118,25 @@ def train(args):
                                                      batch_size=BATCH_SIZE,
                                                      shuffle_cache_size=SHUFFLE_CACHE_SIZE,
                                                      params=reader_params)
-        
-    # Instantiate the neural network estimator
-    nn = tf.estimator.Estimator(model_fn=model_fn, model_dir=args.save_path, params={"learning_rate": 0.01})
     
-    # Hooks for training and validation summaries
-    train_summary_hook  = tf.contrib.training.SummaryAtEndHook(args.save_path)
+    # Instantiate the neural network estimator
+    nn = tf.estimator.Estimator(model_fn=model_fn,
+                                model_dir=args.save_path,
+                                params={"learning_rate": 0.01}, 
+                                config=tf.estimator.RunConfig())
+    
+    # Hooks for validation summaries
     val_summary_hook  = tf.contrib.training.SummaryAtEndHook(os.path.join(args.save_path, 'eval'))
-    step_cnt_hook = tf.train.StepCounterHook(output_dir=args.save_path)
+    step_cnt_hook = tf.train.StepCounterHook(every_n_steps=EVAL_EVERY_N_STEPS, output_dir=args.save_path)
     
     print('Starting training...')
     try:
-        while True:
-            nn.train(input_fn=train_input_fn, hooks=[train_qinit_hook, train_summary_hook,step_cnt_hook], steps=EVAL_EVERY_N_STEPS)
-
+        while True: 
+            nn.train(input_fn=train_input_fn, hooks=[train_qinit_hook, step_cnt_hook], steps=EVAL_EVERY_N_STEPS)
+            
             if args.run_validation:
-                results_val = nn.evaluate(input_fn=val_input_fn, hooks=[val_qinit_hook, val_summary_hook], steps=10)
-                print('Step = {}; val loss = {:.5f};'.format(results_val['global_step'], results_val['loss']) )
+                results_val = nn.evaluate(input_fn=val_input_fn, hooks=[val_qinit_hook, val_summary_hook], steps=EVAL_STEPS)
+                print('Step = {}; val loss = {:.5f};'.format(results_val['global_step'], results_val['loss']))
 
     except KeyboardInterrupt:
         print('Stopping now.')
