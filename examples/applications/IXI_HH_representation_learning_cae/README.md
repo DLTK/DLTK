@@ -3,6 +3,8 @@ Exemplary training and evaluation scripts for representation learning from multi
 
 [1] IXI – Information eXtraction from Images (EPSRC GR/S21533/02)
 
+![Exemplary reconstruction](recon.png)
+
 ### Data
 The data can be downloaded via the script in $DLTK_SRC/data/IXI_HH/. It includes 177 datasets and corresponding demographic information. The download script
  - produces a CSV file containing demographic information
@@ -27,16 +29,20 @@ pd = sitk.GetArrayFromImage(sitk.ReadImage(pd_fn))
 
 ```
 
-### Usage
+### Training
+![L2 loss](loss.png)
+
 - To train a new model, run the train.py script:
 
   ```python -u train.py $MY_OPTIONS```
 
-  The model and training events will be saved to a temporary folder: `/tmp/IXI_autoencoder`.
+### Monitoring
 
 - For monitoring and metric tracking, spawn a tensorboard webserver and point the log directory to the model save_path:
 
   ```tensorboard --logdir=/tmp/IXI_autoencoder/```
+  
+### Deploy
 
 - To deploy a model and run inference, run the deploy.py script and point to the model save_path:
 
