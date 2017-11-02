@@ -21,9 +21,8 @@ from reader import receiver, save_fn
 
 
 # PARAMS
-# PARAMS
 EVAL_EVERY_N_STEPS = 100
-EVAL_STEPS = 10
+EVAL_STEPS = 1
 
 NUM_CLASSES = 9
 NUM_CHANNELS = 3
@@ -51,8 +50,11 @@ def model_fn(features, labels, mode, params):
     """
 
     # 1. create a model and its outputs
-    net_output_ops = residual_fcn_3D(features['x'], NUM_CLASSES, num_res_units=1, filters=(16, 32, 64),
-                    strides=((1, 1, 1), (1, 2, 2), (1, 2, 2)), mode=mode)
+    #net_output_ops = residual_fcn_3D(features['x'], NUM_CLASSES, num_res_units=1, filters=(16, 32, 64),
+    #                strides=((1, 1, 1), (1, 2, 2), (1, 2, 2)), mode=mode)
+    
+    net_output_ops = residual_unet_3D(features['x'], NUM_CLASSES, num_res_units=1, filters=(16, 32, 64),
+                strides=((1, 1, 1), (1, 2, 2), (1, 2, 2)), mode=mode)
     
     # 1.1 Generate predictions only (for `ModeKeys.PREDICT`)
     if mode == tf.estimator.ModeKeys.PREDICT:
@@ -100,8 +102,10 @@ def train(args):
     print('Setting up...')
 
     # Parse csv files for file names
-    train_filenames = pd.read_csv(args.train_csv, dtype=object, keep_default_na=False, na_values=[]).as_matrix()
-    val_filenames = pd.read_csv(args.val_csv, dtype=object, keep_default_na=False, na_values=[]).as_matrix()
+    all_filenames = pd.read_csv(args.train_csv, dtype=object, keep_default_na=False, na_values=[]).as_matrix()
+    
+    train_filenames = all_filenames[1:4]
+    val_filenames = all_filenames[4:5]
     
     # Set up a data reader to handle the file i/o. 
     reader_params = {'n_examples': 18, 'example_size': [4, 240, 240], 'extract_examples': True}
@@ -153,15 +157,14 @@ def train(args):
 if __name__ == '__main__':
 
     # Set up argument parser
-    parser = argparse.ArgumentParser(description='Example: generic training script')
+    parser = argparse.ArgumentParser(description='Example: MRBrainS13 example segmentation training script')
     parser.add_argument('--run_validation', default=True)
     parser.add_argument('--resume', default=False, action='store_true')
     parser.add_argument('--verbose', default=False, action='store_true')
     parser.add_argument('--cuda_devices', '-c', default='0')
     
     parser.add_argument('--save_path', '-p', default='/tmp/mrbrains_segmentation/')
-    parser.add_argument('--train_csv', default='train.csv')
-    parser.add_argument('--val_csv', default='val.csv')
+    parser.add_argument('--train_csv', default='mrbrains.csv')
     
     args = parser.parse_args()
         
