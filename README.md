@@ -1,4 +1,4 @@
-## Deep Learning Toolkit (DLTK)
+## Deep Learning Toolkit (DLTK) for Medical Imaging
 [![Gitter](https://badges.gitter.im/DLTK/DLTK.svg)](https://gitter.im/DLTK/DLTK?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
 ![DLTK logo](logo.png)
@@ -15,15 +15,15 @@ DLTK API and user guides can be found [here](https://dltk.github.io/)
   - io: sliding window
   - misc: utils
   - models:
-    - all: check meaningfulness of saved_strides, regularisation
     - segm: deep medic
-    - ae: all
-    - classification: all
-    - regression: all
+    - ae: vae
+    - classification: lenet
     - gan: all
     - graphical: all
   - examples:
-    - all
+    - mrbrains segm
+    - IXI sex classification
+    - IXI age regression
   - hi level: 
     - deploy
     - fine tuning
