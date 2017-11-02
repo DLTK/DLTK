@@ -32,18 +32,18 @@ pd = sitk.GetArrayFromImage(sitk.ReadImage(pd_fn))
 ### Training
 ![L2 loss](loss.png)
 
-- To train a new model, run the train.py script:
+To train a new model, run the train.py script:
 
   ```python -u train.py $MY_OPTIONS```
 
 ### Monitoring
 
-- For monitoring and metric tracking, spawn a tensorboard webserver and point the log directory to the model save_path:
+For monitoring and metric tracking, spawn a tensorboard webserver and point the log directory to the model save_path:
 
   ```tensorboard --logdir=/tmp/IXI_autoencoder/```
   
 ### Deploy
 
-- To deploy a model and run inference, run the deploy.py script and point to the model save_path:
+To deploy a model and run inference, run the deploy.py script and point to the model save_path:
 
   ```python -u deploy.py --save_path=/tmp/IXI_autoencoder $MY_OPTIONS```
