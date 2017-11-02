@@ -8,7 +8,6 @@ Please refer to $DLTK_SRC/data for instructions on downloading publicly availabl
 ### Tutorials
 The tutorials will contain jupyter notebooks to quickly learn the mechanics of DLTK and to start playing right away:
 
-
 1. Start a notebook server with
 ```shell
 cd $DLTK_SRC
