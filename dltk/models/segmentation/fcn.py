@@ -28,8 +28,7 @@ def upscore_layer_3D(inputs, inputs2, out_filters, in_filters=None, strides=(2, 
     Returns:
         TYPE: Description
     """
-    conv_params = {'padding': 'same',
-                   'use_bias': use_bias,
+    conv_params = {'use_bias': use_bias,
                    'kernel_initializer': kernel_initializer,
                    'bias_initializer': bias_initializer,
                    'kernel_regularizer': kernel_regularizer,
@@ -44,7 +43,7 @@ def upscore_layer_3D(inputs, inputs2, out_filters, in_filters=None, strides=(2, 
     
     # Account for differences in the number of input and output filters
     if in_filters != out_filters:
-        x = tf.layers.conv3d(inputs, out_filters, (1, 1, 1), (1, 1, 1), name='filter_conversion', **conv_params)
+        x = tf.layers.conv3d(inputs, out_filters, (1, 1, 1), (1, 1, 1), padding='same', name='filter_conversion', **conv_params)
     else:
         x = inputs
     
@@ -52,7 +51,7 @@ def upscore_layer_3D(inputs, inputs2, out_filters, in_filters=None, strides=(2, 
     x = linear_upsample_3D(x, strides)    
         
     # Skip connection
-    x2 = tf.layers.conv3d(inputs2, out_filters, (1, 1, 1), (1, 1, 1), **conv_params)
+    x2 = tf.layers.conv3d(inputs2, out_filters, (1, 1, 1), (1, 1, 1), padding='same', **conv_params)
     x2 = tf.layers.batch_normalization(x2, training=mode==tf.estimator.ModeKeys.TRAIN)
     
     # Return the element-wise sum
@@ -85,8 +84,7 @@ def residual_fcn_3D(inputs, num_classes, num_res_units=1, filters=(16, 32, 64, 1
     assert len(strides) == len(filters)
     assert len(inputs.get_shape().as_list()) == 5, 'inputs are required to have a rank of 5.'
 
-    conv_params = {'padding': 'same',
-                   'use_bias': use_bias,
+    conv_params = {'use_bias': use_bias,
                    'kernel_initializer': kernel_initializer,
                    'bias_initializer': bias_initializer,
                    'kernel_regularizer': kernel_regularizer,
@@ -95,7 +93,7 @@ def residual_fcn_3D(inputs, num_classes, num_res_units=1, filters=(16, 32, 64, 1
     x = inputs
     
     # Inital convolution with filters[0]
-    x = tf.layers.conv3d(x, filters[0], (3, 3, 3), strides[0], **conv_params)
+    x = tf.layers.conv3d(x, filters[0], (3, 3, 3), strides[0], padding='same', **conv_params)
     tf.logging.info('Init conv tensor shape {}'.format(x.get_shape()))
 
     # Residual feature encoding blocks with num_res_units at different resolution scales res_scales
@@ -123,7 +121,7 @@ def residual_fcn_3D(inputs, num_classes, num_res_units=1, filters=(16, 32, 64, 1
 
     # Last convolution
     with tf.variable_scope('last'):
-        x = tf.layers.conv3d(x, num_classes, (1, 1, 1), (1, 1, 1), **conv_params)
+        x = tf.layers.conv3d(x, num_classes, (1, 1, 1), (1, 1, 1), padding='same', **conv_params)
     tf.logging.info('Output tensor shape {}'.format(x.get_shape()))
 
     # Define the outputs
