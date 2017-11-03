@@ -53,8 +53,9 @@ def model_fn(features, labels, mode, params):
     #net_output_ops = residual_fcn_3D(features['x'], NUM_CLASSES, num_res_units=1, filters=(16, 32, 64),
     #                strides=((1, 1, 1), (1, 2, 2), (1, 2, 2)), mode=mode)
     
-    net_output_ops = residual_unet_3D(features['x'], NUM_CLASSES, num_res_units=1, filters=(16, 32, 64),
-                strides=((1, 1, 1), (1, 2, 2), (1, 2, 2)), mode=mode)
+    net_output_ops = residual_unet_3D(features['x'], NUM_CLASSES, num_res_units=1, filters=(16, 32, 64, 128, 256), 
+                                      strides=((1, 1, 1), (1, 2, 2), (1, 2, 2), (1, 2, 2), (1, 2, 2)), mode=mode, 
+                                      kernel_regularizer=tf.contrib.layers.l2_regularizer(2e-4))
     
     # 1.1 Generate predictions only (for `ModeKeys.PREDICT`)
     if mode == tf.estimator.ModeKeys.PREDICT:
@@ -69,7 +70,7 @@ def model_fn(features, labels, mode, params):
     
     # 3. define a training op and ops for updating moving averages (i.e. for batch normalisation)  
     global_step = tf.train.get_global_step()
-    optimiser = tf.train.AdamOptimizer(learning_rate=params["learning_rate"], epsilon=1e-5)
+    optimiser = tf.train.AdamOptimizer(learning_rate=params["learning_rate"], epsilon=0.01)
       
     update_ops = tf.get_collection(tf.GraphKeys.UPDATE_OPS)
     with tf.control_dependencies(update_ops):
@@ -125,7 +126,7 @@ def train(args):
                                                      tf.estimator.ModeKeys.EVAL,
                                                      example_shapes=reader_example_shapes, 
                                                      batch_size=BATCH_SIZE,
-                                                     shuffle_cache_size=SHUFFLE_CACHE_SIZE,
+                                                     shuffle_cache_size=min(SHUFFLE_CACHE_SIZE, EVAL_STEPS),
                                                      params=reader_params)
     
     # Instantiate the neural network estimator
