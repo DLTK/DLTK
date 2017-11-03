@@ -19,8 +19,8 @@ from dltk.io.abstract_reader import Reader
 from reader import receiver, save_fn
 
 # PARAMS
-EVAL_EVERY_N_STEPS = 100
-EVAL_STEPS = 10
+EVAL_EVERY_N_STEPS = 500
+EVAL_STEPS = 5
 
 NUM_CLASSES = 1
 NUM_CHANNELS = 1
@@ -28,7 +28,7 @@ NUM_CHANNELS = 1
 NUM_FEATURES_IN_SUMMARIES = min(4, NUM_CHANNELS)
 
 BATCH_SIZE = 8
-SHUFFLE_CACHE_SIZE = 64
+SHUFFLE_CACHE_SIZE = 32
 
 MAX_STEPS = 100000
 
@@ -116,7 +116,7 @@ def train(args):
                                                      tf.estimator.ModeKeys.EVAL,
                                                      example_shapes=reader_example_shapes, 
                                                      batch_size=BATCH_SIZE,
-                                                     shuffle_cache_size=SHUFFLE_CACHE_SIZE,
+                                                     shuffle_cache_size=min(SHUFFLE_CACHE_SIZE, EVAL_STEPS),
                                                      params=reader_params)
     
     # Instantiate the neural network estimator

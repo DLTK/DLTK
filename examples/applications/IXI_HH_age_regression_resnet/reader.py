@@ -20,7 +20,7 @@ def receiver(file_references, mode, params=None):
     
     def _augment(images):
         
-        images = add_gaussian_noise(images, sigma=0.1)
+        #images = add_gaussian_noise(images, sigma=0.1)
         images = flip(images, axis=2)
         
         return images
