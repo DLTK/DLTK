@@ -29,7 +29,7 @@ NUM_CHANNELS = 1
 
 NUM_FEATURES_IN_SUMMARIES = min(4, NUM_CHANNELS)
 
-BATCH_SIZE = 4
+BATCH_SIZE = 8
 SHUFFLE_CACHE_SIZE = 64
 
 MAX_STEPS = 100000
@@ -84,13 +84,13 @@ def model_fn(features, labels, mode, params):
         train_op = optimiser.minimize(loss, global_step=global_step)
     
     # 4.1 (optional) create custom image summaries for tensorboard
-    tf.summary.image('feat_lo_res', tf.reshape(lo_res[0,8,:,:,0:1], [1, 16, 16, 1]))
+    tf.summary.image('feat_lo_res', tf.reshape(lo_res[0,4,:,:,0:1], [1, 32, 32, 1]))
     my_image_summaries = {}
-    my_image_summaries['feat_hi_res'] = features['x'][0,32,:,:,0:1]
-    my_image_summaries['linear_up_hi_res'] = tf.cast(comparative_linear_upsampling, tf.float32)[0,32,:,:,0:1]
-    my_image_summaries['pred_hi_res'] = tf.cast(net_output_ops['x_'], tf.float32)[0,32,:,:,0:1]
+    my_image_summaries['feat_hi_res'] = features['x'][0,16,:,:,0:1]
+    my_image_summaries['linear_up_hi_res'] = tf.cast(comparative_linear_upsampling, tf.float32)[0,16,:,:,0:1]
+    my_image_summaries['pred_hi_res'] = tf.cast(net_output_ops['x_'], tf.float32)[0,16,:,:,0:1]
     
-    expected_output_size = [1, 64, 64, 1] # [B, W, H, C]
+    expected_output_size = [1, 128, 128, 1] # [B, W, H, C]
     [tf.summary.image(name, tf.reshape(image, expected_output_size)) for name, image in my_image_summaries.items()]
     
     # 5. Return EstimatorSpec object
@@ -111,7 +111,7 @@ def train(args):
     val_filenames = all_filenames[100:]
     
     # Set up a data reader to handle the file i/o. 
-    reader_params = {'n_examples': 16, 'example_size' : [64, 64, 64], 'extract_examples': True}
+    reader_params = {'n_examples': 8, 'example_size' : [32, 128, 128], 'extract_examples': True}
     reader_example_shapes = {'features': {'x': reader_params['example_size'] + [NUM_CHANNELS,]}}
     reader = Reader(receiver, save_fn, {'features': {'x': tf.float32}})
 
@@ -127,7 +127,7 @@ def train(args):
                                                      tf.estimator.ModeKeys.EVAL,
                                                      example_shapes=reader_example_shapes, 
                                                      batch_size=BATCH_SIZE,
-                                                     shuffle_cache_size=min(SHUFFLE_CACHE_SIZE,EVAL_STEPS),
+                                                     shuffle_cache_size=min(SHUFFLE_CACHE_SIZE, EVAL_STEPS),
                                                      params=reader_params)
     
     # Instantiate the neural network estimator
