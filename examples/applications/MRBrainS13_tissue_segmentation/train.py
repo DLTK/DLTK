@@ -53,9 +53,9 @@ def model_fn(features, labels, mode, params):
     #net_output_ops = residual_fcn_3D(features['x'], NUM_CLASSES, num_res_units=1, filters=(16, 32, 64),
     #                strides=((1, 1, 1), (1, 2, 2), (1, 2, 2)), mode=mode)
     
-    net_output_ops = residual_unet_3D(features['x'], NUM_CLASSES, num_res_units=1, filters=(16, 32, 64, 128, 256), 
-                                      strides=((1, 1, 1), (1, 2, 2), (1, 2, 2), (1, 2, 2), (1, 2, 2)), mode=mode, 
-                                      kernel_regularizer=tf.contrib.layers.l2_regularizer(2e-4))
+    net_output_ops = residual_unet_3D(features['x'], NUM_CLASSES, num_res_units=2, filters=(16, 32, 64, 128), 
+                                      strides=((1, 1, 1), (1, 2, 2), (1, 2, 2), (1, 2, 2)), mode=mode, 
+                                      kernel_regularizer=tf.contrib.layers.l2_regularizer(1e-4))
     
     # 1.1 Generate predictions only (for `ModeKeys.PREDICT`)
     if mode == tf.estimator.ModeKeys.PREDICT:
@@ -70,7 +70,7 @@ def model_fn(features, labels, mode, params):
     
     # 3. define a training op and ops for updating moving averages (i.e. for batch normalisation)  
     global_step = tf.train.get_global_step()
-    optimiser = tf.train.AdamOptimizer(learning_rate=params["learning_rate"], epsilon=0.01)
+    optimiser = tf.train.AdamOptimizer(learning_rate=params["learning_rate"], epsilon=1e-5)
       
     update_ops = tf.get_collection(tf.GraphKeys.UPDATE_OPS)
     with tf.control_dependencies(update_ops):
@@ -84,7 +84,7 @@ def model_fn(features, labels, mode, params):
     my_image_summaries['labels'] = tf.cast(labels['y'], tf.float32)[0,0,:,:]
     my_image_summaries['predictions'] = tf.cast(net_output_ops['y_'], tf.float32)[0,0,:,:]
         
-    expected_output_size = [1, 240, 240, 1] # [B, W, H, C]
+    expected_output_size = [1, 128, 128, 1] # [B, W, H, C]
     [tf.summary.image(name, tf.reshape(image, expected_output_size)) for name, image in my_image_summaries.items()]
     
     # 4.2 (optional) create custom metric summaries for tensorboard
@@ -109,7 +109,7 @@ def train(args):
     val_filenames = all_filenames[4:5]
     
     # Set up a data reader to handle the file i/o. 
-    reader_params = {'n_examples': 18, 'example_size': [4, 240, 240], 'extract_examples': True}
+    reader_params = {'n_examples': 18, 'example_size': [4, 128, 128], 'extract_examples': True}
     reader_example_shapes = {'features': {'x': reader_params['example_size'] + [NUM_CHANNELS,]},
                              'labels': {'y': reader_params['example_size']}}
     reader = Reader(receiver, save_fn, {'features': {'x': tf.float32}, 'labels': {'y': tf.int32}})
@@ -132,7 +132,7 @@ def train(args):
     # Instantiate the neural network estimator
     nn = tf.estimator.Estimator(model_fn=model_fn,
                                 model_dir=args.save_path,
-                                params={"learning_rate": 0.01}, 
+                                params={"learning_rate": 0.001}, 
                                 config=tf.estimator.RunConfig())
     
     # Hooks for validation summaries
