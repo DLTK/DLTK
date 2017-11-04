@@ -27,7 +27,7 @@ t1_ir = sitk.GetArrayFromImage(sitk.ReadImage(os.path.join(str(img_fn), 'T1_IR.n
 ```
 
 ### Training
-![crossentropy loss](loss.png)
+![Dice_similarity_coefficient](dsc.png)
 
 To train a new model, run the train.py script:
 
