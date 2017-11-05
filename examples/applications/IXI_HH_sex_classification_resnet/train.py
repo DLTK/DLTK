@@ -21,7 +21,7 @@ from reader import receiver, save_fn
 
 # PARAMS
 EVAL_EVERY_N_STEPS = 100
-EVAL_STEPS = 10
+EVAL_STEPS = 5
 
 NUM_CLASSES = 2
 NUM_CHANNELS = 1
@@ -29,7 +29,7 @@ NUM_CHANNELS = 1
 NUM_FEATURES_IN_SUMMARIES = min(4, NUM_CHANNELS)
 
 BATCH_SIZE = 8
-SHUFFLE_CACHE_SIZE = 64
+SHUFFLE_CACHE_SIZE = 32
 
 MAX_STEPS = 100000
 
@@ -49,10 +49,10 @@ def model_fn(features, labels, mode, params):
     """
 
     # 1. create a model and its outputs
-    net_output_ops = resnet_3D(features['x'], num_res_units=1, num_classes=NUM_CLASSES, 
+    net_output_ops = resnet_3D(features['x'], num_res_units=2, num_classes=NUM_CLASSES, 
                               filters=(16, 32, 64, 128, 256, 512),
                               strides=((1, 1, 1), (2, 2, 2), (2, 2, 2), (2, 2, 2), (2, 2, 2), (4, 6, 6)), 
-                              mode=mode)
+                              mode=mode, kernel_regularizer=tf.contrib.layers.l2_regularizer(1e-4))
     
     # 1.1 Generate predictions only (for `ModeKeys.PREDICT`)
     if mode == tf.estimator.ModeKeys.PREDICT:
@@ -117,7 +117,7 @@ def train(args):
                                                      tf.estimator.ModeKeys.EVAL,
                                                      example_shapes=reader_example_shapes, 
                                                      batch_size=BATCH_SIZE,
-                                                     shuffle_cache_size=SHUFFLE_CACHE_SIZE,
+                                                     shuffle_cache_size=min(SHUFFLE_CACHE_SIZE, EVAL_STEPS),
                                                      params=reader_params)
     
     # Instantiate the neural network estimator
