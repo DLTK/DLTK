@@ -27,6 +27,19 @@ pd = sitk.GetArrayFromImage(sitk.ReadImage(pd_fn))
 
 ```
 
+### Notes 
+In this example we use the first 150 datasets for training, the rest for validation. Here are some quick statistics on the sets:
+
+All subjects:
+Age: mean = 47.35, sd = 16.76, var = 280.80, min = 20.17, max = 81.94
+
+Training subjects:
+Age: mean = 48.00, sd = 17.14, var = 293.88, min = 20.17, max = 81.94
+
+Evaluation subjects:
+Age: mean = 43.89, sd = 14.02, var = 196.56, min = 25.53, max = 71.21
+
+
 ### Usage
 - To train a new model, run the train.py script:
 

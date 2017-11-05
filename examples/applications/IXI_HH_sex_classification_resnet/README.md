@@ -3,8 +3,10 @@ Exemplary training and evaluation scripts for classification from multi-sequence
 
 [1] IXI – Information eXtraction from Images (EPSRC GR/S21533/02)
 
+
+
 ### Data
-The data can be downloaded via the script in $DLTK_SRC/data/IXI_HH/. It includes 177 datasets and corresponding demographic information. The download script
+The data can be downloaded via the script in $DLTK_SRC/data/IXI_HH/. It includes 178 datasets and corresponding demographic information. The download script
  - produces a CSV file containing demographic information
  - validates the completeness of all imaging data for each database entry
  - resamples the images to 1mm isotropic resolution
@@ -26,6 +28,19 @@ pd = sitk.GetArrayFromImage(sitk.ReadImage(pd_fn))
 ...
 
 ```
+
+### Notes 
+In this example we use the first 150 datasets for training, the rest for validation. Here are some quick statistics on the sets:
+
+All subjects:
+Sex: mean = 1.51, sd = 0.50, var = 0.25, min = 1.00, max = 2.00
+
+Training subjects:
+Sex: mean = 1.54, sd = 0.50, var = 0.25, min = 1.00, max = 2.00
+
+Evaluation subjects:
+Sex: mean = 1.36, sd = 0.48, var = 0.23, min = 1.00, max = 2.00
+
 
 ### Usage
 - To train a new model, run the train.py script:
