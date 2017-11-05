@@ -24,12 +24,12 @@ EVAL_EVERY_N_STEPS = 100
 EVAL_STEPS = 10
 
 NUM_CLASSES = 2
-NUM_CHANNELS = 3
+NUM_CHANNELS = 1
 
 NUM_FEATURES_IN_SUMMARIES = min(4, NUM_CHANNELS)
 
-BATCH_SIZE = 1
-SHUFFLE_CACHE_SIZE = 10
+BATCH_SIZE = 8
+SHUFFLE_CACHE_SIZE = 64
 
 MAX_STEPS = 100000
 
@@ -49,17 +49,19 @@ def model_fn(features, labels, mode, params):
     """
 
     # 1. create a model and its outputs
-    net_output_ops = resnet_3D(features['x'], num_res_units=2, num_classes=NUM_CLASSES, 
-                              filters=(16, 32, 64, 128, 256),
-                              strides=((1, 1, 1), (2, 2, 2), (2, 2, 2), (2, 2, 2), (2, 2, 2)), 
+    net_output_ops = resnet_3D(features['x'], num_res_units=1, num_classes=NUM_CLASSES, 
+                              filters=(16, 32, 64, 128, 256, 512),
+                              strides=((1, 1, 1), (2, 2, 2), (2, 2, 2), (2, 2, 2), (2, 2, 2), (4, 6, 6)), 
                               mode=mode)
     
     # 1.1 Generate predictions only (for `ModeKeys.PREDICT`)
     if mode == tf.estimator.ModeKeys.PREDICT:
         return tf.estimator.EstimatorSpec(mode=mode, predictions=net_output_ops,
                                           export_outputs={'out': tf.estimator.export.PredictOutput(net_output_ops)})
+    
     # 2. set up a loss function
-    loss = tf.nn.softmax_cross_entropy_with_logits(logits=net_output_ops['logits'], labels=tf.one_hot(labels['y'], NUM_CLASSES))
+    one_hot_labels = tf.reshape(tf.one_hot(labels['y'], depth=NUM_CLASSES), [-1, NUM_CLASSES])
+    loss = tf.losses.softmax_cross_entropy(one_hot_labels, logits=net_output_ops['logits'])
     
     # 3. define a training op and ops for updating moving averages (i.e. for batch normalisation)  
     global_step = tf.train.get_global_step()
@@ -71,11 +73,9 @@ def model_fn(features, labels, mode, params):
     
     # 4.1 (optional) create custom image summaries for tensorboard
     my_image_summaries = {}
-    my_image_summaries['feat_t1'] = features['x'][0,64,:,:,0]
-    my_image_summaries['feat_t2'] = features['x'][0,64,:,:,1]
-    my_image_summaries['feat_pd'] = features['x'][0,64,:,:,2]
+    my_image_summaries['feat_t1'] = features['x'][0,32,:,:,0]
         
-    expected_output_size = [1, 224, 224, 1] # [B, W, H, C]
+    expected_output_size = [1, 96, 96, 1] # [B, W, H, C]
     [tf.summary.image(name, tf.reshape(image, expected_output_size)) for name, image in my_image_summaries.items()]
     
     # 4.2 (optional) track the rmse (scaled back by 100, see reader.py)
@@ -96,11 +96,11 @@ def train(args):
     # Parse csv files for file names
     all_filenames = pd.read_csv(args.data_csv, dtype=object, keep_default_na=False, na_values=[]).as_matrix()
     
-    train_filenames = all_filenames[:100]
-    val_filenames = all_filenames[100:]
+    train_filenames = all_filenames[:150]
+    val_filenames = all_filenames[150:]
     
     # Set up a data reader to handle the file i/o. 
-    reader_params = {'n_examples': 1, 'example_size': [128, 224, 224], 'extract_examples': True}
+    reader_params = {'n_examples': 2, 'example_size': [64, 96, 96], 'extract_examples': True}
     reader_example_shapes = {'features': {'x': reader_params['example_size'] + [NUM_CHANNELS,]},
                              'labels': {'y': [1]}}
     reader = Reader(receiver, save_fn, {'features': {'x': tf.float32}, 'labels': {'y': tf.int32}})
@@ -123,7 +123,7 @@ def train(args):
     # Instantiate the neural network estimator
     nn = tf.estimator.Estimator(model_fn=model_fn,
                                 model_dir=args.save_path,
-                                params={"learning_rate": 0.01}, 
+                                params={"learning_rate": 0.001}, 
                                 config=tf.estimator.RunConfig())
     
     # Hooks for validation summaries
@@ -149,7 +149,7 @@ def train(args):
 if __name__ == '__main__':
 
     # Set up argument parser
-    parser = argparse.ArgumentParser(description='Example: IXI HH resnet classification training script')
+    parser = argparse.ArgumentParser(description='Example: IXI HH resnet sex classification training')
     parser.add_argument('--run_validation', default=True)
     parser.add_argument('--resume', default=False, action='store_true')
     parser.add_argument('--verbose', default=False, action='store_true')
