@@ -57,12 +57,14 @@ class Reader(object):
                     try:
                         ex = next(fn)
                         yield ex
+                    except (tf.errors.OutOfRangeError, StopIteration):
+                        raise
                     except Exception as e:
                         print('got error `{} from `_read_sample`:'.format(e))
                         print(traceback.format_exc())
                         raise
 
-            dataset = tf.contrib.data.Dataset.from_generator(f,
+            dataset = tf.data.Dataset.from_generator(f,
                                                              self.dtypes, example_shapes)
             dataset = dataset.repeat(None)
             dataset = dataset.shuffle(shuffle_cache_size)
