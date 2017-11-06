@@ -1,9 +1,12 @@
-## Representation learning on 3T multi-channel brain MR images
-Exemplary training and evaluation scripts for representation learning from multi-sequence (T1w, T2w, PD) brain MR images, based on the [IXI dataset](http://brain-development.org/ixi-dataset/) [1]. 
+## Simple image super-resolution on T1w brain MR images
+Exemplary training scripts for image super-resolution from T1w brain MR images, based on the [IXI dataset](http://brain-development.org/ixi-dataset/) [1]. 
 
 [1] IXI – Information eXtraction from Images (EPSRC GR/S21533/02)
 
-![Exemplary reconstruction](recon.png)
+![Exemplary reconstructions](example.png)
+
+### Important Notes 
+The artificial downsampling is done via an average pooling op with a kernel size twice of the upsampling factor. This is just to showcase how to the set up works and currently the network learns the inverse of that downsampling op. In practice, this should be replaced by a proper downsampling strategy. For comparison, we also provide results of ```dltk.core.upsampling.linear_upsample_3D```, which exists only for comparison and adds an unnecessary computational burden in practice.  
 
 ### Data
 The data can be downloaded via the script in $DLTK_SRC/data/IXI_HH/. It includes 177 datasets and corresponding demographic information. The download script
@@ -23,8 +26,6 @@ In `train.py`, the CSV is parsed and split into a training and validation set. A
 
 ```...
 t1 = sitk.GetArrayFromImage(sitk.ReadImage(t1_fn))
-t2 = sitk.GetArrayFromImage(sitk.ReadImage(t2_fn))
-pd = sitk.GetArrayFromImage(sitk.ReadImage(pd_fn))
 ...
 
 ```
@@ -40,10 +41,10 @@ To train a new model, run the train.py script:
 
 For monitoring and metric tracking, spawn a tensorboard webserver and point the log directory to the model save_path:
 
-  ```tensorboard --logdir=/tmp/IXI_autoencoder/```
+  ```tensorboard --logdir=$MY_SAVE_PATH```
   
 ### Deploy
 
 To deploy a model and run inference, run the deploy.py script and point to the model save_path:
 
-  ```python -u deploy.py --save_path=/tmp/IXI_autoencoder $MY_OPTIONS```
+  ```python -u deploy.py --save_path $MY_SAVE_PATH  $MY_OPTIONS```

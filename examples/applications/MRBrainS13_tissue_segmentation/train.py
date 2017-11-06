@@ -14,19 +14,23 @@ import tensorflow as tf
 
 from dltk.core.metrics import *
 from dltk.core.losses import *
-from dltk.models.segmentation.fcn import residual_fcn_3D
 from dltk.models.segmentation.unet import residual_unet_3D
 from dltk.io.abstract_reader import Reader
 from reader import receiver, save_fn
 
 
 # PARAMS
-SAVE_SUMMARY_STEPS = 10
-SAVE_EVERY_N_STEPS = 10
+EVAL_EVERY_N_STEPS = 100
+EVAL_STEPS = 1
 
 NUM_CLASSES = 9
+NUM_CHANNELS = 3
 
-STEPS_EVAL = 1000
+NUM_FEATURES_IN_SUMMARIES = min(4, NUM_CHANNELS)
+
+BATCH_SIZE = 4
+SHUFFLE_CACHE_SIZE = 64
+
 MAX_STEPS = 100000
 
 
@@ -44,9 +48,10 @@ def model_fn(features, labels, mode, params):
         TYPE: Description
     """
 
-    # 1. create a model and its outputs
-    net_output_ops = residual_fcn_3D(features['x'], NUM_CLASSES, num_res_units=1, filters=(16, 32, 64),
-                    strides=((1, 1, 1), (1, 2, 2), (1, 2, 2)), mode=mode)
+    # 1. create a model and its outputs    
+    net_output_ops = residual_unet_3D(features['x'], NUM_CLASSES, num_res_units=2, filters=(16, 32, 64, 128), 
+                                      strides=((1, 1, 1), (1, 2, 2), (1, 2, 2), (1, 2, 2)), mode=mode, 
+                                      kernel_regularizer=tf.contrib.layers.l2_regularizer(1e-4))
     
     # 1.1 Generate predictions only (for `ModeKeys.PREDICT`)
     if mode == tf.estimator.ModeKeys.PREDICT:
@@ -54,10 +59,8 @@ def model_fn(features, labels, mode, params):
                                           export_outputs={'out': tf.estimator.export.PredictOutput(net_output_ops)})
     
     # 2. set up a loss function
-    #ce = tf.nn.sparse_softmax_cross_entropy_with_logits(logits=net_output_ops['logits'], labels=labels['y'])
-    #loss = tf.reduce_mean(ce)
-    loss = dice_loss(logits=net_output_ops['logits'], labels=labels['y'], num_classes=NUM_CLASSES)
-    
+    ce = tf.nn.sparse_softmax_cross_entropy_with_logits(logits=net_output_ops['logits'], labels=labels['y'])
+    loss = tf.reduce_mean(ce)
     
     # 3. define a training op and ops for updating moving averages (i.e. for batch normalisation)  
     global_step = tf.train.get_global_step()
@@ -75,7 +78,7 @@ def model_fn(features, labels, mode, params):
     my_image_summaries['labels'] = tf.cast(labels['y'], tf.float32)[0,0,:,:]
     my_image_summaries['predictions'] = tf.cast(net_output_ops['y_'], tf.float32)[0,0,:,:]
         
-    expected_output_size = [1, 240, 240, 1] # [B, W, H, C]
+    expected_output_size = [1, 128, 128, 1] # [B, W, H, C]
     [tf.summary.image(name, tf.reshape(image, expected_output_size)) for name, image in my_image_summaries.items()]
     
     # 4.2 (optional) create custom metric summaries for tensorboard
@@ -94,37 +97,50 @@ def train(args):
     print('Setting up...')
 
     # Parse csv files for file names
-    train_filenames = pd.read_csv(args.train_csv, dtype=object, keep_default_na=False, na_values=[]).as_matrix()
-    val_filenames = pd.read_csv(args.val_csv, dtype=object, keep_default_na=False, na_values=[]).as_matrix()
+    all_filenames = pd.read_csv(args.train_csv, dtype=object, keep_default_na=False, na_values=[]).as_matrix()
+    
+    train_filenames = all_filenames[1:4]
+    val_filenames = all_filenames[4:5]
     
     # Set up a data reader to handle the file i/o. 
-    reader_params = {'n_examples': 18, 'example_size': [4, 240, 240], 'extract_examples': True}
-    reader_example_shapes = {'features': {'x': reader_params['example_size'] + [3,]},
+    reader_params = {'n_examples': 18, 'example_size': [4, 128, 128], 'extract_examples': True}
+    reader_example_shapes = {'features': {'x': reader_params['example_size'] + [NUM_CHANNELS,]},
                              'labels': {'y': reader_params['example_size']}}
     reader = Reader(receiver, save_fn, {'features': {'x': tf.float32}, 'labels': {'y': tf.int32}})
 
     # Get input functions and queue initialisation hooks for training and validation data
-    train_input_fn, train_qinit_hook = reader.get_inputs(train_filenames, tf.estimator.ModeKeys.TRAIN,
-                                                         example_shapes=reader_example_shapes, params=reader_params)
-    val_input_fn, val_qinit_hook = reader.get_inputs(val_filenames, tf.estimator.ModeKeys.EVAL,
-                                                     example_shapes=reader_example_shapes, params=reader_params)
-        
-    # Instantiate the neural network estimator
-    nn = tf.estimator.Estimator(model_fn=model_fn, model_dir=args.save_path, params={"learning_rate": 0.001})
+    train_input_fn, train_qinit_hook = reader.get_inputs(train_filenames, 
+                                                         tf.estimator.ModeKeys.TRAIN,
+                                                         example_shapes=reader_example_shapes,
+                                                         batch_size=BATCH_SIZE,
+                                                         shuffle_cache_size=SHUFFLE_CACHE_SIZE,
+                                                         params=reader_params)
     
-    # Hooks for training and validation summaries
-    train_summary_hook  = tf.contrib.training.SummaryAtEndHook(args.save_path)
+    val_input_fn, val_qinit_hook = reader.get_inputs(val_filenames, 
+                                                     tf.estimator.ModeKeys.EVAL,
+                                                     example_shapes=reader_example_shapes, 
+                                                     batch_size=BATCH_SIZE,
+                                                     shuffle_cache_size=min(SHUFFLE_CACHE_SIZE, EVAL_STEPS),
+                                                     params=reader_params)
+    
+    # Instantiate the neural network estimator
+    nn = tf.estimator.Estimator(model_fn=model_fn,
+                                model_dir=args.save_path,
+                                params={"learning_rate": 0.001}, 
+                                config=tf.estimator.RunConfig())
+    
+    # Hooks for validation summaries
     val_summary_hook  = tf.contrib.training.SummaryAtEndHook(os.path.join(args.save_path, 'eval'))
-    step_cnt_hook = tf.train.StepCounterHook(output_dir=args.save_path)
+    step_cnt_hook = tf.train.StepCounterHook(every_n_steps=EVAL_EVERY_N_STEPS, output_dir=args.save_path)
     
     print('Starting training...')
     try:
-        while True:
-            nn.train(input_fn=train_input_fn, hooks=[train_qinit_hook, train_summary_hook], steps=10)
-
+        while True: 
+            nn.train(input_fn=train_input_fn, hooks=[train_qinit_hook, step_cnt_hook], steps=EVAL_EVERY_N_STEPS)
+            
             if args.run_validation:
-                results_val = nn.evaluate(input_fn=val_input_fn, hooks=[val_qinit_hook, val_summary_hook, step_cnt_hook], steps=1)
-                print('Step = {}; val loss = {:.5f};'.format(results_val['global_step'], results_val['loss']) )
+                results_val = nn.evaluate(input_fn=val_input_fn, hooks=[val_qinit_hook, val_summary_hook], steps=EVAL_STEPS)
+                print('Step = {}; val loss = {:.5f};'.format(results_val['global_step'], results_val['loss']))
 
     except KeyboardInterrupt:
         print('Stopping now.')
@@ -136,15 +152,14 @@ def train(args):
 if __name__ == '__main__':
 
     # Set up argument parser
-    parser = argparse.ArgumentParser(description='Example: generic training script')
+    parser = argparse.ArgumentParser(description='Example: MRBrainS13 example segmentation training script')
     parser.add_argument('--run_validation', default=True)
     parser.add_argument('--resume', default=False, action='store_true')
     parser.add_argument('--verbose', default=False, action='store_true')
     parser.add_argument('--cuda_devices', '-c', default='0')
     
     parser.add_argument('--save_path', '-p', default='/tmp/mrbrains_segmentation/')
-    parser.add_argument('--train_csv', default='train.csv')
-    parser.add_argument('--val_csv', default='val.csv')
+    parser.add_argument('--train_csv', default='mrbrains.csv')
     
     args = parser.parse_args()
         

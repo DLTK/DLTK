@@ -30,7 +30,6 @@ def receiver(file_references, mode, params=None):
     i = 0
     while True:
 
-        # NEEDS TO BE FIXED!
         img_fn = file_references[i][1]
         i += 1
         if i == len(file_references):
