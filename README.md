@@ -12,31 +12,32 @@ The DLTK API can be found [here](https://dltk.github.io/)
 ### Installation
 1. Install CUDA with cuDNN and add its path in ~/.bashrc by sourcing setup.sh:
 
-```shell
-source MY_CUDA_PATH/setup.sh
-```
+   ```shell
+   source MY_CUDA_PATH/setup.sh
+   ```
 
 2. Setup a virtual environment and activate it:
 
-```shell
-virtualenv venv_tf
-source venv_tf/bin/activate
-```
+   ```shell
+   virtualenv venv_tf
+   source venv_tf/bin/activate
+   ```
 
-3a. Install DLTK directly from pypi as is:
-```shell
-pip install dltk
-```
+3. Install DLTK:
+   There are two installation options available: You can simply install dltk as is from pypi via
+   
+   ```shell
+   pip install dltk
+   ```
+   or you can clone the source and install DLTK in edit mode (preferred):
 
-3b. Clone the source and install DLTK (including all dependencies) via pip in edit mode:
-
-```shell
-cd MY_WORKSPACE_DIRECTORY
-git clone https://github.com/DLTK/DLTK.git 
-cd DLTK
-pip install -e .
-```
-This will allow you to modify the actual DLTK source code and import that modified source wherever you need it via ```import dltk```.
+   ```shell
+   cd MY_WORKSPACE_DIRECTORY
+   git clone https://github.com/DLTK/DLTK.git 
+   cd DLTK
+   pip install -e .
+   ```
+   This will allow you to modify the actual DLTK source code and import that modified source wherever you need it via ```import dltk```. 
 
 
 ### Start playing
