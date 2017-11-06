@@ -5,39 +5,21 @@
 
 DLTK is a neural networks toolkit written in python, on top of [Tensorflow](https://github.com/tensorflow/tensorflow). It is developed to enable fast prototyping with a low entry threshold and ensure reproducibility in image analysis applications, with a particular focus on medical imaging. Its goal is  to provide the community with state of the art methods and models and to accelerate research in this exciting field.
 
+### News
+6 Nov 2017: 
+* We have added two tutorial notebooks on I) how to write custom read functions and readers to interface with DLTK and II) how to write your own model_fn.
+
+2 Nov 2017:
+* There are now multiple functional example applications on autoencoder representation learning, image super-resolution and image segmentation available in examples/applications. Please read the specific notes on each application.
+
+29 Oct 2017:
+* Added automatic download and processing scripts for the IXI HH and Guys Hospital data for example applications.
+
+25 Oct 2017:
+* We have decided to freeze the source of v0.1 and continue with tf.Estimators in the future (c.f. commit 2288f2e "nuke and start again"). This will not only lower the entry threshold of using DLTK, but additionally give back some of the maintenance of low level code to tensorflow. We expect to have all available features from v0.1 ported soon, however will slightly change the structure and scope of the source. 
+
 ### Documentation
-DLTK API and user guides can be found [here](https://dltk.github.io/)
-
-
-### TODO v0.2:
-1. portation of 0.1 features:
-  - core: graph convolutions
-  - io: sliding window
-  - misc: utils
-  - models:
-    - segm: deep medic
-    - ae: vae
-    - classification: lenet
-    - gan: all
-    - graphical: all
-  - examples:
-    - mrbrains segm
-    - IXI sex classification
-    - IXI age regression
-  - hi level: 
-    - deploy
-    - fine tuning
-    - validation/inference on full volumes
-    - in notebook training
-    - setting the example shape globally (i.e. for summaries and for the reader)
-    
-2. new features:
-- histogram estimation mit moving averages session hook domain adaption
-- hooks for sampling
-- resampling etc
-- json config?
-- CI / pytest
-
+The DLTK API can be found [here](https://dltk.github.io/)
 
 ### Installation
 1. Install CUDA with cuDNN and add its path in ~/.bashrc by sourcing setup.sh:
@@ -53,28 +35,41 @@ virtualenv venv_tf
 source venv_tf/bin/activate
 ```
 
-3a. Clone the source and install DLTK (including tensorflow) via pip in edit mode:
-
-```shell
-git clone https://github.com/DLTK/DLTK.git $DLTK_SRC
-cd $DLTK_SRC
-pip install -e .
-```
-
-3b. Install DLTK directly from pypi as is:
+3a. Install DLTK directly from pypi as is:
 ```shell
 pip install dltk
 ```
 
+3b. Clone the source and install DLTK (including all dependencies) via pip in edit mode:
+
+```shell
+cd MY_WORKSPACE_DIRECTORY
+git clone https://github.com/DLTK/DLTK.git 
+cd DLTK
+pip install -e .
+```
+This will allow you to modify the actual DLTK source code and import that modified source wherever you need it via ```import dltk```.
+
 
 ### Start playing
-1. Start a notebook server with
-```shell
-cd $DLTK_SRC
-jupyter notebook --ip=* --port $MY_PORT
-```
- 
-2. navigate to examples and run a tutorial.ipynb notebook 
+
+1. Downloading example data
+   You will find download and preprocessing scripts for publicly available datasets in ```data```. To download the IXI HH dataset, navigate to ```data/IXI_HH``` and run the download script with ```python download_IXI_HH.py```.
+
+
+2. Tutorial notebooks
+   In ```examples/tutorials``` you will find tutorial notebooks to better understand on how DLTK interfaces with tensorflow, how to write custom read functions and how to write your own ```model_fn```.   
+   
+   To run a notebook, navigate to the DLTK source root folder and open a notebook server on ```MY_PORT``` (default 8888):
+   
+   ```shell
+   cd MY_WORKSPACE_DIRECTORY/DLTK
+   jupyter notebook --ip=* --port MY_PORT
+   ```   
+   Open a browser and enter the address ```http://localhost:MY_PORT``` or ```http://MY_DOMAIN_NAME:MY_PORT```. You can then navigate to a notebook in ```examples/tutorials```, open it (c.f. extension .ipynb) and modify or run it.
+
+3. Example applications
+   There are several example applications in ```examples/applications``` using the data in 1. These are only for demonstration purposes and are not tuned for performance. Please refer to the notes in the examples' README.md. 
 
     
 ### Dev team
