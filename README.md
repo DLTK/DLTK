@@ -58,7 +58,7 @@ The DLTK API can be found [here](https://dltk.github.io/)
    Open a browser and enter the address ```http://localhost:MY_PORT``` or ```http://MY_DOMAIN_NAME:MY_PORT```. You can then navigate to a notebook in ```examples/tutorials```, open it (c.f. extension .ipynb) and modify or run it.
 
 3. Example applications
-   There are several example applications in ```examples/applications``` using the data in 1. These are only for demonstration purposes and are not tuned for performance. Please refer to the notes in the examples' README.md. 
+   There are several example applications in ```examples/applications``` using the data in 1. Each folder contains an experimental setup with an application. Please note that these are not tuned to high performance, but rather to showcase how to produce functioning scripts with DLTK models. For additional notes and expected results, refer to the notes in the individual example's README.md. 
 
     
 ### Dev team
