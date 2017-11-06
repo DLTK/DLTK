@@ -57,6 +57,8 @@ class Reader(object):
                     try:
                         ex = next(fn)
                         yield ex
+                    except (tf.errors.OutOfRangeError, StopIteration):
+                        raise
                     except Exception as e:
                         print('got error `{} from `_read_sample`:'.format(e))
                         print(traceback.format_exc())
