@@ -49,10 +49,10 @@ def model_fn(features, labels, mode, params):
     """
 
     # 1. create a model and its outputs
-    net_output_ops = resnet_3D(features['x'], num_res_units=2, num_classes=NUM_CLASSES, 
+    net_output_ops = resnet_3D(features['x'], num_res_units=1, num_classes=NUM_CLASSES, 
                               filters=(16, 32, 64, 128, 256, 512),
                               strides=((1, 1, 1), (2, 2, 2), (2, 2, 2), (2, 2, 2), (2, 2, 2), (4, 6, 6)), 
-                              mode=mode, kernel_regularizer=tf.contrib.layers.l2_regularizer(1e-4))
+                              mode=mode, kernel_regularizer=tf.contrib.layers.l2_regularizer(2e-4))
     
     # 1.1 Generate predictions only (for `ModeKeys.PREDICT`)
     if mode == tf.estimator.ModeKeys.PREDICT:
