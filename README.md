@@ -5,18 +5,6 @@
 
 DLTK is a neural networks toolkit written in python, on top of [Tensorflow](https://github.com/tensorflow/tensorflow). It is developed to enable fast prototyping with a low entry threshold and ensure reproducibility in image analysis applications, with a particular focus on medical imaging. Its goal is  to provide the community with state of the art methods and models and to accelerate research in this exciting field.
 
-### News
-6 Nov 2017: 
-* We have added two tutorial notebooks on I) how to write custom read functions and readers to interface with DLTK and II) how to write your own model_fn.
-
-2 Nov 2017:
-* There are now multiple functional example applications on autoencoder representation learning, image super-resolution and image segmentation available in examples/applications. Please read the specific notes on each application.
-
-29 Oct 2017:
-* Added automatic download and processing scripts for the IXI HH and Guys Hospital data for example applications.
-
-25 Oct 2017:
-* We have decided to freeze the source of v0.1 and continue with tf.Estimators in the future (c.f. commit 2288f2e "nuke and start again"). This will not only lower the entry threshold of using DLTK, but additionally give back some of the maintenance of low level code to tensorflow. We expect to have all available features from v0.1 ported soon, however will slightly change the structure and scope of the source. 
 
 ### Documentation
 The DLTK API can be found [here](https://dltk.github.io/)
