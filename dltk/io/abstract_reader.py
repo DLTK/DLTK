@@ -62,7 +62,7 @@ class Reader(object):
                         print(traceback.format_exc())
                         raise
 
-            dataset = tf.contrib.data.Dataset.from_generator(f,
+            dataset = tf.data.Dataset.from_generator(f,
                                                              self.dtypes, example_shapes)
             dataset = dataset.repeat(None)
             dataset = dataset.shuffle(shuffle_cache_size)
