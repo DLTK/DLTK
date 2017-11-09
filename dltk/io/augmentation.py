@@ -160,13 +160,6 @@ def extract_class_balanced_example_array(image, label, example_size=[1, 64, 64],
         r_idx_idx = np.random.choice(len(idx), size=min(n_ex_per_class[c_idx], len(idx)), replace=False).astype(int)
         r_idx = idx[r_idx_idx]
 
-        # Add a random shift them to avoid learning a center bias - IS THIS REALLY TRUE?
-        r_shift = np.array([list(a) for a in zip(
-                    *[np.random.randint(-ex_rad[i][0] // 2, ex_rad[i][1] // 2, size=len(r_idx_idx)) for i in range(rank)]
-                  )]).astype(int)
-
-        r_idx += r_shift
-
         # Shift the random to valid locations if necessary
         r_idx = np.array([np.array([max(min(r[dim], image.shape[dim] - ex_rad[dim][1]),
                                         ex_rad[dim][0]) for dim in range(rank)]) for r in r_idx])
