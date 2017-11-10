@@ -1,0 +1,119 @@
+"""Summary
+"""
+from __future__ import division
+from __future__ import absolute_import
+from __future__ import print_function
+
+import tensorflow as tf
+import numpy as np
+from dltk.core.upsample import linear_upsample_3D
+
+def dcgan_generator_3D(inputs, out_filters, num_convolutions=1, filters=(16, 32, 64),
+                    strides=((2, 2, 2), (2, 2, 2), (2, 2, 2)), mode=tf.estimator.ModeKeys.EVAL, use_bias=False,
+                    name='dcgan_generator'):
+    outputs = {}
+    assert len(strides) == len(filters)
+    assert len(inputs.get_shape().as_list()) == 5, 'inputs are required to have a rank of 5.'
+
+    conv_op = tf.layers.conv3d
+    tp_conv_op = tf.layers.conv3d_transpose
+    relu_op = tf.nn.relu6
+    upsample_op = linear_upsample_3D
+
+    conv_params = {'padding': 'same',
+                   'use_bias': use_bias,
+                   'kernel_initializer': tf.uniform_unit_scaling_initializer(),
+                   'bias_initializer': tf.zeros_initializer(),
+                   'kernel_regularizer': None,
+                   'bias_regularizer': None}
+
+    x = inputs
+    tf.logging.info('Input tensor shape {}'.format(x.get_shape()))
+    for res_scale in range(0, len(filters)):
+        for i in range(0, num_convolutions - 1):
+            with tf.variable_scope('gen_unit_{}_{}'.format(res_scale, i)):
+                x = conv_op(x, filters[res_scale], (3, 3, 3), (1, 1, 1), **conv_params)
+                x = tf.layers.batch_normalization(x, training=mode == tf.estimator.ModeKeys.TRAIN)
+                x = relu_op(x)
+
+        with tf.variable_scope('gen_unit_{}_{}'.format(res_scale, num_convolutions)):
+            tf.logging.info('Generator at res_scale before up {} tensor shape: {}'.format(res_scale, x.get_shape()))
+            x = upsample_op(x, strides[res_scale], use_bias)
+            tf.logging.info('Generator at res_scale after up {} tensor shape: {}'.format(res_scale, x.get_shape()))
+            x = tf.layers.batch_normalization(x, training=mode == tf.estimator.ModeKeys.TRAIN)
+            x = relu_op(x)
+            tf.logging.info('Generator at res_scale {} tensor shape: {}'.format(res_scale, x.get_shape()))
+
+    for i in range(0, num_convolutions - 1):
+        with tf.variable_scope('gen_unit_{}_{}'.format(len(filters), i)):
+            x = conv_op(x, filters[-1], (3, 3, 3), (1, 1, 1), **conv_params)
+            x = tf.layers.batch_normalization(x, training=mode == tf.estimator.ModeKeys.TRAIN)
+            x = relu_op(x)
+
+    x = conv_op(x, out_filters, (3, 3, 3), (1, 1, 1), **conv_params)
+    x = tf.layers.batch_normalization(x, training=mode == tf.estimator.ModeKeys.TRAIN)
+
+    outputs['gen'] = x
+
+    return outputs
+
+def dcgan_discriminator_3D(inputs, num_convolutions=1, filters=(16, 32, 64),
+                    strides=((2, 2, 2), (2, 2, 2), (2, 2, 2)), mode=tf.estimator.ModeKeys.EVAL, use_bias=False,
+                    name='dcgan_generator'):
+    outputs = {}
+    assert len(strides) == len(filters)
+    assert len(inputs.get_shape().as_list()) == 5, 'inputs are required to have a rank of 5.'
+
+    conv_op = tf.layers.conv3d
+    tp_conv_op = tf.layers.conv3d_transpose
+    relu_op = tf.nn.relu6
+    upsample_op = linear_upsample_3D
+
+    conv_params = {'padding': 'same',
+                   'use_bias': use_bias,
+                   'kernel_initializer': tf.uniform_unit_scaling_initializer(),
+                   'bias_initializer': tf.zeros_initializer(),
+                   'kernel_regularizer': None,
+                   'bias_regularizer': None}
+
+    x = inputs
+    tf.logging.info('Input tensor shape {}'.format(x.get_shape()))
+    for res_scale in range(0, len(filters)):
+        for i in range(0, num_convolutions - 1):
+            with tf.variable_scope('disc_unit_{}_{}'.format(res_scale, i)):
+                x = conv_op(x, filters[res_scale], (3, 3, 3), (1, 1, 1), **conv_params)
+                #x = tf.layers.batch_normalization(x, training=mode == tf.estimator.ModeKeys.TRAIN)
+                x = relu_op(x)
+
+        # Employ strided convolutions to downsample
+        with tf.variable_scope('disc_unit_{}_{}'.format(res_scale, num_convolutions)):
+            # Adjust the strided conv kernel size to prevent losing information
+            k_size = [s * 2 if s > 1 else 3 for s in strides[res_scale]]
+
+            x = conv_op(x, filters[res_scale], k_size, strides[res_scale], **conv_params)
+            #x = tf.layers.batch_normalization(x, training=mode == tf.estimator.ModeKeys.TRAIN)
+            x = relu_op(x)
+            tf.logging.info('Discriminator at res_scale {} tensor shape: {}'.format(res_scale, x.get_shape()))
+
+    x_shape = x.get_shape().as_list()
+    x = tf.reshape(x, (tf.shape(x)[0], np.prod(x_shape[1:])))
+
+    x = tf.layers.dense(x,
+                        1,
+                        use_bias=True,
+                        kernel_initializer=conv_params['kernel_initializer'],
+                        bias_initializer=conv_params['bias_initializer'],
+                        kernel_regularizer=conv_params['kernel_regularizer'],
+                        bias_regularizer=conv_params['bias_regularizer'],
+                        name='out')
+
+
+
+
+    outputs['logits'] = x
+
+    outputs['probs'] = tf.nn.sigmoid(x)
+
+    outputs['pred'] = tf.cast((x > 0.5), tf.int32)
+
+    return outputs
