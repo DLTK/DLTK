@@ -88,7 +88,7 @@ class Reader(object):
         # efficiency. However, it also means that if we want a prediction
         # for a single instance, we'll need to wrap it in an outer list.
         def f():
-            inputs = {k: tf.placeholder(shape=[None,] + placeholder_shapes['features'][k],
+            inputs = {k: tf.placeholder(shape=[None,] + list(placeholder_shapes['features'][k]),
                                         dtype=self.dtypes['features'][k])
                       for k in self.dtypes['features'].keys()}
 
