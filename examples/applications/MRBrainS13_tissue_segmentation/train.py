@@ -16,7 +16,7 @@ from dltk.core.metrics import *
 from dltk.core.losses import *
 from dltk.models.segmentation.unet import residual_unet_3D
 from dltk.io.abstract_reader import Reader
-from reader import receiver, save_fn
+from reader import read_fn
 
 
 # PARAMS
@@ -106,7 +106,7 @@ def train(args):
     reader_params = {'n_examples': 18, 'example_size': [4, 128, 128], 'extract_examples': True}
     reader_example_shapes = {'features': {'x': reader_params['example_size'] + [NUM_CHANNELS,]},
                              'labels': {'y': reader_params['example_size']}}
-    reader = Reader(receiver, save_fn, {'features': {'x': tf.float32}, 'labels': {'y': tf.int32}})
+    reader = Reader(read_fn, {'features': {'x': tf.float32}, 'labels': {'y': tf.int32}})
 
     # Get input functions and queue initialisation hooks for training and validation data
     train_input_fn, train_qinit_hook = reader.get_inputs(train_filenames, 
@@ -143,10 +143,11 @@ def train(args):
                 print('Step = {}; val loss = {:.5f};'.format(results_val['global_step'], results_val['loss']))
 
     except KeyboardInterrupt:
-        print('Stopping now.')
-        export_dir = nn.export_savedmodel(export_dir_base=args.save_path,
-            serving_input_receiver_fn=reader.serving_input_receiver_fn(reader_example_shapes))
-        print('Model saved to {}.'.format(export_dir))
+        pass
+    print('Stopping now.')
+    export_dir = nn.export_savedmodel(export_dir_base=args.save_path,
+                                      serving_input_receiver_fn=reader.serving_input_receiver_fn(reader_example_shapes))
+    print('Model saved to {}.'.format(export_dir))
 
         
 if __name__ == '__main__':

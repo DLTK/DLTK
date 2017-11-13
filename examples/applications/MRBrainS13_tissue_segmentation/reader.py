@@ -5,7 +5,7 @@ import os
 from dltk.io.augmentation import *
 from dltk.io.preprocessing import *
 
-def receiver(file_references, mode, params=None):
+def read_fn(file_references, mode, params=None):
     """Summary
     
     Args:
@@ -24,16 +24,8 @@ def receiver(file_references, mode, params=None):
         
         return img, lbl
 
-    n_examples = params['n_examples']
-    example_size = params['example_size']
-
-    i = 0
-    while True:
-
-        img_fn = file_references[i][1]
-        i += 1
-        if i == len(file_references):
-            i = 0
+    for f in file_references:
+        img_fn = f[1]
 
         t1 = sitk.GetArrayFromImage(sitk.ReadImage(os.path.join(str(img_fn), 'T1.nii')))
         t1_ir = sitk.GetArrayFromImage(sitk.ReadImage(os.path.join(str(img_fn), 'T1_IR.nii')))
@@ -51,10 +43,11 @@ def receiver(file_references, mode, params=None):
         images = np.transpose(images, (1, 2, 3, 0))
 
         if mode == tf.estimator.ModeKeys.PREDICT:
-            yield {'features': {'x': images}, 'labels': None}
+            yield {'features': {'x': images}, 'labels': None, 'sitk': t1, 'img_fn': img_fn}
 
-        lbl = sitk.GetArrayFromImage(sitk.ReadImage(os.path.join(str(img_fn), 'LabelsForTraining.nii'))).astype(
-            np.int32)
+        
+        lbl_sitk = sitk.ReadImage(os.path.join(str(img_fn), 'LabelsForTraining.nii'))
+        lbl = sitk.GetArrayFromImage(lbl_sitk).astype(np.int32)
 
         # Augment if used in training mode
         if mode == tf.estimator.ModeKeys.TRAIN:
@@ -62,31 +55,15 @@ def receiver(file_references, mode, params=None):
         
         # Check if the reader is supposed to return training examples or full images
         if params['extract_examples']:
+            n_examples = params['n_examples']
+            example_size = params['example_size']
+            
             images, lbl = extract_class_balanced_example_array(images, lbl, example_size=example_size,
                                                                n_examples=n_examples, classes=9)
             for e in range(n_examples):
-                yield {'features': {'x': images[e].astype(np.float32)}, 'labels': {'y': lbl[e].astype(np.int32)}}
+                yield {'features': {'x': images[e].astype(np.float32)}, 'labels': {'y': lbl[e].astype(np.int32)},
+                       'img_fn': img_fn}
         else:
-            yield {'features': {'x': images}, 'labels': {'y': lbl}}
+            yield {'features': {'x': images}, 'labels': {'y': lbl}, 'sitk': lbl_sitk, 'img_fn': img_fn}
 
     return
-
-
-def save_fn(file_reference, data, output_path):
-    """Summary
-    
-    Args:
-        file_references (TYPE): Description
-        data (TYPE): Description
-        output_path (TYPE): Description
-    
-    Returns:
-        TYPE: Description
-    """
-    lbl = sitk.GetArrayFromImage(sitk.ReadImage(os.path.join(str(file_reference), 'LabelsForTraining.nii')))
-
-    new_sitk = sitk.GetImageFromArray(data)
-
-    new_sitk.CopyInformation(lbl)
-
-    sitk.WriteImage(new_sitk, output_path)
