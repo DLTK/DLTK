@@ -17,7 +17,7 @@ from dltk.core.losses import *
 from dltk.core.upsample import *
 from dltk.models.super_resolution.simple_super_resolution import simple_super_resolution_3D
 from dltk.io.abstract_reader import Reader
-from reader import receiver, save_fn
+from reader import read_fn
 
 
 # PARAMS
@@ -113,7 +113,7 @@ def train(args):
     # Set up a data reader to handle the file i/o. 
     reader_params = {'n_examples': 8, 'example_size' : [32, 128, 128], 'extract_examples': True}
     reader_example_shapes = {'features': {'x': reader_params['example_size'] + [NUM_CHANNELS,]}}
-    reader = Reader(receiver, save_fn, {'features': {'x': tf.float32}})
+    reader = Reader(read_fn, {'features': {'x': tf.float32}})
 
     # Get input functions and queue initialisation hooks for training and validation data
     train_input_fn, train_qinit_hook = reader.get_inputs(train_filenames, 

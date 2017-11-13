@@ -16,7 +16,7 @@ from dltk.core.metrics import *
 from dltk.core.losses import *
 from dltk.models.regression_classification.resnet import resnet_3D
 from dltk.io.abstract_reader import Reader
-from reader import receiver, save_fn
+from reader import read_fn
 
 # PARAMS
 EVAL_EVERY_N_STEPS = 100
@@ -100,7 +100,7 @@ def train(args):
     reader_params = {'n_examples': 2, 'example_size': [64, 96, 96], 'extract_examples': True}
     reader_example_shapes = {'features': {'x': reader_params['example_size'] + [NUM_CHANNELS,]},
                              'labels': {'y': [1]}}
-    reader = Reader(receiver, save_fn, {'features': {'x': tf.float32}, 'labels': {'y': tf.float32}})
+    reader = Reader(read_fn, {'features': {'x': tf.float32}, 'labels': {'y': tf.float32}})
 
     # Get input functions and queue initialisation hooks for training and validation data
     train_input_fn, train_qinit_hook = reader.get_inputs(train_filenames, 

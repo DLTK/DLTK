@@ -15,7 +15,7 @@ class IteratorInitializerHook(tf.train.SessionRunHook):
 
 class Reader(object):
     """Wrapper for dataset generation given a read function and a save function"""
-    def __init__(self, read_fn, save_fn, dtypes):
+    def __init__(self, read_fn, dtypes):
         """
 
         Args:
@@ -30,7 +30,6 @@ class Reader(object):
         self.dtypes = dtypes
 
         self.read_fn = read_fn
-        self.save = save_fn
 
     def get_inputs(self, file_references, mode, example_shapes=None, shuffle_cache_size=100, batch_size=4,
                    params=None):
@@ -52,10 +51,41 @@ class Reader(object):
 
         def train_inputs():
             def f():
+                def clean_ex(ex, compare):
+                    # Clean example dictionary by recursively deleting non relevant entries
+                    # However, this does not look into dictionaries nested into lists
+                    for k in ex.keys():
+                        if not k in compare.keys():
+                            del ex[k]
+                        elif isinstance(ex[k], dict) and isinstance(compare[k], dict):
+                            clean_ex(ex[k], compare[k])
+                        elif (isinstance(ex[k], dict) and not isinstance(compare[k], dict)
+                              or not isinstance(ex[k], dict) and isinstance(compare[k], dict)):
+                            raise ValueError('Entries between example and dtypes incompatible for key {}'.format(k))
+                        elif ((isinstance(ex[k], list) and not isinstance(compare[k], list))
+                              or (not isinstance(ex[k], list) and isinstance(compare[k], list))
+                              or (isinstance(ex[k], list) and isinstance(compare[k], list)
+                                  and not len(ex[k]) == len(compare[k]))):
+                            raise ValueError('Entries between example and dtypes incompatible for key {}'.format(k))
+                    for k in compare.keys():
+                        if k not in ex.keys():
+                            raise ValueError('Key {} not found in ex but is present in dtypes')
+                    return ex         
+                
                 fn = self.read_fn(file_references, mode, params)
+                # iterate over all entries - this loop is terminated by the tf.errors.OutOfRangeError or StopIteration
+                # thrown by the read_fn
                 while True:
                     try:
                         ex = next(fn)
+                        
+                        if ex.get('labels') is None:
+                            ex['labels'] = None
+                        
+                        if not isinstance(ex, dict):
+                            raise ValueError('The read_fn has to return dictionaries')
+                        
+                        ex = clean_ex(ex, self.dtypes)
                         yield ex
                     except (tf.errors.OutOfRangeError, StopIteration):
                         raise

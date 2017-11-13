@@ -6,7 +6,7 @@ import glob
 from dltk.io.augmentation import *
 from dltk.io.preprocessing import *
 
-def receiver(file_references, mode, params=None):
+def read_fn(file_references, mode, params=None):
     """Summary
     
     Args:
@@ -66,23 +66,3 @@ def receiver(file_references, mode, params=None):
             yield {'features': {'x': images}, 'labels': {'y': y.astype(np.int32)}}
 
     return
-
-
-def save_fn(file_reference, data, output_path):
-    """Summary
-    
-    Args:
-        file_references (TYPE): Description
-        data (TYPE): Description
-        output_path (TYPE): Description
-    
-    Returns:
-        TYPE: Description
-    """
-    lbl = sitk.GetArrayFromImage(sitk.ReadImage(os.path.join(str(file_reference), 'LabelsForTraining.nii')))
-
-    new_sitk = sitk.GetImageFromArray(data)
-
-    new_sitk.CopyInformation(lbl)
-
-    sitk.WriteImage(new_sitk, output_path)
