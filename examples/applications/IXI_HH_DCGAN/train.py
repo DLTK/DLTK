@@ -16,13 +16,13 @@ from dltk.core.metrics import *
 from dltk.core.losses import *
 from dltk.models.gan.dcgan import dcgan_discriminator_3D, dcgan_generator_3D
 from dltk.io.abstract_reader import Reader
-from reader import receiver, save_fn
+from reader import read_fn
 
 
 # PARAMS
-BATCH_SIZE = 8
+BATCH_SIZE = 32
 
-MAX_STEPS = 65000
+MAX_STEPS = 35000
 
 def train(args):
 
@@ -41,7 +41,7 @@ def train(args):
     reader_params = {'n_examples': 10, 'example_size': [4, 224, 224], 'extract_examples': True}
     reader_example_shapes = {'labels': [4, 64, 64, 1],
                              'features': {'noise': [1, 1, 1, 100]}}
-    reader = Reader(receiver, save_fn, {'labels': tf.float32, 'features': {'noise': tf.float32}})
+    reader = Reader(read_fn, {'labels': tf.float32, 'features': {'noise': tf.float32}})
 
     # Get input functions and queue initialisation hooks for training and validation data
     train_input_fn, train_qinit_hook = reader.get_inputs(train_filenames, tf.estimator.ModeKeys.TRAIN,
@@ -78,8 +78,8 @@ def train(args):
         discriminator_fn=discriminator_fn,
         generator_loss_fn=tfgan.losses.least_squares_generator_loss,
         discriminator_loss_fn=tfgan.losses.least_squares_discriminator_loss,
-        generator_optimizer=tf.train.AdamOptimizer(0.001, 0.5),
-        discriminator_optimizer=tf.train.AdamOptimizer(0.001, 0.5))
+        generator_optimizer=tf.train.AdamOptimizer(0.0001, 0.5, epsilon=1e-5),
+        discriminator_optimizer=tf.train.AdamOptimizer(0.0001, 0.5, epsilon=1e-5))
     
     print('Starting training...')
     try:
