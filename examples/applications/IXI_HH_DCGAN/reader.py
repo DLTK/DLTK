@@ -7,7 +7,7 @@ from dltk.io.augmentation import *
 from dltk.io.preprocessing import *
 import scipy
 
-def receiver(file_references, mode, params=None):
+def read_fn(file_references, mode, params=None):
     """Summary
     
     Args:
@@ -41,11 +41,11 @@ def receiver(file_references, mode, params=None):
         t1 = sitk.GetArrayFromImage(sitk.ReadImage(t1_fn))
 
         # Normalise volume images
-        t1 = normalise_zero_one(t1)
-        
         t1 = t1[..., np.newaxis]
         
         t1 = t1[len(t1) // 2 - 5:len(t1) // 2 + 5]
+        
+        t1 = normalise_zero_one(t1)
         
         images = t1
 
@@ -65,23 +65,3 @@ def receiver(file_references, mode, params=None):
             yield {'labels': images, 'features': {'noise': noise}}
 
     return
-
-
-def save_fn(file_reference, data, output_path):
-    """Summary
-    
-    Args:
-        file_references (TYPE): Description
-        data (TYPE): Description
-        output_path (TYPE): Description
-    
-    Returns:
-        TYPE: Description
-    """
-    lbl = sitk.GetArrayFromImage(sitk.ReadImage(os.path.join(str(file_reference), 'LabelsForTraining.nii')))
-
-    new_sitk = sitk.GetImageFromArray(data)
-
-    new_sitk.CopyInformation(lbl)
-
-    sitk.WriteImage(new_sitk, output_path)
