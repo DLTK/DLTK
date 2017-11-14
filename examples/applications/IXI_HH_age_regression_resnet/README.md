@@ -4,7 +4,7 @@ Exemplary training and evaluation scripts for regression from multi-sequence (T1
 [1] IXI – Information eXtraction from Images (EPSRC GR/S21533/02)
 
 ### Data
-The data can be downloaded via the script in $DLTK_SRC/data/IXI_HH/. It includes 177 datasets and corresponding demographic information. The download script
+The data can be downloaded via the script in dltk/data/IXI_HH. It includes 177 datasets and corresponding demographic information. The download script
  - produces a CSV file containing demographic information
  - validates the completeness of all imaging data for each database entry
  - resamples the images to 1mm isotropic resolution
@@ -43,7 +43,7 @@ Age: mean = 43.89, sd = 14.02, var = 196.56, min = 25.53, max = 71.21
 ### Usage
 - To train a new model, run the train.py script:
 
-  ```python -u train.py $MY_OPTIONS```
+  ```python -u train.py MY_OPTIONS```
 
   The model and training events will be saved to a temporary folder: `/tmp/IXI_regression`.
 
@@ -53,4 +53,4 @@ Age: mean = 43.89, sd = 14.02, var = 196.56, min = 25.53, max = 71.21
 
 - To deploy a model and run inference, run the deploy.py script and point to the model save_path:
 
-  ```python -u deploy.py --save_path=/tmp/IXI_regression $MY_OPTIONS```
+  ```python -u deploy.py --save_path=/tmp/IXI_regression MY_OPTIONS```
