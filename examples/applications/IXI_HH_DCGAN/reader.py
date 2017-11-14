@@ -18,21 +18,9 @@ def read_fn(file_references, mode, params=None):
     Returns:
         TYPE: Description
     """
-    
-    def _augment(images):
-        
-        images = add_gaussian_noise(images, sigma=0.1)
-        #images = flip(images, axis=2)
-        
-        return images
 
-    i = 0
-    while True:
-
-        subject_id = file_references[i][0]
-        i += 1
-        if i == len(file_references):
-            i = 0
+    for f in file_references:
+        subject_id = f[0]
             
         data_path = '../../../data/IXI_HH/1mm'
         
@@ -43,6 +31,7 @@ def read_fn(file_references, mode, params=None):
         # Normalise volume images
         t1 = t1[..., np.newaxis]
         
+        # restrict to slices around center slice
         t1 = t1[len(t1) // 2 - 5:len(t1) // 2 + 5]
         
         t1 = normalise_zero_one(t1)
@@ -56,7 +45,8 @@ def read_fn(file_references, mode, params=None):
         
         # Check if the reader is supposed to return training examples or full images
         if params['extract_examples']:
-            images = extract_random_example_array(images, example_size=params['example_size'], n_examples=params['n_examples'])
+            images = extract_random_example_array(images, example_size=params['example_size'],
+                                                  n_examples=params['n_examples'])
             for e in range(params['n_examples']):
                 
                 yield {'labels': scipy.ndimage.zoom(images[e], (1, 64./224., 64./224., 1)).astype(np.float32),

@@ -19,9 +19,7 @@ def read_fn(file_references, mode, params=None):
     """
     
     def _augment(images):
-        
         images = add_gaussian_noise(images, sigma=0.1)
-        #images = flip(images, axis=2)
         
         return images
 
@@ -48,11 +46,8 @@ def read_fn(file_references, mode, params=None):
         t2 = whitening(t2)
         pd = whitening(pd)
 
-        # Create a 4D multi-sequence image (i.e. [channels, x, y, z])
-        images = np.asarray([t1, t2, pd]).astype(np.float32)
-
-        # Transpose to [batch, x, y, z, channel] as required input by the network
-        images = np.transpose(images, (1, 2, 3, 0))
+        # Create a 4D multi-sequence image (i.e. [x, y, z, channels])
+        images = np.stack([t1, t2, pd], axis=-1).astype(np.float32)
 
         if mode == tf.estimator.ModeKeys.PREDICT:
             yield {'features': {'x': images}}
@@ -63,7 +58,8 @@ def read_fn(file_references, mode, params=None):
         
         # Check if the reader is supposed to return training examples or full images
         if params['extract_examples']:
-            images = extract_random_example_array(images, example_size=params['example_size'], n_examples=params['n_examples'])
+            images = extract_random_example_array(images, example_size=params['example_size'],
+                                                  n_examples=params['n_examples'])
             
             for e in range(params['n_examples']):
                 yield {'features': {'x': images[e].astype(np.float32)}}

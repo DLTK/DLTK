@@ -27,7 +27,8 @@ def read_fn(file_references, mode, params=None):
     for f in file_references:
         img_fn = f[1]
 
-        t1 = sitk.GetArrayFromImage(sitk.ReadImage(os.path.join(str(img_fn), 'T1.nii')))
+        t1_sitk = sitk.ReadImage(os.path.join(str(img_fn), 'T1.nii'))
+        t1 = sitk.GetArrayFromImage(t1_sitk)
         t1_ir = sitk.GetArrayFromImage(sitk.ReadImage(os.path.join(str(img_fn), 'T1_IR.nii')))
         t2_fl = sitk.GetArrayFromImage(sitk.ReadImage(os.path.join(str(img_fn), 'T2_FLAIR.nii')))
 
@@ -37,17 +38,16 @@ def read_fn(file_references, mode, params=None):
         t2_fl = whitening(t2_fl)
 
         # Create a 4D multi-sequence image (i.e. [channels, x, y, z])
-        images = np.asarray([t1, t1_ir, t2_fl]).astype(np.float32)
+        images = np.stack([t1, t1_ir, t2_fl], axis=-1).astype(np.float32)
 
         # Transpose to [batch, x, y, z, channel] as required input by the network
         images = np.transpose(images, (1, 2, 3, 0))
 
         if mode == tf.estimator.ModeKeys.PREDICT:
-            yield {'features': {'x': images}, 'labels': None, 'sitk': t1, 'img_fn': img_fn}
+            yield {'features': {'x': images}, 'labels': None, 'sitk': t1_sitk, 'img_fn': img_fn}
 
-        
-        lbl_sitk = sitk.ReadImage(os.path.join(str(img_fn), 'LabelsForTraining.nii'))
-        lbl = sitk.GetArrayFromImage(lbl_sitk).astype(np.int32)
+        lbl = sitk.GetArrayFromImage(sitk.ReadImage(
+                os.path.join(str(img_fn),'LabelsForTraining.nii'))).astype(np.int32)
 
         # Augment if used in training mode
         if mode == tf.estimator.ModeKeys.TRAIN:
@@ -64,6 +64,6 @@ def read_fn(file_references, mode, params=None):
                 yield {'features': {'x': images[e].astype(np.float32)}, 'labels': {'y': lbl[e].astype(np.int32)},
                        'img_fn': img_fn}
         else:
-            yield {'features': {'x': images}, 'labels': {'y': lbl}, 'sitk': lbl_sitk, 'img_fn': img_fn}
+            yield {'features': {'x': images}, 'labels': {'y': lbl}, 'sitk': t1_sitk, 'img_fn': img_fn}
 
     return
