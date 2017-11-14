@@ -24,8 +24,7 @@ class Reader(object):
         tuple, first item is extracted as features. Prediction continues until
         `input_fn` raises an end-of-input exception (`OutOfRangeError` or
         `StopIteration`).
-            save_fn:
-            dtypes:
+            dtypes:  A nested structure of tf.DType objects corresponding to each component of an element yielded by generator.
         """
         self.dtypes = dtypes
 
@@ -38,7 +37,7 @@ class Reader(object):
 
         Args:
             file_references: An array like structure that holds the reference to the file to read
-            mode: A tf.estimator.ModeKeys. It is passed on to `read_fn` to trigger specific functions there.
+            mode: A tf.estimator.ModeKeys. It is passed on to `read_fn` to trigger specific functions there. It can also be None if not needed.
             example_shapes:
             shuffle_cache_size: An `int` determining the number of examples that are held in the shuffle queue.
             batch_size: An `int` specifying the number of examples returned in a batch.
