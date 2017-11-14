@@ -1,10 +1,10 @@
-## Age regression from 3T multi-channel brain MR images
-Exemplary training and evaluation scripts for regression from multi-sequence (T1w, T2w, PD) brain MR images, based on the [IXI dataset](http://brain-development.org/ixi-dataset/) [1]. 
+## Age regression from 3T T1w brain MR images
+Exemplary training and evaluation scripts for regression from T1w brain MR images, based on the [IXI dataset](http://brain-development.org/ixi-dataset/) [1]. 
 
 [1] IXI – Information eXtraction from Images (EPSRC GR/S21533/02)
 
 ### Data
-The data can be downloaded via the script in dltk/data/IXI_HH. It includes 177 datasets and corresponding demographic information. The download script
+The data can be downloaded via the script in dltk/data/IXI_HH. It includes 178 datasets and corresponding demographic information. The download script
  - produces a CSV file containing demographic information
  - validates the completeness of all imaging data for each database entry
  - resamples the images to 1mm isotropic resolution
@@ -24,33 +24,35 @@ t1 = sitk.GetArrayFromImage(sitk.ReadImage(t1_fn))
 t2 = sitk.GetArrayFromImage(sitk.ReadImage(t2_fn))
 pd = sitk.GetArrayFromImage(sitk.ReadImage(pd_fn))
 ...
-
 ```
 
 ### Notes 
 In this example we use the first 150 datasets for training, the rest for validation. Here are some quick statistics on the sets:
 
 All subjects:
-Age: mean = 47.35, sd = 16.76, var = 280.80, min = 20.17, max = 81.94
+Age: mean = 47.35, sd = 16.76, min = 20.17, max = 81.94
 
 Training subjects:
-Age: mean = 48.00, sd = 17.14, var = 293.88, min = 20.17, max = 81.94
+Age: mean = 48.00, sd = 17.14, min = 20.17, max = 81.94
 
 Evaluation subjects:
-Age: mean = 43.89, sd = 14.02, var = 196.56, min = 25.53, max = 71.21
+Age: mean = 43.89, sd = 14.02, min = 25.53, max = 71.21
 
 
 ### Usage
 - To train a new model, run the train.py script:
 
-  ```python -u train.py MY_OPTIONS```
+  ```python -u train.py MY_OPTIONS
+  ```
 
   The model and training events will be saved to a temporary folder: `/tmp/IXI_regression`.
 
 - For monitoring and metric tracking, spawn a tensorboard webserver and point the log directory to the model save_path:
 
-  ```tensorboard --logdir=/tmp/IXI_regression/```
+  ```tensorboard --logdir /tmp/IXI_regression/
+  ```
 
 - To deploy a model and run inference, run the deploy.py script and point to the model save_path:
 
-  ```python -u deploy.py --save_path=/tmp/IXI_regression MY_OPTIONS```
+  ```python -u deploy.py --save_path /tmp/IXI_regression MY_OPTIONS
+  ```

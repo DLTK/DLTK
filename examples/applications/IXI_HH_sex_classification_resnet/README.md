@@ -1,9 +1,7 @@
-## Sex classification from 3T multi-channel brain MR images
+## Sex classification from 3T T1w brain MR images
 Exemplary training and evaluation scripts for classification from T1w brain MR images, based on the [IXI dataset](http://brain-development.org/ixi-dataset/) [1]. 
 
 [1] IXI – Information eXtraction from Images (EPSRC GR/S21533/02)
-
-
 
 ### Data
 The data can be downloaded via the script in dltk/data/IXI_HH. It includes 178 datasets and corresponding demographic information. The download script
@@ -26,33 +24,35 @@ t1 = sitk.GetArrayFromImage(sitk.ReadImage(t1_fn))
 t2 = sitk.GetArrayFromImage(sitk.ReadImage(t2_fn))
 pd = sitk.GetArrayFromImage(sitk.ReadImage(pd_fn))
 ...
-
 ```
 
 ### Notes 
 In this example we use the first 150 datasets for training, the rest for validation. Here are some quick statistics on the sets:
 
 All subjects:
-Sex: mean = 1.51, sd = 0.50, var = 0.25, min = 1.00, max = 2.00
+Sex: mean = 1.51, sd = 0.50, min = 1.00, max = 2.00
 
 Training subjects:
-Sex: mean = 1.54, sd = 0.50, var = 0.25, min = 1.00, max = 2.00
+Sex: mean = 1.54, sd = 0.50, min = 1.00, max = 2.00
 
 Evaluation subjects:
-Sex: mean = 1.36, sd = 0.48, var = 0.23, min = 1.00, max = 2.00
+Sex: mean = 1.36, sd = 0.48, min = 1.00, max = 2.00
 
 
 ### Usage
 - To train a new model, run the train.py script:
 
-  ```python -u train.py MY_OPTIONS```
+  ```python -u train.py MY_OPTIONS
+  ```
 
   The model and training events will be saved to a temporary folder: `/tmp/IXI_sex_classification`.
 
 - For monitoring and metric tracking, spawn a tensorboard webserver and point the log directory to the model save_path:
 
-  ```tensorboard --logdir=/tmp/IXI_sex_classification/```
+  ```tensorboard --logdir /tmp/IXI_sex_classification/
+  ```
 
 - To deploy a model and run inference, run the deploy.py script and point to the model save_path:
 
-  ```python -u deploy.py --save_path=/tmp/IXI_sex_classification MY_OPTIONS```
+  ```python -u deploy.py --save_path /tmp/IXI_sex_classification MY_OPTIONS
+  ```
