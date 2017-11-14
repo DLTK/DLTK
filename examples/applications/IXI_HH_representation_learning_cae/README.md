@@ -6,7 +6,7 @@ Exemplary training and evaluation scripts for representation learning from multi
 ![Exemplary reconstruction](recon.png)
 
 ### Data
-The data can be downloaded via the script in $DLTK_SRC/data/IXI_HH/. It includes 177 datasets and corresponding demographic information. The download script
+The data can be downloaded via the script in dltk/data/IXI_HH. It includes 178 datasets and corresponding demographic information. The download script
  - produces a CSV file containing demographic information
  - validates the completeness of all imaging data for each database entry
  - resamples the images to 1mm isotropic resolution
@@ -26,7 +26,6 @@ t1 = sitk.GetArrayFromImage(sitk.ReadImage(t1_fn))
 t2 = sitk.GetArrayFromImage(sitk.ReadImage(t2_fn))
 pd = sitk.GetArrayFromImage(sitk.ReadImage(pd_fn))
 ...
-
 ```
 
 ### Training
@@ -34,16 +33,19 @@ pd = sitk.GetArrayFromImage(sitk.ReadImage(pd_fn))
 
 To train a new model, run the train.py script:
 
-  ```python -u train.py $MY_OPTIONS```
+  ```python -u train.py MY_OPTIONS
+  ```
 
 ### Monitoring
 
 For monitoring and metric tracking, spawn a tensorboard webserver and point the log directory to the model save_path:
 
-  ```tensorboard --logdir=/tmp/IXI_autoencoder/```
+  ```tensorboard --logdir /tmp/IXI_autoencoder/
+  ```
   
 ### Deploy
 
 To deploy a model and run inference, run the deploy.py script and point to the model save_path:
 
-  ```python -u deploy.py --save_path=/tmp/IXI_autoencoder $MY_OPTIONS```
+  ```python -u deploy.py --save_path /tmp/IXI_autoencoder MY_OPTIONS
+  ```
