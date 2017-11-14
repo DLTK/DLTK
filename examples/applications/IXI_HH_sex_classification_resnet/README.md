@@ -1,12 +1,12 @@
 ## Sex classification from 3T multi-channel brain MR images
-Exemplary training and evaluation scripts for classification from multi-sequence (T1w, T2w, PD) brain MR images, based on the [IXI dataset](http://brain-development.org/ixi-dataset/) [1]. 
+Exemplary training and evaluation scripts for classification from T1w brain MR images, based on the [IXI dataset](http://brain-development.org/ixi-dataset/) [1]. 
 
 [1] IXI – Information eXtraction from Images (EPSRC GR/S21533/02)
 
 
 
 ### Data
-The data can be downloaded via the script in $DLTK_SRC/data/IXI_HH/. It includes 178 datasets and corresponding demographic information. The download script
+The data can be downloaded via the script in dltk/data/IXI_HH. It includes 178 datasets and corresponding demographic information. The download script
  - produces a CSV file containing demographic information
  - validates the completeness of all imaging data for each database entry
  - resamples the images to 1mm isotropic resolution
@@ -45,7 +45,7 @@ Sex: mean = 1.36, sd = 0.48, var = 0.23, min = 1.00, max = 2.00
 ### Usage
 - To train a new model, run the train.py script:
 
-  ```python -u train.py $MY_OPTIONS```
+  ```python -u train.py MY_OPTIONS```
 
   The model and training events will be saved to a temporary folder: `/tmp/IXI_sex_classification`.
 
@@ -55,4 +55,4 @@ Sex: mean = 1.36, sd = 0.48, var = 0.23, min = 1.00, max = 2.00
 
 - To deploy a model and run inference, run the deploy.py script and point to the model save_path:
 
-  ```python -u deploy.py --save_path=/tmp/IXI_sex_classification $MY_OPTIONS```
+  ```python -u deploy.py --save_path=/tmp/IXI_sex_classification MY_OPTIONS```
