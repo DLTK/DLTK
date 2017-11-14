@@ -3,10 +3,23 @@
 
 ![DLTK logo](logo.png)
 
-DLTK is a neural networks toolkit written in python, on top of [Tensorflow](https://github.com/tensorflow/tensorflow). It is developed to enable fast prototyping with a low entry threshold and ensure reproducibility in image analysis applications, with a particular focus on medical imaging. Its goal is  to provide the community with state of the art methods and models and to accelerate research in this exciting field.
+DLTK is a neural networks toolkit written in python, on top of [TensorFlow](https://github.com/tensorflow/tensorflow). It is developed to enable fast prototyping with a low entry threshold and ensure reproducibility in image analysis applications, with a particular focus on medical imaging. Its goal is  to provide the community with state of the art methods and models and to accelerate research in this exciting field.
 
 ### Documentation
 The DLTK API can be found [here](https://dltk.github.io/)
+
+### Referencing and citing DLTK
+If you use DLTK in your work please refer to this citation for the current version:
+
+```@article{pawlowski2017state,
+  title={DLTK: State of the Art Reference Implementations for Deep Learning on Medical Images},
+  author={Nick Pawlowski and S. Ira Ktena, and Matthew C.H. Lee and Bernhard Kainz and Daniel Rueckert and Ben Glocker and Martin Rajchl},
+  journal={arXiv preprint arXiv:SOME_ID},
+  year={2017}
+}
+```
+
+If you use any application from the [DLTK Model Zoo](https://github.com/DLTK/models), additionally refer to the respective README.md files in the applications' folder to comply with its authors' instructions on referencing.
 
 ### Installation
 1. Install CUDA with cuDNN and add its path in ~/.bashrc by sourcing setup.sh:
@@ -45,7 +58,7 @@ The DLTK API can be found [here](https://dltk.github.io/)
 
 
 2. Tutorial notebooks
-   In ```examples/tutorials``` you will find tutorial notebooks to better understand on how DLTK interfaces with tensorflow, how to write custom read functions and how to write your own ```model_fn```.   
+   In ```examples/tutorials``` you will find tutorial notebooks to better understand on how DLTK interfaces with TensorFlow, how to write custom read functions and how to write your own ```model_fn```.   
    
    To run a notebook, navigate to the DLTK source root folder and open a notebook server on ```MY_PORT``` (default 8888):
    
@@ -59,27 +72,23 @@ The DLTK API can be found [here](https://dltk.github.io/)
 3. Example applications
    There are several example applications in ```examples/applications``` using the data in 1. Each folder contains an experimental setup with an application. **Please note that these are not tuned to high performance, but rather to showcase how to produce functioning scripts with DLTK models.** For additional notes and expected results, refer to the notes in the individual example's README.md.  
 
-### DLTK model zoo
-We also provide a model zoo with (re-)implementations of current research methodology in a separate repository [DLTK/models](https://github.com/DLTK/models). Each model in the zoo is maintained by the respective authors and implementations often differ to those in ```examples/applications```. For instructions and information on the individual application in the zoo, please refer to the respective README.md files.
+### DLTK Model Zoo
+We also provide a zoo with (re-)implementations of current research methodology in a separate repository [DLTK/models](https://github.com/DLTK/models). Each model in the zoo is maintained by the respective authors and implementations often differ to those in ```examples/applications```. For instructions and information on the individual application in the zoo, please refer to the respective README.md files.
 
 ### How to contribute
-We appreciate any contributions to the DLTK and its model zoo. If you have improvements, features or patches, please send us your pull requests! You can find specific instructions on how to issue a PR on github [here](https://help.github.com/articles/about-pull-requests/). Feel free to open an [issue](https://github.com/DLTK/DLTK/issues) if you find a bug or directly come chat with us on our gitter channel [![Gitter](https://badges.gitter.im/DLTK/DLTK.svg)](https://gitter.im/DLTK/DLTK?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge).
+We appreciate any contributions to the DLTK and its Model Zoo. If you have improvements, features or patches, please send us your pull requests! You can find specific instructions on how to issue a PR on github [here](https://help.github.com/articles/about-pull-requests/). Feel free to open an [issue](https://github.com/DLTK/DLTK/issues) if you find a bug or directly come chat with us on our gitter channel [![Gitter](https://badges.gitter.im/DLTK/DLTK.svg)](https://gitter.im/DLTK/DLTK?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge).
 
 #### Basic contribution guidelines
-- Python coding style: Like tensorflow, we adhere to [google coding style](https://google.github.io/styleguide/pyguide.html) and [google docstrings](https://google.github.io/styleguide/pyguide.html#Comments).
+- Python coding style: Like TensorFlow, we loosely adhere to [google coding style](https://google.github.io/styleguide/pyguide.html) and [google docstrings](https://google.github.io/styleguide/pyguide.html#Comments).
 - Entirely new features should be committed to ```dltk/contrib``` before we can sensibly integrate it into the core.
-- Standalone problem-specific applications or (re-)implementations of published methods should be committed to the [DLTK model zoo](https://github.com/DLTK/models) repo and provide a README.md file with author/coder contact information. 
-
+- Standalone problem-specific applications or (re-)implementations of published methods should be committed to the [DLTK Model Zoo](https://github.com/DLTK/models) repo and provide a README.md file with author/coder contact information. 
     
-### Dev team
-[@mrajchl](https://github.com/mrajchl) 
-[@pawni](https://github.com/pawni)
-
-### Contributors (many thanks)
-#### v0.1 [@ericspod](https://github.com/ericspod) [@ghisvail](https://github.com/ghisvail) [@mauinz](https://github.com/mauinz) [@michaeld123](https://github.com/michaeld123) [@sk1712](https://github.com/sk1712)
+### The team
+DLTK is currently maintained by [@pawni](https://github.com/pawni) and [@mrajchl](https://github.com/mrajchl) with greatly appreciated contributions coming from individual researchers and engineers listed here in alphabetical order: 
+ [@ericspod](https://github.com/ericspod) [@ghisvail](https://github.com/ghisvail) [@mauinz](https://github.com/mauinz) [@michaeld123](https://github.com/michaeld123) [@sk1712](https://github.com/sk1712)
 
 ### License
-See license.md
+See [LICENSE](https://github.com/DLTK/DLTK/blob/master/LICENSE)
 
-### Acknowledgements
+### Acknowledgments
 We would like to thank [NVIDIA GPU Computing](http://www.nvidia.com/) for providing us with hardware for our research. 
