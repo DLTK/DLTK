@@ -117,7 +117,7 @@ def train(args):
                                                      tf.estimator.ModeKeys.EVAL,
                                                      example_shapes=reader_example_shapes, 
                                                      batch_size=BATCH_SIZE,
-                                                     shuffle_cache_size=min(SHUFFLE_CACHE_SIZE, EVAL_STEPS),
+                                                     shuffle_cache_size=SHUFFLE_CACHE_SIZE,
                                                      params=reader_params)
     
     # Instantiate the neural network estimator
