@@ -5,10 +5,6 @@
 
 DLTK is a neural networks toolkit written in python, on top of [Tensorflow](https://github.com/tensorflow/tensorflow). It is developed to enable fast prototyping with a low entry threshold and ensure reproducibility in image analysis applications, with a particular focus on medical imaging. Its goal is  to provide the community with state of the art methods and models and to accelerate research in this exciting field.
 
-
-<a class="twitter-timeline" href="https://twitter.com/dltk_?ref_src=twsrc%5Etfw">Tweets by dltk_</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-
-
 ### Documentation
 The DLTK API can be found [here](https://dltk.github.io/)
 
@@ -67,7 +63,7 @@ The DLTK API can be found [here](https://dltk.github.io/)
 We also provide a model zoo with (re-)implementations of current research methodology in a separate repository [DLTK/models](https://github.com/DLTK/models). Each model in the zoo is maintained by the respective authors and implementations often differ to those in ```examples/applications```. For instructions and information on the individual application in the zoo, please refer to the respective README.md files.
 
 ### How to contribute
-We appreciate any contributions to the DLTK and its model zoo. If you have improvements, features or patches, please send us your pull requests! You can find specific instructions on how to issue a PR on github [here](https://help.github.com/articles/about-pull-requests/). Feel free to open an [issue](https://github.com/DLTK/DLTK/issues) if you find a bug or directly come chat with us on our gitter channel.
+We appreciate any contributions to the DLTK and its model zoo. If you have improvements, features or patches, please send us your pull requests! You can find specific instructions on how to issue a PR on github [here](https://help.github.com/articles/about-pull-requests/). Feel free to open an [issue](https://github.com/DLTK/DLTK/issues) if you find a bug or directly come chat with us on our gitter channel [![Gitter](https://badges.gitter.im/DLTK/DLTK.svg)](https://gitter.im/DLTK/DLTK?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge).
 
 #### Basic contribution guidelines
 - Python coding style: Like tensorflow, we adhere to [google coding style](https://google.github.io/styleguide/pyguide.html) and [google docstrings](https://google.github.io/styleguide/pyguide.html#Comments).
@@ -76,7 +72,7 @@ We appreciate any contributions to the DLTK and its model zoo. If you have impro
 
     
 ### Dev team
-[@mrajchl](https://github.com/mrajchl)
+[@mrajchl](https://github.com/mrajchl) 
 [@pawni](https://github.com/pawni)
 
 ### Contributors (many thanks)
@@ -87,6 +83,3 @@ See license.md
 
 ### Acknowledgements
 We would like to thank [NVIDIA GPU Computing](http://www.nvidia.com/) for providing us with hardware for our research. 
-
-
-
