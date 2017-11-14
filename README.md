@@ -6,6 +6,9 @@
 DLTK is a neural networks toolkit written in python, on top of [Tensorflow](https://github.com/tensorflow/tensorflow). It is developed to enable fast prototyping with a low entry threshold and ensure reproducibility in image analysis applications, with a particular focus on medical imaging. Its goal is  to provide the community with state of the art methods and models and to accelerate research in this exciting field.
 
 
+<a class="twitter-timeline" href="https://twitter.com/dltk_?ref_src=twsrc%5Etfw">Tweets by dltk_</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+
 ### Documentation
 The DLTK API can be found [here](https://dltk.github.io/)
 
@@ -41,7 +44,6 @@ The DLTK API can be found [here](https://dltk.github.io/)
 
 
 ### Start playing
-
 1. Downloading example data
    You will find download and preprocessing scripts for publicly available datasets in ```data```. To download the IXI HH dataset, navigate to ```data/IXI_HH``` and run the download script with ```python download_IXI_HH.py```.
 
@@ -54,11 +56,23 @@ The DLTK API can be found [here](https://dltk.github.io/)
    ```shell
    cd MY_WORKSPACE_DIRECTORY/DLTK
    jupyter notebook --ip=* --port MY_PORT
-   ```   
+   ```
+
    Open a browser and enter the address ```http://localhost:MY_PORT``` or ```http://MY_DOMAIN_NAME:MY_PORT```. You can then navigate to a notebook in ```examples/tutorials```, open it (c.f. extension .ipynb) and modify or run it.
 
 3. Example applications
-   There are several example applications in ```examples/applications``` using the data in 1. Each folder contains an experimental setup with an application. Please note that these are not tuned to high performance, but rather to showcase how to produce functioning scripts with DLTK models. For additional notes and expected results, refer to the notes in the individual example's README.md. 
+   There are several example applications in ```examples/applications``` using the data in 1. Each folder contains an experimental setup with an application. **Please note that these are not tuned to high performance, but rather to showcase how to produce functioning scripts with DLTK models.** For additional notes and expected results, refer to the notes in the individual example's README.md.  
+
+### DLTK model zoo
+We also provide a model zoo with (re-)implementations of current research methodology in a separate repository [DLTK/models](https://github.com/DLTK/models). Each model in the zoo is maintained by the respective authors and implementations often differ to those in ```examples/applications```. For instructions and information on the individual application in the zoo, please refer to the respective README.md files.
+
+### How to contribute
+We appreciate any contributions to the DLTK and its model zoo. If you have improvements, features or patches, please send us your pull requests! You can find specific instructions on how to issue a PR on github [here](https://help.github.com/articles/about-pull-requests/). Feel free to open an [issue](https://github.com/DLTK/DLTK/issues) if you find a bug or directly come chat with us on our gitter channel.
+
+#### Basic contribution guidelines
+- Python coding style: Like tensorflow, we adhere to [google coding style](https://google.github.io/styleguide/pyguide.html) and [google docstrings](https://google.github.io/styleguide/pyguide.html#Comments).
+- Entirely new features should be committed to ```dltk/contrib``` before we can sensibly integrate it into the core.
+- Standalone problem-specific applications or (re-)implementations of published methods should be committed to the [DLTK model zoo](https://github.com/DLTK/models) repo and provide a README.md file with author/coder contact information. 
 
     
 ### Dev team
