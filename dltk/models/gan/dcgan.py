@@ -51,7 +51,6 @@ def dcgan_generator_3D(inputs, out_filters, num_convolutions=1, filters=(16, 32,
             x = relu_op(x)
 
     x = conv_op(x, out_filters, (3, 3, 3), (1, 1, 1), **conv_params)
-    x = tf.layers.batch_normalization(x, training=mode == tf.estimator.ModeKeys.TRAIN)
 
     outputs['gen'] = x
 

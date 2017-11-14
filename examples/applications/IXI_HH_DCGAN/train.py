@@ -20,7 +20,7 @@ from reader import read_fn
 
 
 # PARAMS
-BATCH_SIZE = 32
+BATCH_SIZE = 8
 
 MAX_STEPS = 35000
 
@@ -53,7 +53,7 @@ def train(args):
     # See TFGAN's `train.py` for a description of the generator and
     # discriminator API.
     def generator_fn(generator_inputs):
-        gen = dcgan_generator_3D(generator_inputs['noise'], 1, num_convolutions=2, filters=(256, 128, 64, 32, 16),
+        gen = dcgan_generator_3D(generator_inputs['noise'], 1, num_convolutions=1, filters=(256, 128, 64, 32, 16),
                                  strides=((4, 4, 4), (1, 2, 2), (1, 2, 2), (1, 2, 2), (1, 2, 2)),
                                  mode=tf.estimator.ModeKeys.TRAIN)
         gen = gen['gen']
