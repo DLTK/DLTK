@@ -153,7 +153,7 @@ if __name__ == '__main__':
     # Set up argument parser
     parser = argparse.ArgumentParser(description='Example: MRBrainS13 example segmentation training script')
     parser.add_argument('--run_validation', default=True)
-    parser.add_argument('--resume', default=False, action='store_true')
+    parser.add_argument('--restart', default=False, action='store_true')
     parser.add_argument('--verbose', default=False, action='store_true')
     parser.add_argument('--cuda_devices', '-c', default='0')
     
@@ -173,9 +173,15 @@ if __name__ == '__main__':
     # GPU allocation options
     os.environ["CUDA_VISIBLE_DEVICES"] = args.cuda_devices
     
-    # Create model save path
-    os.system("rm -rf %s" % args.save_path)
-    os.system("mkdir -p %s" % args.save_path)
+    # Handle restarting and resuming training
+    if args.restart:
+        print('Restarting training from scratch.')
+        os.system('rm -rf {}'.format(args.save_path))
+        
+    if not os.path.isdir(args.save_path):
+        os.system('mkdir -p {}'.format(args.save_path))
+    else:
+        print('Resuming training on save_path {}'.format(args.save_path))
 
     # Call training
     train(args)

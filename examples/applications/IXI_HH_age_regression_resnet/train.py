@@ -164,7 +164,7 @@ if __name__ == '__main__':
     # GPU allocation options
     os.environ["CUDA_VISIBLE_DEVICES"] = args.cuda_devices
     
-    # Restart model save path
+    # Handle restarting and resuming training
     if args.restart:
         print('Restarting training from scratch.')
         os.system('rm -rf {}'.format(args.save_path))
