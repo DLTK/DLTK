@@ -9,7 +9,8 @@ Exemplary training scripts for tissue segmentation from multi-sequence (T1w, T1 
 The data can be downloaded [here](http://mrbrains13.isi.uu.nl/download.php) and requires registration. It includes 5 datasets and corresponding segmentations. CSV files contain the paths to the folders for the training and validation splits, respectively:
 
 mrbrains.csv:
-```id, subj_folder
+```
+id, subj_folder
 1, MY_DATA_PATH/MRBrainS13DataNii/TrainingData/1/
 2, MY_DATA_PATH/MRBrainS13DataNii/TrainingData/2/
 3, MY_DATA_PATH/MRBrainS13DataNii/TrainingData/3/
@@ -19,7 +20,8 @@ mrbrains.csv:
 
 These are parsed and extract tf.Tensor examples for training and evaluation in `reader.py` using a [SimpleITK](http://www.simpleitk.org/) for i/o of the .nii files:
 
-```...
+```
+...
 t1 = sitk.GetArrayFromImage(sitk.ReadImage(os.path.join(str(img_fn), 'T1.nii')))
 t1_ir = sitk.GetArrayFromImage(sitk.ReadImage(os.path.join(str(img_fn), 'T1_IR.nii')))
 ...
@@ -30,19 +32,22 @@ t1_ir = sitk.GetArrayFromImage(sitk.ReadImage(os.path.join(str(img_fn), 'T1_IR.n
 
 To train a new model, run the train.py script:
 
-  ```python -u train.py MY_OPTIONS
+  ```
+  python -u train.py MY_OPTIONS
   ```
 
 ### Monitoring
 
 For monitoring and metric tracking, spawn a tensorboard webserver and point the log directory to the model save_path:
 
-  ```tensorboard --logdir /tmp/mrbrains_segmentation/
+  ```
+  tensorboard --logdir /tmp/mrbrains_segmentation/
   ```
   
 ### Deploy
 
 To deploy a model and run inference, run the deploy.py script and point to the model save_path:
 
-  ```python -u deploy.py --save_path /tmp/mrbrains_segmentation/ MY_OPTIONS
+  ```
+  python -u deploy.py --save_path /tmp/mrbrains_segmentation/ MY_OPTIONS
   ```
