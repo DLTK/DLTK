@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-#from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 from builtins import input
@@ -16,13 +15,12 @@ from dltk.core.metrics import *
 from dltk.core.losses import *
 from dltk.models.gan.dcgan import dcgan_discriminator_3D, dcgan_generator_3D
 from dltk.io.abstract_reader import Reader
+
 from reader import read_fn
 
-
-# PARAMS
 BATCH_SIZE = 8
-
 MAX_STEPS = 35000
+
 
 def train(args):
 

@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-#from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 from builtins import input
@@ -16,17 +15,14 @@ from dltk.core.metrics import *
 from dltk.core.losses import *
 from dltk.models.autoencoder.convolutional_autoencoder import convolutional_autoencoder_3D
 from dltk.io.abstract_reader import Reader
+
 from reader import read_fn
 
 
-# PARAMS
 EVAL_EVERY_N_STEPS = 100
 EVAL_STEPS = 10
 
-NUM_CLASSES = 9
 NUM_CHANNELS = 3
-
-NUM_FEATURES_IN_SUMMARIES = min(4, NUM_CHANNELS)
 
 BATCH_SIZE = 8
 SHUFFLE_CACHE_SIZE = 64
@@ -34,18 +30,17 @@ SHUFFLE_CACHE_SIZE = 64
 MAX_STEPS = 100000
 
 
-# MODEL
 def model_fn(features, labels, mode, params):
-    """Summary
+    """Model function to construct a tf.estimator.EstimatorSpec. It creates a network given input features (e.g. from a dltk.io.abstract_reader) and training targets (labels). Further, loss, optimiser, evaluation ops and custom tensorboard summary ops can be added. For additional information, please refer to https://www.tensorflow.org/api_docs/python/tf/estimator/Estimator#model_fn.
     
     Args:
-        features (TYPE): Description
-        labels (TYPE): Description
-        mode (TYPE): Description
-        params (TYPE): Description
+        features (tf.Tensor): Tensor of input features to train from. Required rank and dimensions are determined by the subsequent ops (i.e. the network).
+        labels (tf.Tensor): Tensor of training targets or labels. Required rank and dimensions are determined by the network output.
+        mode (str): One of the tf.estimator.ModeKeys: TRAIN, EVAL or PREDICT
+        params (dict, optional): A dictionary to parameterise the model_fn (e.g. learning_rate)
     
     Returns:
-        TYPE: Description
+        tf.estimator.EstimatorSpec: A custom EstimatorSpec for this experiment
     """
 
     # 1. create a model and its outputs
