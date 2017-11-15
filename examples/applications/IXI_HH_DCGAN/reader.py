@@ -8,24 +8,25 @@ from dltk.io.preprocessing import *
 import scipy
 
 def read_fn(file_references, mode, params=None):
-    """Summary
+    """A custom python read function for interfacing with nii image files.
     
     Args:
-        file_references (TYPE): Description
-        mode (TYPE): Description
-        params (TYPE): Description
+        file_references (list): A list of lists containing file references, such as [['id_0', 'image_filename_0', target_value_0], ..., ['id_N', 'image_filename_N', target_value_N]].
+        mode (str): One of the tf.estimator.ModeKeys strings: TRAIN, EVAL or PREDICT.
+        params (dict, optional): A dictionary to parameterise read_fn ouputs (e.g. reader_params = {'n_examples': 10, 'example_size': [64, 64, 64], 'extract_examples': True}, etc.).
     
-    Returns:
-        TYPE: Description
+    Yields:
+        dict: A dictionary of reader outputs for dltk.io.abstract_reader. 
     """
+    
 
     for f in file_references:
         subject_id = f[0]
             
         data_path = '../../../data/IXI_HH/1mm'
         
+        # Read the image nii with sitk
         t1_fn = os.path.join(data_path, '{}/T1_1mm.nii.gz'.format(subject_id))
-        
         t1 = sitk.GetArrayFromImage(sitk.ReadImage(t1_fn))
 
         # Normalise volume images
