@@ -44,9 +44,9 @@ def model_fn(features, labels, mode, params):
     """
 
     # 1. create a model and its outputs
-    net_output_ops = resnet_3D(features['x'], num_res_units=3, num_classes=NUM_CLASSES, 
-                              filters=(16, 32, 64, 128, 256, 512),
-                              strides=((1, 1, 1), (2, 2, 2), (2, 2, 2), (2, 2, 2), (2, 2, 2), (4, 6, 6)), 
+    net_output_ops = resnet_3D(features['x'], num_res_units=2, num_classes=NUM_CLASSES, 
+                              filters=(16, 32, 64, 128, 256),
+                              strides=((1, 1, 1), (2, 2, 2), (2, 2, 2), (2, 2, 2), (2, 2, 2)), 
                               mode=mode, kernel_regularizer=tf.contrib.layers.l2_regularizer(1e-4))
     
     # 1.1 Generate predictions only (for `ModeKeys.PREDICT`)
@@ -144,7 +144,7 @@ if __name__ == '__main__':
     # Set up argument parser
     parser = argparse.ArgumentParser(description='Example: IXI HH resnet regression training script')
     parser.add_argument('--run_validation', default=True)
-    parser.add_argument('--resume', default=False, action='store_true')
+    parser.add_argument('--restart', default=False, action='store_true')
     parser.add_argument('--verbose', default=False, action='store_true')
     parser.add_argument('--cuda_devices', '-c', default='0')
     
@@ -164,9 +164,15 @@ if __name__ == '__main__':
     # GPU allocation options
     os.environ["CUDA_VISIBLE_DEVICES"] = args.cuda_devices
     
-    # Create model save path
-    os.system("rm -rf %s" % args.save_path)
-    os.system("mkdir -p %s" % args.save_path)
-
+    # Restart model save path
+    if args.restart:
+        print('Restarting training from scratch.')
+        os.system('rm -rf {}'.format(args.save_path))
+        
+    if not os.path.isdir(args.save_path):
+        os.system('mkdir -p {}'.format(args.save_path))
+    else:
+        print('Resuming training on save_path {}'.format(args.save_path))
+        
     # Call training
     train(args)
