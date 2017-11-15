@@ -1,4 +1,4 @@
-from __future__ import unicode_literals, print
+from __future__ import unicode_literals, print_function
 
 import tensorflow as tf
 import traceback
