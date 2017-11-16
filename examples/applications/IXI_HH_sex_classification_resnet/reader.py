@@ -65,7 +65,7 @@ def read_fn(file_references, mode, params=None):
         # images
         if params['extract_examples']:
             images = extract_random_example_array(
-                images,
+                image_list=images,
                 example_size=params['example_size'],
                 n_examples=params['n_examples'])
             

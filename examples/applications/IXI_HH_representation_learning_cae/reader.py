@@ -24,11 +24,11 @@ def read_fn(file_references, mode, params=None):
     """
     
     def _augment(img):
-        """An image augmentation function. 
-        
+        """An image augmentation function.
+
         Args:
-            img (np.array): Input image to be augmented. 
-        
+            img (np.array): Input image to be augmented.
+
         Returns:
             np.array: The augmented image.
         """
@@ -68,7 +68,7 @@ def read_fn(file_references, mode, params=None):
         # images
         if params['extract_examples']:
             images = extract_random_example_array(
-                images,
+                image_list=images,
                 example_size=params['example_size'],
                 n_examples=params['n_examples'])
             

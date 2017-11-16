@@ -3,14 +3,17 @@ from __future__ import absolute_import
 from __future__ import print_function
 
 import tensorflow as tf
-import numpy as np
 
 from dltk.core.residual_unit import *
 
 
-def resnet_3d(inputs, num_classes, num_res_units=1, filters=(16, 32, 64, 128),
+def resnet_3d(inputs,
+              num_classes,
+              num_res_units=1,
+              filters=(16, 32, 64, 128),
               strides=((1, 1, 1), (2, 2, 2), (2, 2, 2), (2, 2, 2)),
-              mode=tf.estimator.ModeKeys.EVAL, use_bias=False,
+              mode=tf.estimator.ModeKeys.EVAL,
+              use_bias=False,
               kernel_initializer=tf.uniform_unit_scaling_initializer(),
               bias_initializer=tf.zeros_initializer(),
               kernel_regularizer=None, bias_regularizer=None):
@@ -51,8 +54,8 @@ def resnet_3d(inputs, num_classes, num_res_units=1, filters=(16, 32, 64, 128),
     """
     outputs = {}
     assert len(strides) == len(filters)
-    assert len(inputs.get_shape().as_list()
-               ) == 5, 'inputs are required to have a rank of 5.'
+    assert len(inputs.get_shape().as_list()) == 5, \
+        'inputs are required to have a rank of 5.'
 
     relu_op = tf.nn.relu6
 
@@ -79,14 +82,23 @@ def resnet_3d(inputs, num_classes, num_res_units=1, filters=(16, 32, 64, 128),
         # Features are downsampled via strided convolutions. These are defined
         # in `strides` and subsequently saved
         with tf.variable_scope('unit_{}_0'.format(res_scale)):
+
             x = vanilla_residual_unit_3D(
-                x, filters[res_scale], strides=strides[res_scale], mode=mode)
+                inputs=x,
+                out_filters=filters[res_scale],
+                strides=strides[res_scale],
+                mode=mode)
         saved_strides.append(strides[res_scale])
 
         for i in range(1, num_res_units):
+
             with tf.variable_scope('unit_{}_{}'.format(res_scale, i)):
+
                 x = vanilla_residual_unit_3D(
-                    x, filters[res_scale], strides=(1, 1, 1), mode=mode)
+                    inputs=x,
+                    out_filters=filters[res_scale],
+                    strides=(1, 1, 1),
+                    mode=mode)
         res_scales.append(x)
         tf.logging.info('Encoder at res_scale {} tensor shape: {}'.format(
             res_scale, x.get_shape()))
@@ -96,20 +108,20 @@ def resnet_3d(inputs, num_classes, num_res_units=1, filters=(16, 32, 64, 128),
         x = tf.layers.batch_normalization(
             x, training=mode == tf.estimator.ModeKeys.TRAIN)
         x = relu_op(x)
+
         axis = tuple(range(len(x.get_shape().as_list())))[1:-1]
         x = tf.reduce_mean(x, axis=axis, name='global_avg_pool')
+
         tf.logging.info('Global pool shape {}'.format(x.get_shape()))
 
     with tf.variable_scope('last'):
-        x = tf.layers.dense(x,
-                            num_classes,
+        x = tf.layers.dense(inputs=x,
+                            units=num_classes,
                             activation=None,
                             use_bias=conv_params['use_bias'],
-                            kernel_initializer=conv_params[
-                                'kernel_initializer'],
+                            kernel_initializer=conv_params['kernel_initializer'],
                             bias_initializer=conv_params['bias_initializer'],
-                            kernel_regularizer=conv_params[
-                                'kernel_regularizer'],
+                            kernel_regularizer=conv_params['kernel_regularizer'],
                             bias_regularizer=conv_params['bias_regularizer'],
                             name='hidden_units')
 
@@ -119,11 +131,13 @@ def resnet_3d(inputs, num_classes, num_res_units=1, filters=(16, 32, 64, 128),
     outputs['logits'] = x
 
     with tf.variable_scope('pred'):
+
         y_prob = tf.nn.softmax(x)
         outputs['y_prob'] = y_prob
-        y_ = tf.argmax(
-            x, axis=-1) if num_classes > 1 else \
-            tf.cast(tf.greater_equal(x[..., 0], 0.5), tf.int32)
+
+        y_ = tf.argmax(x, axis=-1) \
+            if num_classes > 1 \
+            else tf.cast(tf.greater_equal(x[..., 0], 0.5), tf.int32)
         outputs['y_'] = y_
 
     return outputs
