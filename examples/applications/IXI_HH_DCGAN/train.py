@@ -1,17 +1,12 @@
 # -*- coding: utf-8 -*-
 from __future__ import division
 from __future__ import print_function
-from builtins import input
 
 import argparse
 import os
-import sys
-
-import numpy as np
 import pandas as pd
 import tensorflow as tf
 
-from dltk.core.metrics import *
 from dltk.core.losses import *
 from dltk.networks.gan.dcgan import dcgan_discriminator_3d, dcgan_generator_3d
 from dltk.io.abstract_reader import Reader
@@ -30,30 +25,46 @@ def train(args):
     print('Setting up...')
 
     # Parse csv files for file names
-    all_filenames = pd.read_csv(args.data_csv, dtype=object, keep_default_na=False, na_values=[]).as_matrix()
+    all_filenames = pd.read_csv(
+        args.data_csv,
+        dtype=object,
+        keep_default_na=False,
+        na_values=[]).as_matrix()
     
-    train_filenames = all_filenames[:100]
-    val_filenames = all_filenames[100:]
+    train_filenames = all_filenames
     
     # Set up a data reader to handle the file i/o. 
-    reader_params = {'n_examples': 10, 'example_size': [4, 224, 224], 'extract_examples': True}
+    reader_params = {'n_examples': 10,
+                     'example_size': [4, 224, 224],
+                     'extract_examples': True}
+
     reader_example_shapes = {'labels': [4, 64, 64, 1],
                              'features': {'noise': [1, 1, 1, 100]}}
-    reader = Reader(read_fn, {'labels': tf.float32, 'features': {'noise': tf.float32}})
 
-    # Get input functions and queue initialisation hooks for training and validation data
-    train_input_fn, train_qinit_hook = reader.get_inputs(train_filenames, tf.estimator.ModeKeys.TRAIN,
-                                                         example_shapes=reader_example_shapes,
-                                                         batch_size=BATCH_SIZE, params=reader_params)
+    reader = Reader(read_fn, {'features': {'noise': tf.float32},
+                              'labels': tf.float32})
+
+    # Get input functions and queue initialisation hooks for data
+    train_input_fn, train_qinit_hook = reader.get_inputs(
+        file_references=train_filenames,
+        mode=tf.estimator.ModeKeys.TRAIN,
+        example_shapes=reader_example_shapes,
+        batch_size=BATCH_SIZE,
+        params=reader_params)
 
     tfgan = tf.contrib.gan
 
     # See TFGAN's `train.py` for a description of the generator and
     # discriminator API.
     def generator_fn(generator_inputs):
-        gen = dcgan_generator_3d(generator_inputs['noise'], 1, num_convolutions=2, filters=(256, 128, 64, 32, 16),
-                                 strides=((4, 4, 4), (1, 2, 2), (1, 2, 2), (1, 2, 2), (1, 2, 2)),
-                                 mode=tf.estimator.ModeKeys.TRAIN)
+        gen = dcgan_generator_3d(
+            inputs=generator_inputs['noise'],
+            out_filters=1,
+            num_convolutions=2,
+            filters=(256, 128, 64, 32, 16),
+            strides=((4, 4, 4), (1, 2, 2), (1, 2, 2), (1, 2, 2), (1, 2, 2)),
+            mode=tf.estimator.ModeKeys.TRAIN)
+
         gen = gen['gen']
         gen = tf.nn.sigmoid(gen)
         tf.summary.image('pred', gen[:, 0])
@@ -61,9 +72,12 @@ def train(args):
 
     def discriminator_fn(data, conditioning):
         tf.summary.image('data', data[:, 0])
-        disc = dcgan_discriminator_3d(data, filters=(32, 64, 128, 256),
-                                      strides=((1, 2, 2), (2, 2, 2), (2, 2, 2), (1, 2, 2)),
-                                      mode=tf.estimator.ModeKeys.TRAIN)
+        disc = dcgan_discriminator_3d(
+            inputs=data,
+            filters=(32, 64, 128, 256),
+            strides=((1, 2, 2), (2, 2, 2), (2, 2, 2), (1, 2, 2)),
+            mode=tf.estimator.ModeKeys.TRAIN)
+
         return disc['logits']
     
     # Hooks for training and validation summaries
@@ -81,7 +95,10 @@ def train(args):
     
     print('Starting training...')
     try:
-        gan_estimator.train(train_input_fn, hooks=[train_qinit_hook, step_cnt_hook], steps=MAX_STEPS)
+        gan_estimator.train(
+            input_fn=train_input_fn,
+            hooks=[train_qinit_hook, step_cnt_hook],
+            steps=MAX_STEPS)
 
     except KeyboardInterrupt:
         pass
@@ -90,7 +107,8 @@ def train(args):
         export_dir_base=args.save_path,
         serving_input_receiver_fn=reader.serving_input_receiver_fn(reader_example_shapes))
     print('Model saved to {}.'.format(export_dir))
-        
+
+
 if __name__ == '__main__':
 
     # Set up argument parser

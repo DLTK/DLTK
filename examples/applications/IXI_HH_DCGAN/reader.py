@@ -52,14 +52,12 @@ def read_fn(file_references, mode, params=None):
         # images
         if params['extract_examples']:
             images = extract_random_example_array(
-                images,
+                image_list=images,
                 example_size=params['example_size'],
                 n_examples=params['n_examples'])
 
             for e in range(params['n_examples']):
-                lbls = scipy.ndimage.zoom(
-                    images[e], (1, 64./224., 64./224., 1)).astype(np.float32)
-                yield {'labels': lbls,
+                yield {'labels': scipy.ndimage.zoom(images[e], (1, 64./224., 64./224., 1)).astype(np.float32),
                        'features': {'noise': noise}}
         else:
             yield {'labels': images, 'features': {'noise': noise}}
