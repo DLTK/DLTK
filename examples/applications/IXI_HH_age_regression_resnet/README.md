@@ -3,6 +3,8 @@ Exemplary training and evaluation scripts for regression from T1w brain MR image
 
 [1] IXI – Information eXtraction from Images (EPSRC GR/S21533/02)
 
+![Exemplary inputs](example.png)
+
 ### Data
 The data can be downloaded via the script in dltk/data/IXI_HH. It includes 178 datasets and corresponding demographic information. The download script
  - produces a CSV file containing demographic information
@@ -31,14 +33,11 @@ pd = sitk.GetArrayFromImage(sitk.ReadImage(pd_fn))
 ### Notes 
 In this example we use the first 150 datasets for training, the rest for validation. Here are some quick statistics on the sets:
 
-All subjects:
-Age: mean = 47.35, sd = 16.76, min = 20.17, max = 81.94
-
-Training subjects:
-Age: mean = 48.00, sd = 17.14, min = 20.17, max = 81.94
-
-Evaluation subjects:
-Age: mean = 43.89, sd = 14.02, min = 25.53, max = 71.21
+| AGE   | mean  | sd    | min   | max   |
+|-------|-------|-------|-------|-------|
+| all   | 47.35 | 16.76 | 20.17 | 81.94 |
+| train | 48.00 | 17.14 | 20.17 | 81.94 |
+| val   | 43.89 | 14.02 | 25.53 | 71.21 |
 
 
 ### Usage
@@ -49,25 +48,30 @@ Age: mean = 43.89, sd = 14.02, min = 25.53, max = 71.21
   ```
 
   The model and training events will be saved to a temporary folder: `/tmp/IXI_regression`.
+  
+  ![Training loss](loss.png)
 
 - For monitoring and metric tracking, spawn a tensorboard webserver and point the log directory to the model save_path:
 
   ```
   tensorboard --logdir /tmp/IXI_regression/
   ```
-
+  
+  ![Mean absolute error and RMSE](metrics.png) 
+  
 - To deploy a model and run inference, run the deploy.py script and point to the model save_path:
 
   ```
   python -u deploy.py --model_path /tmp/IXI_regression MY_OPTIONS
   ```
   
-  This should result in an output similar to this:  
+  Note that during deploy we average the predictions of 4 random crops of a test input, so results may vary a bit from run to run. The expected output of deploy should look similar to the one below: 
+  
   ```
   id=IXI566; pred=47.20 yrs; true=42.97 yrs; run time=1.75 s;   
   id=IXI567; pred=33.68 yrs; true=28.56 yrs; run time=0.32 s; 
   ...
-  mean absolute err=5.399
+  mean absolute err=5.399 yrs
   ```
    
 
