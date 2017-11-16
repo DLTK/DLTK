@@ -175,7 +175,7 @@ def train(args):
     
     print('Starting training...')
     try:
-        while True: 
+        for _ in range(MAX_STEPS // EVAL_EVERY_N_STEPS):
             nn.train(
                 input_fn=train_input_fn,
                 hooks=[train_qinit_hook, step_cnt_hook],
@@ -190,12 +190,14 @@ def train(args):
                     results_val['global_step'], results_val['loss']))
 
     except KeyboardInterrupt:
-        print('Stopping now.')
-        export_dir = nn.export_savedmodel(
-            export_dir_base=args.save_path,
-            serving_input_receiver_fn=
-            reader.serving_input_receiver_fn(reader_example_shapes))
-        print('Model saved to {}.'.format(export_dir))
+        pass
+
+    print('Stopping now.')
+    export_dir = nn.export_savedmodel(
+        export_dir_base=args.save_path,
+        serving_input_receiver_fn=
+        reader.serving_input_receiver_fn(reader_example_shapes))
+    print('Model saved to {}.'.format(export_dir))
         
         
 if __name__ == '__main__':
