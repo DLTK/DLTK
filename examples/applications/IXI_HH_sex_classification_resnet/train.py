@@ -13,7 +13,7 @@ import tensorflow as tf
 
 from dltk.core.metrics import *
 from dltk.core.losses import *
-from dltk.models.regression_classification.resnet import resnet_3D
+from dltk.networks.regression_classification.resnet import resnet_3D
 from dltk.io.abstract_reader import Reader
 
 from reader import read_fn
@@ -45,9 +45,9 @@ def model_fn(features, labels, mode, params):
     """
 
     # 1. create a model and its outputs
-    net_output_ops = resnet_3D(features['x'], num_res_units=3, num_classes=NUM_CLASSES, 
-                              filters=(16, 32, 64, 128, 256, 512),
-                              strides=((1, 1, 1), (2, 2, 2), (2, 2, 2), (2, 2, 2), (2, 2, 2), (4, 6, 6)), 
+    net_output_ops = resnet_3D(features['x'], num_res_units=2, num_classes=NUM_CLASSES, 
+                              filters=(16, 32, 64, 128, 256),
+                              strides=((1, 1, 1), (2, 2, 2), (2, 2, 2), (2, 2, 2), (2, 2, 2)), 
                               mode=mode, kernel_regularizer=tf.contrib.layers.l2_regularizer(1e-3))
     
     # 1.1 Generate predictions only (for `ModeKeys.PREDICT`)

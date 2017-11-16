@@ -13,7 +13,7 @@ import tensorflow as tf
 
 from dltk.core.metrics import *
 from dltk.core.losses import *
-from dltk.models.segmentation.unet import residual_unet_3D
+from dltk.networks.segmentation.unet import residual_unet_3D
 from dltk.io.abstract_reader import Reader
 
 from reader import read_fn

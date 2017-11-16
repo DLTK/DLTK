@@ -19,7 +19,7 @@ from tensorflow.contrib import predictor
 from dltk.core import metrics as metrics
 
 from dltk.core.utils import sliding_window_segmentation_inference
-from dltk.models.segmentation.fcn import residual_fcn_3D
+from dltk.networks.segmentation.fcn import residual_fcn_3D
 
 from reader import read_fn
 
@@ -66,18 +66,18 @@ def predict(args):
 
         # Calculate the Dice coefficient
         dsc = metrics.dice(pred, lbl, num_classes)[1:].mean()
-        print('Dice={}. Computed in {} sec.'.format(dsc, time.time()-t0))
         
-        # Save the file as .nii.gz using the header information from the original label file
+        # Save the file as .nii.gz using the header information from the original sitk image
         file_identifier = str(output['img_fn']).split('/')[-2]
-        save_path = os.path.join(args.save_path, '{}.nii.gz'.format(file_identifier))
+        output_fn = os.path.join(args.save_path, '{}.nii.gz'.format(file_identifier))
         new_sitk = sitk.GetImageFromArray(pred[0].astype(np.int32))
 
         new_sitk.CopyInformation(output['sitk'])
 
-        sitk.WriteImage(new_sitk, save_path)
+        sitk.WriteImage(new_sitk, output_fn)
         
-        print('Saved prediction to {}'.format(save_path))
+        # Print outputs 
+        print('Dice={}; time={}; output_path={};'.format(dsc, time.time()-t0, output_fn))
 
 
 if __name__ == '__main__':

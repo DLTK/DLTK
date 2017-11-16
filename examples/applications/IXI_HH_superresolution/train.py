@@ -14,7 +14,7 @@ import tensorflow as tf
 from dltk.core.metrics import *
 from dltk.core.losses import *
 from dltk.core.upsample import *
-from dltk.models.super_resolution.simple_super_resolution import simple_super_resolution_3D
+from dltk.networks.super_resolution.simple_super_resolution import simple_super_resolution_3D
 from dltk.io.abstract_reader import Reader
 
 from reader import read_fn
