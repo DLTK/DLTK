@@ -13,7 +13,7 @@ import tensorflow as tf
 
 from dltk.core.metrics import *
 from dltk.core.losses import *
-from dltk.networks.gan.dcgan import dcgan_discriminator_3D, dcgan_generator_3D
+from dltk.networks.gan.dcgan import dcgan_discriminator_3d, dcgan_generator_3d
 from dltk.io.abstract_reader import Reader
 
 from reader import read_fn
@@ -51,7 +51,7 @@ def train(args):
     # See TFGAN's `train.py` for a description of the generator and
     # discriminator API.
     def generator_fn(generator_inputs):
-        gen = dcgan_generator_3D(generator_inputs['noise'], 1, num_convolutions=2, filters=(256, 128, 64, 32, 16),
+        gen = dcgan_generator_3d(generator_inputs['noise'], 1, num_convolutions=2, filters=(256, 128, 64, 32, 16),
                                  strides=((4, 4, 4), (1, 2, 2), (1, 2, 2), (1, 2, 2), (1, 2, 2)),
                                  mode=tf.estimator.ModeKeys.TRAIN)
         gen = gen['gen']
@@ -61,9 +61,9 @@ def train(args):
 
     def discriminator_fn(data, conditioning):
         tf.summary.image('data', data[:, 0])
-        disc = dcgan_discriminator_3D(data, filters=(32, 64, 128, 256),
-                                           strides=((1, 2, 2), (2, 2, 2), (2, 2, 2), (1, 2, 2)),
-                                           mode=tf.estimator.ModeKeys.TRAIN)
+        disc = dcgan_discriminator_3d(data, filters=(32, 64, 128, 256),
+                                      strides=((1, 2, 2), (2, 2, 2), (2, 2, 2), (1, 2, 2)),
+                                      mode=tf.estimator.ModeKeys.TRAIN)
         return disc['logits']
     
     # Hooks for training and validation summaries

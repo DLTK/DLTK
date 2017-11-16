@@ -1,24 +1,28 @@
 import SimpleITK as sitk
 import tensorflow as tf
 import os
-import glob
 
 from dltk.io.augmentation import *
 from dltk.io.preprocessing import *
 import scipy
 
+
 def read_fn(file_references, mode, params=None):
     """A custom python read function for interfacing with nii image files.
     
     Args:
-        file_references (list): A list of lists containing file references, such as [['id_0', 'image_filename_0', target_value_0], ..., ['id_N', 'image_filename_N', target_value_N]].
-        mode (str): One of the tf.estimator.ModeKeys strings: TRAIN, EVAL or PREDICT.
-        params (dict, optional): A dictionary to parameterise read_fn ouputs (e.g. reader_params = {'n_examples': 10, 'example_size': [64, 64, 64], 'extract_examples': True}, etc.).
+        file_references (list): A list of lists containing file references,
+            such as [['id_0', 'image_filename_0', target_value_0], ...,
+             ['id_N', 'image_filename_N', target_value_N]].
+        mode (str): One of the tf.estimator.ModeKeys strings: TRAIN, EVAL or
+            PREDICT.
+        params (dict, optional): A dictionary to parametrise read_fn ouputs
+            (e.g. reader_params = {'n_examples': 10, 'example_size':
+            [64, 64, 64], 'extract_examples': True}, etc.).
     
     Yields:
         dict: A dictionary of reader outputs for dltk.io.abstract_reader. 
     """
-    
 
     for f in file_references:
         subject_id = f[0]
@@ -44,13 +48,18 @@ def read_fn(file_references, mode, params=None):
         if mode == tf.estimator.ModeKeys.PREDICT:
             yield {'labels': images, 'features': {'noise': noise}}
         
-        # Check if the reader is supposed to return training examples or full images
+        # Check if the reader is supposed to return training examples or full
+        # images
         if params['extract_examples']:
-            images = extract_random_example_array(images, example_size=params['example_size'],
-                                                  n_examples=params['n_examples'])
+            images = extract_random_example_array(
+                images,
+                example_size=params['example_size'],
+                n_examples=params['n_examples'])
+
             for e in range(params['n_examples']):
-                
-                yield {'labels': scipy.ndimage.zoom(images[e], (1, 64./224., 64./224., 1)).astype(np.float32),
+                lbls = scipy.ndimage.zoom(
+                    images[e], (1, 64./224., 64./224., 1)).astype(np.float32)
+                yield {'labels': lbls,
                        'features': {'noise': noise}}
         else:
             yield {'labels': images, 'features': {'noise': noise}}
