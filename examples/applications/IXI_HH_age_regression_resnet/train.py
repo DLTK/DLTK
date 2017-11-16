@@ -22,7 +22,7 @@ NUM_CHANNELS = 1
 BATCH_SIZE = 8
 SHUFFLE_CACHE_SIZE = 32
 
-MAX_STEPS = 100000
+MAX_STEPS = 50000
 
 
 def model_fn(features, labels, mode, params):
