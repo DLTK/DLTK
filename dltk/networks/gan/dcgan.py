@@ -108,7 +108,7 @@ def dcgan_generator_3d(inputs,
 
     x = conv_op(inputs=x,
                 filters=out_filters,
-                kernel_size=(3, 3, 3), # IS THIS CORRECT?
+                kernel_size=(3, 3, 3),  #TODO  IS THIS CORRECT?
                 strides=(1, 1, 1), **conv_params)
 
     outputs['gen'] = x
