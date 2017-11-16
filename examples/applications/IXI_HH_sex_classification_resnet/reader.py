@@ -42,7 +42,7 @@ def read_fn(file_references, mode, params=None):
         images = np.expand_dims(t1, axis=-1).astype(np.float32)
 
         if mode == tf.estimator.ModeKeys.PREDICT:
-            yield {'features': {'x': images}}
+            yield {'features': {'x': images}, 'img_id': subject_id}
 
         # Parse the sex classes from the file_references [1,2] and shift them
         # to [0,1]
@@ -63,10 +63,12 @@ def read_fn(file_references, mode, params=None):
             
             for e in range(params['n_examples']):
                 yield {'features': {'x': images[e].astype(np.float32)},
-                       'labels': {'y': y.astype(np.int32)}}
+                       'labels': {'y': y.astype(np.float32)},
+                       'img_id': subject_id}
                        
         else:
             yield {'features': {'x': images},
-                   'labels': {'y': y.astype(np.int32)}}
+                   'labels': {'y': y.astype(np.float32)},
+                   'img_id': subject_id}
 
     return

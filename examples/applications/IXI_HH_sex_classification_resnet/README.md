@@ -3,6 +3,8 @@ Exemplary training and evaluation scripts for classification from T1w brain MR i
 
 [1] IXI – Information eXtraction from Images (EPSRC GR/S21533/02)
 
+![Exemplary inputs](example.png)
+
 ### Data
 The data can be downloaded via the script in dltk/data/IXI_HH. It includes 178 datasets and corresponding demographic information. The download script
  - produces a CSV file containing demographic information
@@ -23,22 +25,17 @@ In `train.py`, the CSV is parsed and split into a training and validation set. A
 ```
 ...
 t1 = sitk.GetArrayFromImage(sitk.ReadImage(t1_fn))
-t2 = sitk.GetArrayFromImage(sitk.ReadImage(t2_fn))
-pd = sitk.GetArrayFromImage(sitk.ReadImage(pd_fn))
 ...
 ```
 
 ### Notes 
-In this example we use the first 150 datasets for training, the rest for validation. Here are some quick statistics on the sets:
+In this example we use the first 150 datasets for training, the rest for validation. Here are some quick statistics on the sets (male=1, female=2):
 
-All subjects:
-Sex: mean = 1.51, sd = 0.50, min = 1.00, max = 2.00
-
-Training subjects:
-Sex: mean = 1.54, sd = 0.50, min = 1.00, max = 2.00
-
-Evaluation subjects:
-Sex: mean = 1.36, sd = 0.48, min = 1.00, max = 2.00
+| SEX   | mean | sd   | min  | max  |
+|-------|------|------|------|------|
+| all   | 1.51 | 0.50 | 1.00 | 2.00 |
+| train | 1.54 | 0.50 | 1.00 | 2.00 |
+| val   | 1.36 | 0.50 | 1.00 | 2.00 |
 
 
 ### Usage
@@ -49,15 +46,31 @@ Sex: mean = 1.36, sd = 0.48, min = 1.00, max = 2.00
   ```
 
   The model and training events will be saved to a temporary folder: `/tmp/IXI_sex_classification`.
+  
+  ![Training loss](loss.png)
+  
 
 - For monitoring and metric tracking, spawn a tensorboard webserver and point the log directory to the model save_path:
 
   ```
   tensorboard --logdir /tmp/IXI_sex_classification/
   ```
+  
+  ![Accuracy and precision](metrics.png)  
+  
 
 - To deploy a model and run inference, run the deploy.py script and point to the model save_path:
 
   ```
   python -u deploy.py --save_path /tmp/IXI_sex_classification MY_OPTIONS
+  ```
+  
+  Note that during deploy we average the predictions of 4 random crops of a test input, so results may vary a bit from run to run. The expected output of deploy should look similar to the one below:
+  
+  ```
+  id=IXI566; pred=1; true=1.0; run time=1.20 s;
+  id=IXI567; pred=1; true=1.0; run time=0.23 s;
+  id=IXI568; pred=1; true=1.0; run time=0.21 s;
+  ...
+  accuracy=0.964285714286
   ```

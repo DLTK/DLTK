@@ -12,6 +12,8 @@ import tensorflow as tf
 
 from tensorflow.contrib import predictor
 
+from dltk.io.augmentation import extract_random_example_array
+
 from reader import read_fn
 
 READER_PARAMS = {'extract_examples': False}
@@ -32,7 +34,7 @@ def predict(args):
     # From the model save_path, parse the latest saved model and restore a
     # predictor from it
     export_dir = \
-        [os.path.join(args.model_path, o) for o in os.listdir(args.model_path)
+        [os.path.join(args.model_path, o) for o in sorted(os.listdir(args.model_path))
          if os.path.isdir(os.path.join(args.model_path, o))
          and o.isdigit()][-1]
     print('Loading from {}'.format(export_dir))
@@ -48,22 +50,36 @@ def predict(args):
 
         # Parse the read function output and add a dummy batch dimension as
         # required
-        img = np.expand_dims(output['features']['x'], axis=0)
-        lbl = np.expand_dims(output['labels']['y'], axis=0)
+        img = output['features']['x']
+        lbl = output['labels']['y']
+        test_id = output['img_id']
 
-        print('Running image with shape {}. '.format(img.shape))
+        # We know, that the training input shape of [64, 96, 96] will work with
+        # our model strides, so we collect several crops of the test image and
+        # average the predictions. Alternatively, we could pad or crop the input
+        # to any shape that is compatible with the resolution scales of the
+        # model:
 
-        # Do a sliding window inference with our DLTK wrapper
+        num_crop_predictions = 4
+        crop_batch = extract_random_example_array(
+            image_list=img,
+            example_size=[64, 96, 96],
+            n_examples=num_crop_predictions)
+
         y_ = my_predictor.session.run(
-            fetches=my_predictor._fetch_tensors['y_'],
-            feed_dict={my_predictor._feed_tensors['x']: img})
+            fetches=my_predictor._fetch_tensors['y_prob'],
+            feed_dict={my_predictor._feed_tensors['x']: crop_batch})
 
+        # Average the predictions on the cropped test inputs:
+        y_ = np.mean(y_, axis=0)
+        predicted_class = np.argmax(y_)
+        
         # Calculate the accuracy for this subject
-        accuracy.append(y_ == lbl)
+        accuracy.append(predicted_class == lbl)
 
         # Print outputs
-        print('pred={}; true={}; time={}; '.format(
-            y_, lbl, time.time() - t0))
+        print('id={}; pred={}; true={}; run time={:0.2f} s; '
+              ''.format(test_id, predicted_class, lbl[0], time.time() - t0))
     print('accuracy={}'.format(np.mean(accuracy)))
 
 
