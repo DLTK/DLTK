@@ -11,8 +11,7 @@ def convolutional_autoencoder_3d(inputs, num_convolutions=1,
                                  strides=((2, 2, 2), (2, 2, 2), (2, 2, 2)),
                                  mode=tf.estimator.ModeKeys.TRAIN,
                                  use_bias=False,
-                                 kernel_initializer=
-                                 tf.uniform_unit_scaling_initializer(),
+                                 kernel_initializer=tf.uniform_unit_scaling_initializer(),
                                  bias_initializer=tf.zeros_initializer(),
                                  kernel_regularizer=None,
                                  bias_regularizer=None):
@@ -50,8 +49,8 @@ def convolutional_autoencoder_3d(inputs, num_convolutions=1,
     """
     outputs = {}
     assert len(strides) == len(filters)
-    assert len(inputs.get_shape().as_list()
-               ) == 5, 'inputs are required to have a rank of 5.'
+    assert len(inputs.get_shape().as_list()) == 5, \
+        'inputs are required to have a rank of 5.'
 
     conv_op = tf.layers.conv3d
     tp_conv_op = tf.layers.conv3d_transpose
@@ -73,23 +72,33 @@ def convolutional_autoencoder_3d(inputs, num_convolutions=1,
 
         for i in range(0, num_convolutions - 1):
             with tf.variable_scope('enc_unit_{}_{}'.format(res_scale, i)):
-                x = conv_op(x, filters[res_scale],
-                            (3, 3, 3), (1, 1, 1), **conv_params)
+                x = conv_op(inputs=x,
+                            filters=filters[res_scale],
+                            kernel_size=(3, 3, 3),
+                            strides=(1, 1, 1),
+                            **conv_params)
+
                 x = tf.layers.batch_normalization(
-                    x, training=mode == tf.estimator.ModeKeys.TRAIN)
+                    inputs=x,
+                    training=mode == tf.estimator.ModeKeys.TRAIN)
                 x = relu_op(x)
                 tf.logging.info('Encoder at res_scale {} shape: {}'.format(
                     res_scale, x.get_shape()))
 
         # Employ strided convolutions to downsample
         with tf.variable_scope('enc_unit_{}_{}'.format(
-                res_scale, num_convolutions)):
+                res_scale,
+                num_convolutions)):
 
             # Adjust the strided conv kernel size to prevent losing information
             k_size = [s * 2 if s > 1 else 3 for s in strides[res_scale]]
 
-            x = conv_op(x, filters[res_scale], k_size,
-                        strides[res_scale], **conv_params)
+            x = conv_op(inputs=x,
+                        filters=filters[res_scale],
+                        kernel_size=k_size,
+                        strides=strides[res_scale],
+                        **conv_params)
+
             x = tf.layers.batch_normalization(
                 x, training=mode == tf.estimator.ModeKeys.TRAIN)
             x = relu_op(x)
@@ -100,8 +109,8 @@ def convolutional_autoencoder_3d(inputs, num_convolutions=1,
     x_shape = x.get_shape().as_list()
     x = tf.reshape(x, (tf.shape(x)[0], np.prod(x_shape[1:])))
 
-    x = tf.layers.dense(x,
-                        num_hidden_units,
+    x = tf.layers.dense(inputs=x,
+                        units=num_hidden_units,
                         use_bias=conv_params['use_bias'],
                         kernel_initializer=conv_params['kernel_initializer'],
                         bias_initializer=conv_params['bias_initializer'],
@@ -112,8 +121,8 @@ def convolutional_autoencoder_3d(inputs, num_convolutions=1,
     outputs['hidden_units'] = x
     tf.logging.info('Hidden units tensor shape: {}'.format(x.get_shape()))
 
-    x = tf.layers.dense(x,
-                        np.prod(x_shape[1:]),
+    x = tf.layers.dense(inputs=x,
+                        units=np.prod(x_shape[1:]),
                         activation=relu_op,
                         use_bias=conv_params['use_bias'],
                         kernel_initializer=conv_params['kernel_initializer'],
@@ -135,8 +144,12 @@ def convolutional_autoencoder_3d(inputs, num_convolutions=1,
             # information
             k_size = [s * 2 if s > 1 else 3 for s in strides[res_scale]]
 
-            x = tp_conv_op(x, filters[res_scale], k_size, strides[
-                           res_scale], **conv_params)
+            x = tp_conv_op(inputs=x,
+                           filters=filters[res_scale],
+                           kernel_size=k_size,
+                           strides=strides[res_scale],
+                           **conv_params)
+
             x = tf.layers.batch_normalization(
                 x, training=mode == tf.estimator.ModeKeys.TRAIN)
             x = relu_op(x)
@@ -145,8 +158,13 @@ def convolutional_autoencoder_3d(inputs, num_convolutions=1,
 
         for i in range(1, num_convolutions):
             with tf.variable_scope('dec_unit_{}_{}'.format(res_scale, i)):
-                x = conv_op(x, filters[res_scale],
-                            (3, 3, 3), (1, 1, 1), **conv_params)
+
+                x = conv_op(inputs=x,
+                            filters=filters[res_scale],
+                            kernel_size=(3, 3, 3),
+                            strides=(1, 1, 1),
+                            **conv_params)
+
                 x = tf.layers.batch_normalization(
                     x, training=mode == tf.estimator.ModeKeys.TRAIN)
                 x = relu_op(x)
@@ -155,8 +173,11 @@ def convolutional_autoencoder_3d(inputs, num_convolutions=1,
 
     # A final convolution reduces the number of output features to those of
     # the inputs
-    x = conv_op(x, inputs.get_shape().as_list()
-                [-1], (1, 1, 1), (1, 1, 1), **conv_params)
+    x = conv_op(inputs=x,
+                filters=inputs.get_shape().as_list()[-1],
+                kernel_size=(1, 1, 1),
+                strides=(1, 1, 1),
+                **conv_params)
 
     tf.logging.info('Output tensor shape: {}'.format(x.get_shape()))
     outputs['x_'] = x

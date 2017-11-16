@@ -3,16 +3,18 @@ from __future__ import absolute_import
 from __future__ import print_function
 
 import tensorflow as tf
-import numpy as np
 
 
-def simple_super_resolution_3d(inputs, num_convolutions=1, filters=(16, 32, 64),
+def simple_super_resolution_3d(inputs,
+                               num_convolutions=1,
+                               filters=(16, 32, 64),
                                upsampling_factor=(2, 2, 2),
-                               mode=tf.estimator.ModeKeys.EVAL, use_bias=False,
-                               kernel_initializer=
-                               tf.uniform_unit_scaling_initializer(),
+                               mode=tf.estimator.ModeKeys.EVAL,
+                               use_bias=False,
+                               kernel_initializer=tf.uniform_unit_scaling_initializer(),
                                bias_initializer=tf.zeros_initializer(),
-                               kernel_regularizer=None, bias_regularizer=None):
+                               kernel_regularizer=None,
+                               bias_regularizer=None):
     """Simple super resolution network with num_convolutions per feature
         extraction block. Each convolution in a block b has a filter size
         of filters[b].
@@ -42,10 +44,10 @@ def simple_super_resolution_3d(inputs, num_convolutions=1, filters=(16, 32, 64),
     """
 
     outputs = {}
-    assert len(inputs.get_shape().as_list()) == 5, 'inputs are required to ' \
-                                                   'have a rank of 5.'
-    assert len(upsampling_factor) == 3, 'upsampling factor is required to ' \
-                                        'be of length 3.'
+    assert len(inputs.get_shape().as_list()) == 5, \
+        'inputs are required to have a rank of 5.'
+    assert len(upsampling_factor) == 3, \
+        'upsampling factor is required to be of length 3.'
 
     conv_op = tf.layers.conv3d
     tp_conv_op = tf.layers.conv3d_transpose
@@ -64,13 +66,22 @@ def simple_super_resolution_3d(inputs, num_convolutions=1, filters=(16, 32, 64),
     # Convolutional feature encoding blocks with num_convolutions at different
     # resolution scales res_scales
     for unit in range(0, len(filters)):
+
         for i in range(0, num_convolutions):
+
             with tf.variable_scope('enc_unit_{}_{}'.format(unit, i)):
-                x = conv_op(x, filters[unit], (3, 3, 3),
-                            (1, 1, 1), **conv_params)
+
+                x = conv_op(inputs=x,
+                            filters=filters[unit],
+                            kernel_size=(3, 3, 3),
+                            strides=(1, 1, 1),
+                            **conv_params)
+
                 x = tf.layers.batch_normalization(
                     x, training=mode == tf.estimator.ModeKeys.TRAIN)
+
                 x = relu_op(x)
+
                 tf.logging.info('Encoder at unit_{}_{} tensor '
                                 'shape: {}'.format(unit, i, x.get_shape()))
 
@@ -79,8 +90,11 @@ def simple_super_resolution_3d(inputs, num_convolutions=1, filters=(16, 32, 64),
 
         # Adjust the strided tp conv kernel size to prevent losing information
         k_size = [u * 2 for u in upsampling_factor]
-        x = tp_conv_op(x, inputs.get_shape().as_list()
-                       [-1], k_size, upsampling_factor, **conv_params)
+        x = tp_conv_op(inputs=x,
+                       filters=inputs.get_shape().as_list()[-1],
+                       kernel_size=k_size,
+                       strides=upsampling_factor,
+                       **conv_params)
 
     tf.logging.info('Output tensor shape: {}'.format(x.get_shape()))
     outputs['x_'] = x

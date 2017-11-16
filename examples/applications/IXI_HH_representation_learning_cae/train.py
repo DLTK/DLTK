@@ -48,7 +48,9 @@ def model_fn(features, labels, mode, params):
 
     # 1. create a model and its outputs
     net_output_ops = convolutional_autoencoder_3d(
-        features['x'], num_convolutions=2, num_hidden_units=1024,
+        inputs=features['x'],
+        num_convolutions=2,
+        num_hidden_units=1024,
         filters=(16, 32, 64, 128, 256),
         strides=((1, 2, 2), (1, 2, 2), (1, 2, 2), (1, 2, 2), (1, 2, 2)),
         mode=mode)
@@ -56,18 +58,21 @@ def model_fn(features, labels, mode, params):
     # 1.1 Generate predictions only (for `ModeKeys.PREDICT`)
     if mode == tf.estimator.ModeKeys.PREDICT:
         return tf.estimator.EstimatorSpec(
-            mode=mode, predictions=net_output_ops,
-            export_outputs={'out': tf.estimator.export.PredictOutput(
-                net_output_ops)})
+            mode=mode,
+            predictions=net_output_ops,
+            export_outputs={'out': tf.estimator.export.PredictOutput(net_output_ops)})
+
     # 2. set up a loss function
-    loss = tf.losses.mean_squared_error(labels=features['x'],
-                                        predictions=net_output_ops['x_'])
+    loss = tf.losses.mean_squared_error(
+        labels=features['x'],
+        predictions=net_output_ops['x_'])
     
     # 3. define a training op and ops for updating moving averages (i.e.
     # for batch normalisation)
     global_step = tf.train.get_global_step()
-    optimiser = tf.train.AdamOptimizer(learning_rate=params["learning_rate"],
-                                       epsilon=1e-5)
+    optimiser = tf.train.AdamOptimizer(
+        learning_rate=params["learning_rate"],
+        epsilon=1e-5)
       
     update_ops = tf.get_collection(tf.GraphKeys.UPDATE_OPS)
     with tf.control_dependencies(update_ops):
@@ -78,20 +83,19 @@ def model_fn(features, labels, mode, params):
     my_image_summaries['feat_t1'] = features['x'][0, 0, :, :, 0]
     my_image_summaries['feat_t2'] = features['x'][0, 0, :, :, 1]
     my_image_summaries['feat_pd'] = features['x'][0, 0, :, :, 2]
-    my_image_summaries['pred_t1'] = \
-        tf.cast(net_output_ops['x_'], tf.float32)[0, 0, :, :, 0]
-    my_image_summaries['pred_t2'] = \
-        tf.cast(net_output_ops['x_'], tf.float32)[0, 0, :, :, 1]
-    my_image_summaries['pred_pd'] = \
-        tf.cast(net_output_ops['x_'], tf.float32)[0, 0, :, :, 2]
+    my_image_summaries['pred_t1'] = tf.cast(net_output_ops['x_'], tf.float32)[0, 0, :, :, 0]
+    my_image_summaries['pred_t2'] = tf.cast(net_output_ops['x_'], tf.float32)[0, 0, :, :, 1]
+    my_image_summaries['pred_pd'] = tf.cast(net_output_ops['x_'], tf.float32)[0, 0, :, :, 2]
         
     expected_output_size = [1, 224, 224, 1] # [B, W, H, C]
     [tf.summary.image(name, tf.reshape(image, expected_output_size))
      for name, image in my_image_summaries.items()]
     
     # 5. Return EstimatorSpec object
-    return tf.estimator.EstimatorSpec(mode=mode, predictions=net_output_ops,
-                                      loss=loss, train_op=train_op,
+    return tf.estimator.EstimatorSpec(mode=mode,
+                                      predictions=net_output_ops,
+                                      loss=loss,
+                                      train_op=train_op,
                                       eval_metric_ops=None)
 
 
@@ -104,49 +108,60 @@ def train(args):
 
     # Parse csv files for file names
     all_filenames = pd.read_csv(
-        args.data_csv, dtype=object, keep_default_na=False,
+        args.data_csv,
+        dtype=object,
+        keep_default_na=False,
         na_values=[]).as_matrix()
     
     train_filenames = all_filenames[:100]
     val_filenames = all_filenames[100:]
     
     # Set up a data reader to handle the file i/o. 
-    reader_params = {'n_examples': 10, 'example_size': [1, 224, 224],
+    reader_params = {'n_examples': 10,
+                     'example_size': [1, 224, 224],
                      'extract_examples': True}
-    reader_example_shapes = \
-        {'features': {'x': reader_params['example_size'] + [NUM_CHANNELS,]}}
+    reader_example_shapes = {'features': {'x': reader_params['example_size'] + [NUM_CHANNELS, ]}}
     reader = Reader(read_fn, {'features': {'x': tf.float32}})
 
     # Get input functions and queue initialisation hooks for training and
     # validation data
     train_input_fn, train_qinit_hook = reader.get_inputs(
-        train_filenames, tf.estimator.ModeKeys.TRAIN,
-        example_shapes=reader_example_shapes, batch_size=BATCH_SIZE,
-        shuffle_cache_size=SHUFFLE_CACHE_SIZE, params=reader_params)
+        file_references=train_filenames,
+        mode=tf.estimator.ModeKeys.TRAIN,
+        example_shapes=reader_example_shapes,
+        batch_size=BATCH_SIZE,
+        shuffle_cache_size=SHUFFLE_CACHE_SIZE,
+        params=reader_params)
     
     val_input_fn, val_qinit_hook = reader.get_inputs(
-        val_filenames, tf.estimator.ModeKeys.EVAL,
-        example_shapes=reader_example_shapes,  batch_size=BATCH_SIZE,
-        shuffle_cache_size=SHUFFLE_CACHE_SIZE, params=reader_params)
+        file_references=val_filenames,
+        mode=tf.estimator.ModeKeys.EVAL,
+        example_shapes=reader_example_shapes,
+        batch_size=BATCH_SIZE,
+        shuffle_cache_size=SHUFFLE_CACHE_SIZE,
+        params=reader_params)
     
     # Instantiate the neural network estimator
-    nn = tf.estimator.Estimator(model_fn=model_fn,
-                                model_dir=args.save_path,
-                                params={"learning_rate": 0.01}, 
-                                config=tf.estimator.RunConfig())
+    nn = tf.estimator.Estimator(
+        model_fn=model_fn,
+        model_dir=args.save_path,
+        params={"learning_rate": 0.01},
+        config=tf.estimator.RunConfig())
     
     # Hooks for validation summaries
     val_summary_hook = tf.contrib.training.SummaryAtEndHook(
         os.path.join(args.save_path, 'eval'))
-    step_cnt_hook = tf.train.StepCounterHook(every_n_steps=EVAL_EVERY_N_STEPS,
-                                             output_dir=args.save_path)
+    step_cnt_hook = tf.train.StepCounterHook(
+        every_n_steps=EVAL_EVERY_N_STEPS,
+        output_dir=args.save_path)
     
     print('Starting training...')
     try:
         while True: 
-            nn.train(input_fn=train_input_fn,
-                     hooks=[train_qinit_hook, step_cnt_hook],
-                     steps=EVAL_EVERY_N_STEPS)
+            nn.train(
+                input_fn=train_input_fn,
+                hooks=[train_qinit_hook, step_cnt_hook],
+                steps=EVAL_EVERY_N_STEPS)
             
             if args.run_validation:
                 results_val = nn.evaluate(

@@ -27,16 +27,18 @@ N_VALIDATION_SUBJECTS = 1
 def predict(args):
     
     # Read in the csv with the file names you would want to predict on
-    file_names = pd.read_csv(args.csv, dtype=object, keep_default_na=False,
-                             na_values=[]).as_matrix()
+    file_names = pd.read_csv(
+        args.csv,
+        dtype=object,
+        keep_default_na=False,
+        na_values=[]).as_matrix()
     
     # We trained on the first 4 subjects, so we predict on the rest
     file_names = file_names[-N_VALIDATION_SUBJECTS:]
     
     # From the model save_path, parse the latest saved model and restore a
     # predictor from it
-    export_dir = [os.path.join(args.save_path, o)
-                  for o in os.listdir(args.save_path)
+    export_dir = [os.path.join(args.save_path, o) for o in os.listdir(args.save_path)
                   if os.path.isdir(os.path.join(args.save_path, o))
                   and o.isdigit()][-1]
     print('Loading from {}'.format(export_dir))
@@ -48,7 +50,7 @@ def predict(args):
 
     # Iterate through the files, predict on the full volumes and compute a Dice
     # coefficient
-    for output in read_fn(file_names,
+    for output in read_fn(file_references=file_names,
                           mode=tf.estimator.ModeKeys.EVAL,
                           params=READER_PARAMS):
             
@@ -63,9 +65,10 @@ def predict(args):
         
         # Do a sliding window inference with our DLTK wrapper
         pred = sliding_window_segmentation_inference(
-            my_predictor.session,
-            [y_prob],
-            {my_predictor._feed_tensors['x']: img}, batch_size=32)[0]
+            session=my_predictor.session,
+            ops_list=[y_prob],
+            sample_dict={my_predictor._feed_tensors['x']: img},
+            batch_size=32)[0]
 
         # Calculate the prediction from the probabilities
         pred = np.argmax(pred, -1)
@@ -77,8 +80,8 @@ def predict(args):
         # original sitk image
         file_identifier = str(output['img_fn']).split('/')[-2]
         output_fn = os.path.join(args.save_path, '{}.nii.gz'.format(file_identifier))
-        new_sitk = sitk.GetImageFromArray(pred[0].astype(np.int32))
 
+        new_sitk = sitk.GetImageFromArray(pred[0].astype(np.int32))
         new_sitk.CopyInformation(output['sitk'])
 
         sitk.WriteImage(new_sitk, output_fn)
@@ -89,8 +92,7 @@ def predict(args):
 
 if __name__ == '__main__':
     # Set up argument parser
-    parser = argparse.ArgumentParser(
-        description='MRBrainS13 example segmentation deploy script')
+    parser = argparse.ArgumentParser(description='MRBrainS13 example segmentation deploy script')
     parser.add_argument('--verbose', default=False, action='store_true')
     parser.add_argument('--cuda_devices', '-c', default='0')
 
