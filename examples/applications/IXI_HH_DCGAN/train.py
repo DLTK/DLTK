@@ -51,7 +51,7 @@ def train(args):
     # See TFGAN's `train.py` for a description of the generator and
     # discriminator API.
     def generator_fn(generator_inputs):
-        gen = dcgan_generator_3D(generator_inputs['noise'], 1, num_convolutions=1, filters=(256, 128, 64, 32, 16),
+        gen = dcgan_generator_3D(generator_inputs['noise'], 1, num_convolutions=2, filters=(256, 128, 64, 32, 16),
                                  strides=((4, 4, 4), (1, 2, 2), (1, 2, 2), (1, 2, 2), (1, 2, 2)),
                                  mode=tf.estimator.ModeKeys.TRAIN)
         gen = gen['gen']
@@ -61,8 +61,8 @@ def train(args):
 
     def discriminator_fn(data, conditioning):
         tf.summary.image('data', data[:, 0])
-        disc = dcgan_discriminator_3D(data, filters=(64, 128, 256),
-                                           strides=((2, 2, 2), (2, 2, 2), (1, 2, 2)),
+        disc = dcgan_discriminator_3D(data, filters=(32, 64, 128, 256),
+                                           strides=((1, 2, 2), (2, 2, 2), (2, 2, 2), (1, 2, 2)),
                                            mode=tf.estimator.ModeKeys.TRAIN)
         return disc['logits']
     
@@ -76,8 +76,8 @@ def train(args):
         discriminator_fn=discriminator_fn,
         generator_loss_fn=tfgan.losses.least_squares_generator_loss,
         discriminator_loss_fn=tfgan.losses.least_squares_discriminator_loss,
-        generator_optimizer=tf.train.AdamOptimizer(0.0001, 0.5, epsilon=1e-5),
-        discriminator_optimizer=tf.train.AdamOptimizer(0.0001, 0.5, epsilon=1e-5))
+        generator_optimizer=tf.train.AdamOptimizer(0.0005, 0.5, epsilon=1e-5),
+        discriminator_optimizer=tf.train.AdamOptimizer(0.0005, 0.5, epsilon=1e-5))
     
     print('Starting training...')
     try:
