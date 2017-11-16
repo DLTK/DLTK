@@ -2,6 +2,14 @@
 
 from setuptools import setup, find_packages
 
+try:
+    import tensorflow
+except:
+    raise Exception('We did not find TensorFlow on your system. Please install '
+                    'it via `pip install tensorflow-gpu` if you have a '
+                    'CUDA-enabled GPU or with `pip install tensorflow` without '
+                    'GPU support.')
+
 setup(name='dltk',
       version='0.2rc',
       description='Deep Learning Toolkit for Medical Image Analysis',
@@ -21,8 +29,7 @@ setup(name='dltk',
                    'Programming Language :: Python :: 3.4'],
       install_requires=['numpy>=1.12.1', 'scipy>=0.19.0', 'pandas>=0.19.0',
                         'matplotlib>=1.5.3', 'future>=0.16.0', 'xlrd>=1.1.0',
-                        'scikit-image>=0.13.0', 'tensorflow-gpu>=1.4.0',
-                        'tensorflow_tensorboard', 'SimpleITK>=1.0.0',
+                        'scikit-image>=0.13.0', 'SimpleITK>=1.0.0',
                         'jupyter>=1.0.0'],
       extras_require={'doc': ['sphinx', 'sphinx-rtd-theme', 'recommonmark']}
       )
