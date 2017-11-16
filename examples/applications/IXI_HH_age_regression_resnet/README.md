@@ -59,5 +59,16 @@ Age: mean = 43.89, sd = 14.02, min = 25.53, max = 71.21
 - To deploy a model and run inference, run the deploy.py script and point to the model save_path:
 
   ```
-  python -u deploy.py --save_path /tmp/IXI_regression MY_OPTIONS
+  python -u deploy.py --model_path /tmp/IXI_regression MY_OPTIONS
   ```
+  
+  This should result in an output similar to this:  
+  ```
+  id=IXI566; pred=47.20 yrs; true=42.97 yrs; run time=1.75 s;   
+  id=IXI567; pred=33.68 yrs; true=28.56 yrs; run time=0.32 s; 
+  ...
+  mean absolute err=5.399
+  ```
+   
+
+

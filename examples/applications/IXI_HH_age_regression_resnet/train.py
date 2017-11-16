@@ -84,7 +84,7 @@ def model_fn(features, labels, mode, params):
     my_image_summaries = {}
     my_image_summaries['feat_t1'] = features['x'][0, 32, :, :, 0]
         
-    expected_output_size = [1, 96, 96, 1] # [B, W, H, C]
+    expected_output_size = [1, 96, 96, 1]  # [B, W, H, C]
     [tf.summary.image(name, tf.reshape(image, expected_output_size))
      for name, image in my_image_summaries.items()]
     
@@ -181,22 +181,25 @@ def train(args):
 
     print('Stopping now.')
 
+    # When exporting we set the expected input shape to be arbitrary.
     export_dir = nn.export_savedmodel(
         export_dir_base=args.save_path,
-        serving_input_receiver_fn=reader.serving_input_receiver_fn(reader_example_shapes))
+        serving_input_receiver_fn=reader.serving_input_receiver_fn(
+            {'features': {'x': [None, None, None, NUM_CHANNELS]},
+             'labels': {'y': [1]}}))
     print('Model saved to {}.'.format(export_dir))
         
         
 if __name__ == '__main__':
 
     # Set up argument parser
-    parser = argparse.ArgumentParser(description='Example: IXI HH resnet regression training script')
+    parser = argparse.ArgumentParser(description='Example: IXI HH resnet age regression training script')
     parser.add_argument('--run_validation', default=True)
     parser.add_argument('--restart', default=False, action='store_true')
     parser.add_argument('--verbose', default=False, action='store_true')
     parser.add_argument('--cuda_devices', '-c', default='0')
     
-    parser.add_argument('--save_path', '-p', default='/tmp/IXI_regression/')
+    parser.add_argument('--save_path', '-p', default='/tmp/IXI_age_regression/')
     parser.add_argument('--data_csv', default='../../../data/IXI_HH/demographic_HH.csv')
     
     args = parser.parse_args()

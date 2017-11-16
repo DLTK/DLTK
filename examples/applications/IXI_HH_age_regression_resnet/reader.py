@@ -43,7 +43,7 @@ def read_fn(file_references, mode, params=None):
         images = np.expand_dims(t1, axis=-1).astype(np.float32)
         
         if mode == tf.estimator.ModeKeys.PREDICT:
-            yield {'features': {'x': images}}
+            yield {'features': {'x': images}, 'img_id': subject_id}
 
         # Parse the regression targets from the file_references
         age = np.float(f[11])
@@ -63,10 +63,12 @@ def read_fn(file_references, mode, params=None):
             
             for e in range(params['n_examples']):
                 yield {'features': {'x': images[e].astype(np.float32)},
-                       'labels': {'y': y.astype(np.float32)}}
+                       'labels': {'y': y.astype(np.float32)},
+                       'img_id': subject_id}
                        
         else:
             yield {'features': {'x': images},
-                   'labels': {'y': y.astype(np.float32)}}
+                   'labels': {'y': y.astype(np.float32)},
+                   'img_id': subject_id}
 
     return
