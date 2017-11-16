@@ -8,29 +8,42 @@ import numpy as np
 from dltk.core.residual_unit import *
 
 
-def resnet_3D(inputs, num_classes, num_res_units=1, filters=(16, 32, 64, 128),
+def resnet_3d(inputs, num_classes, num_res_units=1, filters=(16, 32, 64, 128),
               strides=((1, 1, 1), (2, 2, 2), (2, 2, 2), (2, 2, 2)),
               mode=tf.estimator.ModeKeys.EVAL, use_bias=False,
               kernel_initializer=tf.uniform_unit_scaling_initializer(),
               bias_initializer=tf.zeros_initializer(),
               kernel_regularizer=None, bias_regularizer=None):
-    """Regression/classification network based on a flexible resnet architecture [1] using residual units proposed in [2].  The downsampling of features is done via strided convolutions. On each resolution scale s are num_convolutions with filter size = filters[s]. strides[s] determine the downsampling factor at each resolution scale.
+    """Regression/classification network based on a flexible resnet
+        architecture [1] using residual units proposed in [2]. The downsampling
+        of features is done via strided convolutions. On each resolution scale s
+         are num_convolutions with filter size = filters[s]. strides[s]
+         determine the downsampling factor at each resolution scale.
 
     [1] K. He et al. Deep residual learning for image recognition. CVPR 2016.
     [2] K. He et al. Identity Mappings in Deep Residual Networks. ECCV 2016.
 
     Args:
-        inputs (tf.Tensor): Input feature tensor to the network (rank 5 required).
+        inputs (tf.Tensor): Input feature tensor to the network (rank 5
+            required).
         num_classes (int): Number of output channels or classes.
-        num_res_units (int, optional): Number of residual units per resolution scale.
-        filters (tuple, optional): Number of filters for all residual units at each resolution scale.
-        strides (tuple, optional): Stride of the first unit on a resolution scale.
-        mode (TYPE, optional): One of the tf.estimator.ModeKeys strings: TRAIN, EVAL or PREDICT
+        num_res_units (int, optional): Number of residual units per resolution
+            scale.
+        filters (tuple, optional): Number of filters for all residual units at
+            each resolution scale.
+        strides (tuple, optional): Stride of the first unit on a resolution
+            scale.
+        mode (TYPE, optional): One of the tf.estimator.ModeKeys strings: TRAIN,
+            EVAL or PREDICT
         use_bias (bool, optional): Boolean, whether the layer uses a bias.
-        kernel_initializer (TYPE, optional): An initializer for the convolution kernel.
-        bias_initializer (TYPE, optional): An initializer for the bias vector. If None, no bias will be applied.
-        kernel_regularizer (None, optional): Optional regularizer for the convolution kernel.
-        bias_regularizer (None, optional): Optional regularizer for the bias vector.
+        kernel_initializer (TYPE, optional): An initializer for the convolution
+            kernel.
+        bias_initializer (TYPE, optional): An initializer for the bias vector.
+            If None, no bias will be applied.
+        kernel_regularizer (None, optional): Optional regularizer for the
+            convolution kernel.
+        bias_regularizer (None, optional): Optional regularizer for the bias
+            vector.
 
     Returns:
         dict: dictionary of output tensors
@@ -109,7 +122,8 @@ def resnet_3D(inputs, num_classes, num_res_units=1, filters=(16, 32, 64, 128),
         y_prob = tf.nn.softmax(x)
         outputs['y_prob'] = y_prob
         y_ = tf.argmax(
-            x, axis=-1) if num_classes > 1 else tf.cast(tf.greater_equal(x[..., 0], 0.5), tf.int32)
+            x, axis=-1) if num_classes > 1 else \
+            tf.cast(tf.greater_equal(x[..., 0], 0.5), tf.int32)
         outputs['y_'] = y_
 
     return outputs

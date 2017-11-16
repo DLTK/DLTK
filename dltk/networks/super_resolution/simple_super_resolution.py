@@ -6,23 +6,35 @@ import tensorflow as tf
 import numpy as np
 
 
-def simple_super_resolution_3D(inputs, num_convolutions=1, filters=(16, 32, 64), upsampling_factor=(2, 2, 2),
+def simple_super_resolution_3d(inputs, num_convolutions=1, filters=(16, 32, 64),
+                               upsampling_factor=(2, 2, 2),
                                mode=tf.estimator.ModeKeys.EVAL, use_bias=False,
-                               kernel_initializer=tf.uniform_unit_scaling_initializer(), bias_initializer=tf.zeros_initializer(),
+                               kernel_initializer=
+                               tf.uniform_unit_scaling_initializer(),
+                               bias_initializer=tf.zeros_initializer(),
                                kernel_regularizer=None, bias_regularizer=None):
-    """Simple super resolution network with num_convolutions per feature extraction block. Each convolution in a block b has a filter size of filters[b]. 
+    """Simple super resolution network with num_convolutions per feature
+        extraction block. Each convolution in a block b has a filter size
+        of filters[b].
 
     Args:
-        inputs (tf.Tensor): Input feature tensor to the network (rank 5 required).
+        inputs (tf.Tensor): Input feature tensor to the network (rank 5
+            required).
         num_convolutions (int, optional): Number of convolutions.
         filters (tuple, optional): filters (tuple, optional): Number of filters.
-        upsampling_factor (tuple, optional): Upsampling factor of the low resolution to the high resolution image.
-        mode (TYPE, optional): One of the tf.estimator.ModeKeys strings: TRAIN, EVAL or PREDICT
+        upsampling_factor (tuple, optional): Upsampling factor of the low
+            resolution to the high resolution image.
+        mode (TYPE, optional): One of the tf.estimator.ModeKeys strings: TRAIN,
+            EVAL or PREDICT
         use_bias (bool, optional): Boolean, whether the layer uses a bias.
-        kernel_initializer (TYPE, optional): An initializer for the convolution kernel.
-        bias_initializer (TYPE, optional): An initializer for the bias vector. If None, no bias will be applied.
-        kernel_regularizer (None, optional): Optional regularizer for the convolution kernel.
-        bias_regularizer (None, optional): Optional regularizer for the bias vector.
+        kernel_initializer (TYPE, optional): An initializer for the convolution
+            kernel.
+        bias_initializer (TYPE, optional): An initializer for the bias vector.
+            If None, no bias will be applied.
+        kernel_regularizer (None, optional): Optional regularizer for the
+            convolution kernel.
+        bias_regularizer (None, optional): Optional regularizer for the bias
+            vector.
 
     Returns:
         dict: dictionary of output tensors
@@ -30,10 +42,10 @@ def simple_super_resolution_3D(inputs, num_convolutions=1, filters=(16, 32, 64),
     """
 
     outputs = {}
-    assert len(inputs.get_shape().as_list()
-               ) == 5, 'inputs are required to have a rank of 5.'
-    assert len(
-        upsampling_factor) == 3, 'upsampling factor is required to be of length 3.'
+    assert len(inputs.get_shape().as_list()) == 5, 'inputs are required to ' \
+                                                   'have a rank of 5.'
+    assert len(upsampling_factor) == 3, 'upsampling factor is required to ' \
+                                        'be of length 3.'
 
     conv_op = tf.layers.conv3d
     tp_conv_op = tf.layers.conv3d_transpose
@@ -59,8 +71,8 @@ def simple_super_resolution_3D(inputs, num_convolutions=1, filters=(16, 32, 64),
                 x = tf.layers.batch_normalization(
                     x, training=mode == tf.estimator.ModeKeys.TRAIN)
                 x = relu_op(x)
-                tf.logging.info('Encoder at unit_{}_{} tensor shape: {}'.format(
-                    unit, i, x.get_shape()))
+                tf.logging.info('Encoder at unit_{}_{} tensor '
+                                'shape: {}'.format(unit, i, x.get_shape()))
 
     # Upsampling
     with tf.variable_scope('upsampling_unit'):

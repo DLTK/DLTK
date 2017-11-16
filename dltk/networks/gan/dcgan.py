@@ -7,17 +7,28 @@ import numpy as np
 from dltk.core.upsample import linear_upsample_3D
 
 
-def dcgan_generator_3D(inputs, out_filters, num_convolutions=1, filters=(16, 32, 64),
-                       strides=((2, 2, 2), (2, 2, 2), (2, 2, 2)), mode=tf.estimator.ModeKeys.TRAIN, use_bias=False):
-    """Deep convolutional generative adversial network (DCGAN) generator network. with num_convolutions on len(filters) resolution scales. The upsampling of features is done via strided transpose convolutions. On each resolution scale s are num_convolutions with filter size = filters[s]. strides[s] determine the upsampling factor at each resolution scale.
+def dcgan_generator_3d(inputs, out_filters, num_convolutions=1,
+                       filters=(16, 32, 64),
+                       strides=((2, 2, 2), (2, 2, 2), (2, 2, 2)),
+                       mode=tf.estimator.ModeKeys.TRAIN, use_bias=False):
+    """Deep convolutional generative adversial network (DCGAN) generator
+        network. with num_convolutions on len(filters) resolution scales. The
+        upsampling of features is done via strided transpose convolutions. On
+        each resolution scale s are num_convolutions with filter size =
+        filters[s]. strides[s] determine the upsampling factor at each
+        resolution scale.
 
     Args:
         inputs (tf.Tensor): Input noise tensor to the network.
         out_filters (int): Number of output filters.
-        num_convolutions (int, optional): Number of convolutions per resolution scale. 
-        filters (tuple, optional): Number of filters for all convolutions at each resolution scale.
-        strides (tuple, optional): Stride of the first convolution on a resolution scale.
-        mode (TYPE, optional): One of the tf.estimator.ModeKeys strings: TRAIN, EVAL or PREDICT
+        num_convolutions (int, optional): Number of convolutions per resolution
+            scale.
+        filters (tuple, optional): Number of filters for all convolutions at
+            each resolution scale.
+        strides (tuple, optional): Stride of the first convolution on a
+            resolution scale.
+        mode (TYPE, optional): One of the tf.estimator.ModeKeys strings: TRAIN,
+            EVAL or PREDICT
         use_bias (bool, optional): Boolean, whether the layer uses a bias.
 
     Returns:
@@ -29,7 +40,6 @@ def dcgan_generator_3D(inputs, out_filters, num_convolutions=1, filters=(16, 32,
                ) == 5, 'inputs are required to have a rank of 5.'
 
     conv_op = tf.layers.conv3d
-    tp_conv_op = tf.layers.conv3d_transpose
     relu_op = tf.nn.relu6
     upsample_op = linear_upsample_3D
 
@@ -51,17 +61,18 @@ def dcgan_generator_3D(inputs, out_filters, num_convolutions=1, filters=(16, 32,
                     x, training=mode == tf.estimator.ModeKeys.TRAIN)
                 x = relu_op(x)
 
-        with tf.variable_scope('gen_unit_{}_{}'.format(res_scale, num_convolutions)):
-            tf.logging.info('Generator at res_scale before up {} tensor shape: {}'.format(
-                res_scale, x.get_shape()))
+        with tf.variable_scope('gen_unit_{}_{}'.format(res_scale,
+                                                       num_convolutions)):
+            tf.logging.info('Generator at res_scale before up {} tensor '
+                            'shape: {}'.format(res_scale, x.get_shape()))
             x = upsample_op(x, strides[res_scale], use_bias)
-            tf.logging.info('Generator at res_scale after up {} tensor shape: {}'.format(
-                res_scale, x.get_shape()))
+            tf.logging.info('Generator at res_scale after up {} tensor '
+                            'shape: {}'.format(res_scale, x.get_shape()))
             x = tf.layers.batch_normalization(
                 x, training=mode == tf.estimator.ModeKeys.TRAIN)
             x = relu_op(x)
-            tf.logging.info('Generator at res_scale {} tensor shape: {}'.format(
-                res_scale, x.get_shape()))
+            tf.logging.info('Generator at res_scale {} tensor shape: '
+                            '{}'.format(res_scale, x.get_shape()))
 
     for i in range(0, num_convolutions - 1):
         with tf.variable_scope('gen_unit_{}_{}'.format(len(filters), i)):
@@ -77,16 +88,26 @@ def dcgan_generator_3D(inputs, out_filters, num_convolutions=1, filters=(16, 32,
     return outputs
 
 
-def dcgan_discriminator_3D(inputs, num_convolutions=1, filters=(16, 32, 64),
-                           strides=((2, 2, 2), (2, 2, 2), (2, 2, 2)), mode=tf.estimator.ModeKeys.EVAL, use_bias=False):
-    """Deep convolutional generative adversial network (DCGAN) discriminator network with num_convolutions on len(filters) resolution scales. The downsampling of features is done via strided convolutions. On each resolution scale s are num_convolutions with filter size = filters[s]. strides[s] determine the downsampling factor at each resolution scale.
+def dcgan_discriminator_3d(inputs, num_convolutions=1, filters=(16, 32, 64),
+                           strides=((2, 2, 2), (2, 2, 2), (2, 2, 2)),
+                           mode=tf.estimator.ModeKeys.EVAL, use_bias=False):
+    """Deep convolutional generative adversial network (DCGAN) discriminator
+        network with num_convolutions on len(filters) resolution scales. The
+        downsampling of features is done via strided convolutions. On each
+        resolution scale s are num_convolutions with filter size = filters[s].
+         strides[s] determine the downsampling factor at each resolution scale.
 
     Args:
-        inputs (tf.Tensor): Input tensor to the network, required to be of rank 5.
-        num_convolutions (int, optional): Number of convolutions per resolution scale.
-        filters (tuple, optional): Number of filters for all convolutions at each resolution scale.
-        strides (tuple, optional): Stride of the first convolution on a resolution scale.
-        mode (TYPE, optional): One of the tf.estimator.ModeKeys strings: TRAIN, EVAL or PREDICT.
+        inputs (tf.Tensor): Input tensor to the network, required to be of
+            rank 5.
+        num_convolutions (int, optional): Number of convolutions per resolution
+            scale.
+        filters (tuple, optional): Number of filters for all convolutions at
+            each resolution scale.
+        strides (tuple, optional): Stride of the first convolution on a
+            resolution scale.
+        mode (TYPE, optional): One of the tf.estimator.ModeKeys strings: TRAIN,
+            EVAL or PREDICT.
         use_bias (bool, optional): Boolean, whether the layer uses a bias.
 
     Returns:
@@ -119,7 +140,8 @@ def dcgan_discriminator_3D(inputs, num_convolutions=1, filters=(16, 32, 64),
                 x = relu_op(x)
 
         # Employ strided convolutions to downsample
-        with tf.variable_scope('disc_unit_{}_{}'.format(res_scale, num_convolutions)):
+        with tf.variable_scope('disc_unit_{}_{}'.format(res_scale,
+                                                        num_convolutions)):
 
             # Adjust the strided conv kernel size to prevent losing information
             k_size = [s * 2 if s > 1 else 3 for s in strides[res_scale]]
@@ -127,8 +149,8 @@ def dcgan_discriminator_3D(inputs, num_convolutions=1, filters=(16, 32, 64),
             x = conv_op(x, filters[res_scale], k_size,
                         strides[res_scale], **conv_params)
             x = relu_op(x)
-            tf.logging.info('Discriminator at res_scale {} tensor shape: {}'.format(
-                res_scale, x.get_shape()))
+            tf.logging.info('Discriminator at res_scale {} tensor shape: '
+                            '{}'.format(res_scale, x.get_shape()))
 
     x_shape = x.get_shape().as_list()
     x = tf.reshape(x, (tf.shape(x)[0], np.prod(x_shape[1:])))
