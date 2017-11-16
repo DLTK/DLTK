@@ -24,16 +24,7 @@ def read_fn(file_references, mode, params=None):
     """
     
     def _augment(img, lbl):
-        """An image augmentation function. 
-        
-        Args:
-            img (np.array): Input image to be augmented. 
-            lbl (np.array): Corresponding label to the input image. 
-        
-        Returns:
-            np.array, np.array: The augmented image and corresponding label.
-        """
-        
+        """An image augmentation function"""
         img = add_gaussian_noise(img, sigma=0.1)
         [img, lbl] = flip([img, lbl], axis=1)
         

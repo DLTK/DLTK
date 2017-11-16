@@ -24,15 +24,7 @@ def read_fn(file_references, mode, params=None):
     """
     
     def _augment(img):
-        """An image augmentation function.
-
-        Args:
-            img (np.array): Input image to be augmented.
-
-        Returns:
-            np.array: The augmented image.
-        """
-        
+        """An image augmentation function"""
         return add_gaussian_noise(img, sigma=0.1)
 
     for f in file_references:
