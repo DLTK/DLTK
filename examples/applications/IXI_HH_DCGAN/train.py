@@ -57,6 +57,17 @@ def train(args):
     # See TFGAN's `train.py` for a description of the generator and
     # discriminator API.
     def generator_fn(generator_inputs):
+        """Generator function to build fake data samples. It creates a network
+        given input features (e.g. from a dltk.io.abstract_reader). Further,
+        custom Tensorboard summary ops can be added. For additional
+        information, please refer to https://www.tensorflow.org/versions/master/api_docs/python/tf/contrib/gan/estimator/GANEstimator.
+
+        Args:
+            generator_inputs (tf.Tensor): Noise input to generate samples from.
+
+        Returns:
+            tf.Tensor: Generated data samples
+        """
         gen = dcgan_generator_3d(
             inputs=generator_inputs['noise'],
             out_filters=1,
@@ -64,14 +75,25 @@ def train(args):
             filters=(256, 128, 64, 32, 16),
             strides=((4, 4, 4), (1, 2, 2), (1, 2, 2), (1, 2, 2), (1, 2, 2)),
             mode=tf.estimator.ModeKeys.TRAIN)
-
         gen = gen['gen']
         gen = tf.nn.sigmoid(gen)
         tf.summary.image('pred', gen[:, 0])
         return gen
 
     def discriminator_fn(data, conditioning):
+        """Discriminator function to discriminate real and fake data. It creates
+        a network given input features (e.g. from a dltk.io.abstract_reader).
+        Further, custom Tensorboard summary ops can be added. For additional
+        information, please refer to https://www.tensorflow.org/versions/master/api_docs/python/tf/contrib/gan/estimator/GANEstimator.
+
+        Args:
+            generator_inputs (tf.Tensor): Noise input to generate samples from.
+
+        Returns:
+            tf.Tensor: Generated data samples
+        """
         tf.summary.image('data', data[:, 0])
+
         disc = dcgan_discriminator_3d(
             inputs=data,
             filters=(32, 64, 128, 256),
