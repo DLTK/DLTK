@@ -30,7 +30,7 @@ def upsample_and_concat(inputs, inputs2, strides=(2, 2, 2)):
         'Ranks of input and input2 differ'
 
     # Upsample inputs
-    inputs = linear_upsample_3D(inputs, strides)
+    inputs = linear_upsample_3d(inputs, strides)
 
     return tf.concat(axis=-1, values=[inputs2, inputs])
 

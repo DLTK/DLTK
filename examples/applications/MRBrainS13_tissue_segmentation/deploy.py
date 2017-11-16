@@ -15,7 +15,7 @@ from tensorflow.contrib import predictor
 
 from dltk.core import metrics as metrics
 
-from dltk.core.utils import sliding_window_segmentation_inference
+from dltk.utils import sliding_window_segmentation_inference
 
 
 from reader import read_fn

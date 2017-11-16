@@ -60,7 +60,7 @@ def model_fn(features, labels, mode, params):
             name='training_downsample')
 
         # Compute some linear upsampling for comparison:
-        lin_up = linear_upsample_3D(inputs=lo_res,
+        lin_up = linear_upsample_3d(inputs=lo_res,
                                     strides=params['upsampling_factor'])
     else:
         lo_res = features['x']

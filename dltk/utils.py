@@ -76,7 +76,9 @@ class SlidingWindow(object):
         return slicer
 
 
-def sliding_window_segmentation_inference(session, ops_list, sample_dict,
+def sliding_window_segmentation_inference(session,
+                                          ops_list,
+                                          sample_dict,
                                           batch_size=1):
     """Utility function to perform sliding window inference for segmentation
 

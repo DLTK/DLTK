@@ -76,7 +76,7 @@ def upscore_layer_3d(inputs,
         x = inputs
 
     # Upsample inputs
-    x = linear_upsample_3D(inputs=x, strides=strides)
+    x = linear_upsample_3d(inputs=x, strides=strides)
 
     # Skip connection
     x2 = tf.layers.conv3d(inputs=inputs2,

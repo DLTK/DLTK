@@ -6,12 +6,14 @@ import numpy as np
 
 
 def dice(predictions, labels, num_classes):
-    """Calculates the categorical Dice similarity coefficients for each class between labels and predictions. 
+    """Calculates the categorical Dice similarity coefficients for each class
+        between labels and predictions.
 
     Args:
         predictions (np.ndarray): predictions
         labels (np.ndarray): labels
-        num_classes (int): number of classes to calculate the dice coefficient for
+        num_classes (int): number of classes to calculate the dice
+            coefficient for
 
     Returns:
         np.ndarray: dice coefficient per class
@@ -27,7 +29,8 @@ def dice(predictions, labels, num_classes):
 
 
 def abs_vol_difference(predictions, labels, num_classes):
-    """Calculates the absolute volume difference for each class between labels and predictions.
+    """Calculates the absolute volume difference for each class between
+        labels and predictions.
 
     Args:
         predictions (np.ndarray): predictions

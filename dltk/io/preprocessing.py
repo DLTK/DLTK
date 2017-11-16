@@ -6,29 +6,16 @@ import numpy as np
 
 epsilon = 1e-8
 
+
 def whitening(image):
-    """Whitening. Normalises image to zero mean and unit variance.
-    
-    Args:
-        image (np.ndarray): image to be whitened
-            
-    Returns:
-        np.ndarray: whitened image
-    """
+    """Whitening. Normalises image to zero mean and unit variance."""
 
     ret = (image - np.mean(image)) / (np.std(image) + epsilon)
     return ret
 
 
 def normalise_zero_one(image):
-    """Image normalisation. Normalises image to fit [0, 1] range.
-    
-    Args:
-        image (np.ndarray): image to be normalised
-            
-    Returns:
-        np.ndarray: normalised image
-    """
+    """Image normalisation. Normalises image to fit [0, 1] range."""
 
     image = image.astype(np.float32)
     ret = (image - np.min(image))
@@ -37,14 +24,7 @@ def normalise_zero_one(image):
 
 
 def normalise_one_one(image):
-    """Image normalisation. Normalises image to fit [-1, 1] range.
-    
-    Args:
-        image (np.ndarray): image to be normalised
-            
-    Returns:
-        np.ndarray: normalised image
-    """
+    """Image normalisation. Normalises image to fit [-1, 1] range."""
 
     ret = normalise_zero_one(image)
     ret *= 2.
@@ -53,7 +33,8 @@ def normalise_one_one(image):
 
 
 def resize_image_with_crop_or_pad(image, img_size=[64,64,64], **kwargs):
-    """Image resizing. Resizes image by cropping or padding dimension to fit specified size.
+    """Image resizing. Resizes image by cropping or padding dimension
+     to fit specified size.
     
     Args:
         image (np.ndarray): image to be resized

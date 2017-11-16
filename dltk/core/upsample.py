@@ -6,14 +6,22 @@ import tensorflow as tf
 import numpy as np
 
 
-def get_linear_upsampling_kernel(kernel_spatial_shape, out_filters, in_filters, trainable=False):
-    """Builds a kernel for linear upsampling with the shape [kernel_spatial_shape] + [out_filters, in_filters]. Can be set to trainable to potentially learn a better upsamling.
+def get_linear_upsampling_kernel(kernel_spatial_shape,
+                                 out_filters,
+                                 in_filters,
+                                 trainable=False):
+    """Builds a kernel for linear upsampling with the shape
+        [kernel_spatial_shape] + [out_filters, in_filters]. Can be set to
+        trainable to potentially learn a better upsamling.
 
     Args:
-        kernel_spatial_shape (list or tuple): Spatial dimensions of the upsampling kernel. Is required to be of rank 2 or 3, (i.e. [dim_x, dim_y] or [dim_x, dim_y, dim_z]) 
+        kernel_spatial_shape (list or tuple): Spatial dimensions of the
+            upsampling kernel. Is required to be of rank 2 or 3,
+            (i.e. [dim_x, dim_y] or [dim_x, dim_y, dim_z])
         out_filters (int): Number of output filters.  
         in_filters (int): Number of input filters. 
-        trainable (bool, optional): Flag to set the returned tf.Variable to be trainable or not.
+        trainable (bool, optional): Flag to set the returned tf.Variable
+            to be trainable or not.
 
     Returns:
         tf.Variable: Linear upsampling kernel
@@ -56,15 +64,25 @@ def get_linear_upsampling_kernel(kernel_spatial_shape, out_filters, in_filters, 
 
     init = tf.constant_initializer(value=weights, dtype=tf.float32)
 
-    return tf.get_variable(name="linear_up_kernel", initializer=init, shape=weights.shape, trainable=trainable)
+    return tf.get_variable(name="linear_up_kernel",
+                           initializer=init,
+                           shape=weights.shape,
+                           trainable=trainable)
 
 
-def linear_upsample_3D(inputs, strides=(2, 2, 2), use_bias=False, trainable=False, name='linear_upsample_3D'):
-    """Linear upsampling layer in 3D using strided transpose convolutions. The upsampling kernel size will be automatically computed to avoid information loss.
+def linear_upsample_3d(inputs,
+                       strides=(2, 2, 2),
+                       use_bias=False,
+                       trainable=False,
+                       name='linear_upsample_3d'):
+    """Linear upsampling layer in 3D using strided transpose convolutions. The
+        upsampling kernel size will be automatically computed to avoid
+        information loss.
 
     Args:
         inputs (tf.Tensor): Input tensor to be upsampled
-        strides (tuple, optional): The strides determine the upsampling factor in each dimension.
+        strides (tuple, optional): The strides determine the upsampling factor
+            in each dimension.
         use_bias (bool, optional): Flag to train an additional bias.
         trainable (bool, optional): Flag to set the variables to be trainable or not.
         name (str, optional): Name of the layer.
@@ -77,23 +95,34 @@ def linear_upsample_3D(inputs, strides=(2, 2, 2), use_bias=False, trainable=Fals
     rank = len(static_inp_shape)
 
     num_filters = static_inp_shape[-1]
-    strides_5D = [1, ] + list(strides) + [1, ]
+    strides_5d = [1, ] + list(strides) + [1, ]
     kernel_size = [2 * s if s > 1 else 1 for s in strides]
 
     kernel = get_linear_upsampling_kernel(
-        kernel_size, num_filters, num_filters, trainable)
+        kernel_spatial_shape=kernel_size,
+        out_filters=num_filters,
+        in_filters=num_filters,
+        trainable=trainable)
 
-    dyn_out_shape = [dyn_inp_shape[i] * strides_5D[i] for i in range(rank)]
+    dyn_out_shape = [dyn_inp_shape[i] * strides_5d[i] for i in range(rank)]
     dyn_out_shape[-1] = num_filters
 
-    static_out_shape = [static_inp_shape[i] * strides_5D[i]
-                        if isinstance(static_inp_shape[i], int) else None for i in range(rank)]
+    static_out_shape = [static_inp_shape[i] * strides_5d[i]
+                        if isinstance(static_inp_shape[i], int)
+                        else None for i in range(rank)]
+
     static_out_shape[-1] = num_filters
     tf.logging.info('Upsampling from {} to {}'.format(
         static_inp_shape, static_out_shape))
 
     upsampled = tf.nn.conv3d_transpose(
-        inputs, filter=kernel, output_shape=dyn_out_shape, strides=strides_5D, padding='SAME', name='upsample')
+        inputs=inputs,
+        filter=kernel,
+        output_shape=dyn_out_shape,
+        strides=strides_5d,
+        padding='SAME',
+        name='upsample')
+
     upsampled.set_shape(static_out_shape)
 
     return upsampled

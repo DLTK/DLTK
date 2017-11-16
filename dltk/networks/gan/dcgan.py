@@ -4,7 +4,7 @@ from __future__ import print_function
 
 import tensorflow as tf
 import numpy as np
-from dltk.core.upsample import linear_upsample_3D
+from dltk.core.upsample import linear_upsample_3d
 
 
 def dcgan_generator_3d(inputs,
@@ -43,7 +43,7 @@ def dcgan_generator_3d(inputs,
 
     conv_op = tf.layers.conv3d
     relu_op = tf.nn.relu6
-    upsample_op = linear_upsample_3D
+    upsample_op = linear_upsample_3d
 
     conv_params = {'padding': 'same',
                    'use_bias': use_bias,

@@ -175,7 +175,7 @@ def deepmedic_3D(inputs, num_classes,
 
         # TODO: build repeat upsampling
 
-        x = linear_upsample_3D(x, strides=factor)
+        x = linear_upsample_3d(x, strides=factor)
         return x
 
     x = inputs
