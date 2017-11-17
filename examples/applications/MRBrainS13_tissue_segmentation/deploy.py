@@ -60,9 +60,7 @@ def predict(args):
         # required
         img = np.expand_dims(output['features']['x'], axis=0)
         lbl = np.expand_dims(output['labels']['y'], axis=0)
-        
-        print('Running image with shape {}. '.format(img.shape))
-        
+                
         # Do a sliding window inference with our DLTK wrapper
         pred = sliding_window_segmentation_inference(
             session=my_predictor.session,
@@ -78,8 +76,7 @@ def predict(args):
         
         # Save the file as .nii.gz using the header information from the
         # original sitk image
-        file_identifier = str(output['img_fn']).split('/')[-2]
-        output_fn = os.path.join(args.model_path, '{}.nii.gz'.format(file_identifier))
+        output_fn = os.path.join(args.model_path, '{}_seg.nii.gz'.format(output['subject_id']))
 
         new_sitk = sitk.GetImageFromArray(pred[0].astype(np.int32))
         new_sitk.CopyInformation(output['sitk'])
@@ -87,7 +84,8 @@ def predict(args):
         sitk.WriteImage(new_sitk, output_fn)
         
         # Print outputs 
-        print('Dice={}; time={}; output_path={};'.format(dsc, time.time()-t0, output_fn))
+        print('Id={}; Dice={:0.4f}; time={:0.2} secs; output_path={};'.format(
+            output['subject_id'], dsc, time.time()-t0, output_fn))
 
 
 if __name__ == '__main__':

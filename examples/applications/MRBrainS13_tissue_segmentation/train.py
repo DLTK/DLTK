@@ -26,7 +26,7 @@ NUM_FEATURES_IN_SUMMARIES = min(4, NUM_CHANNELS)
 BATCH_SIZE = 4
 SHUFFLE_CACHE_SIZE = 64
 
-MAX_STEPS = 100000
+MAX_STEPS = 50000
 
 
 def model_fn(features, labels, mode, params):
