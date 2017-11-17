@@ -73,7 +73,7 @@ class Reader(object):
                     # Clean example dictionary by recursively deleting
                     # non-relevant entries. However, this does not look into
                     # dictionaries nested into lists
-                    for k in ex.keys():
+                    for k in list(ex):
                         if not k in compare.keys():
                             del ex[k]
                         elif isinstance(ex[k], dict) and isinstance(compare[k], dict):
@@ -86,7 +86,7 @@ class Reader(object):
                               or (isinstance(ex[k], list) and isinstance(compare[k], list)
                                   and not len(ex[k]) == len(compare[k]))):
                             raise ValueError('Entries between example and dtypes incompatible for key {}'.format(k))
-                    for k in compare.keys():
+                    for k in list(compare):
                         if k not in ex.keys():
                             raise ValueError('Key {} not found in ex but is present in dtypes')
                     return ex         
