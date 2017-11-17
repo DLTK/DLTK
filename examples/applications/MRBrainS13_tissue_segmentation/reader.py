@@ -48,10 +48,6 @@ def read_fn(file_references, mode, params=None):
         # Create a 4D multi-sequence image (i.e. [channels, x, y, z])
         images = np.stack([t1, t1_ir, t2_fl], axis=-1).astype(np.float32)
 
-        # Transpose to [batch, x, y, z, channel] as required input by the
-        #  network
-        images = np.transpose(images, (1, 2, 3, 0))
-
         if mode == tf.estimator.ModeKeys.PREDICT:
             yield {'features': {'x': images},
                    'labels': None,
