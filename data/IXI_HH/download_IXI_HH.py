@@ -5,8 +5,11 @@ url: http://brain-development.org/ixi-dataset/
 ref: IXI – Information eXtraction from Images (EPSRC GR/S21533/02)
 
 """
+from future.standard_library import install_aliases  # py 2/3 compatability
+install_aliases()
 
-import urllib
+from urllib.request import FancyURLopener
+
 import os.path
 import tarfile
 import pandas as pd
@@ -79,7 +82,7 @@ if DOWNLOAD_IMAGES:
 
         if not os.path.isfile(fnames[key]):
             print('Downloading {} from {}'.format(fnames[key], url))
-            curr_file = urllib.FancyURLopener()
+            curr_file = FancyURLopener()
             curr_file.retrieve(url, fnames[key]) 
         else:
             print('File {} already exists. Skipping download.'.format(fnames[key]))
