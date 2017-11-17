@@ -98,11 +98,11 @@ def sliding_window_segmentation_inference(session,
 
     # TODO: asserts
 
-    pl_shape = list(sample_dict.keys()[0].get_shape().as_list())
+    pl_shape = list(sample_dict.keys())[0].get_shape().as_list()
 
     pl_bshape = pl_shape[1:-1]
 
-    inp_shape = list(sample_dict.values()[0].shape)
+    inp_shape = list(list(sample_dict.values())[0].shape)
     inp_bshape = inp_shape[1:-1]
 
     out_dummies = [np.zeros(
@@ -123,7 +123,7 @@ def sliding_window_segmentation_inference(session,
     padded_dict = {k: np.pad(v, padding, mode='constant') for k, v
                    in sample_dict.items()}
 
-    f_bshape = padded_dict.values()[0].shape[1:-1]
+    f_bshape = list(padded_dict.values())[0].shape[1:-1]
 
     striding = list(np.array(op_bshape) // 2) if all(out_diff == 0) else op_bshape
 
