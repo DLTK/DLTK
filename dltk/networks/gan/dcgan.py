@@ -196,7 +196,7 @@ def dcgan_discriminator_3d(inputs,
     x = tf.reshape(x, (tf.shape(x)[0], np.prod(x_shape[1:])))
 
     x = tf.layers.dense(inputs=x,
-                        filters=1,
+                        units=1,
                         use_bias=True,
                         kernel_initializer=conv_params['kernel_initializer'],
                         bias_initializer=conv_params['bias_initializer'],
