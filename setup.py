@@ -30,6 +30,6 @@ setup(name='dltk',
       install_requires=['numpy>=1.12.1', 'scipy>=0.19.0', 'pandas>=0.19.0',
                         'matplotlib>=1.5.3', 'future>=0.16.0', 'xlrd>=1.1.0',
                         'scikit-image>=0.13.0', 'SimpleITK>=1.0.0',
-                        'jupyter>=1.0.0'],
+                        'jupyter>=1.0.0', 'argparse'],
       extras_require={'doc': ['sphinx', 'sphinx-rtd-theme', 'recommonmark']}
       )
