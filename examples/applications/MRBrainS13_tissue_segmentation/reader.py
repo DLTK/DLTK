@@ -31,6 +31,7 @@ def read_fn(file_references, mode, params=None):
         return img, lbl
 
     for f in file_references:
+        subject_id = f[0]
         img_fn = f[1]
 
         # Read the image nii with sitk and keep the pointer to the sitk.Image
@@ -52,7 +53,7 @@ def read_fn(file_references, mode, params=None):
             yield {'features': {'x': images},
                    'labels': None,
                    'sitk': t1_sitk,
-                   'img_fn': img_fn}
+                   'subject_id': subject_id}
 
         lbl = sitk.GetArrayFromImage(sitk.ReadImage(
             os.path.join(str(img_fn),
@@ -78,11 +79,11 @@ def read_fn(file_references, mode, params=None):
             for e in range(n_examples):
                 yield {'features': {'x': images[e].astype(np.float32)},
                        'labels': {'y': lbl[e].astype(np.int32)},
-                       'img_fn': img_fn}
+                       'subject_id': subject_id}
         else:
             yield {'features': {'x': images},
                    'labels': {'y': lbl},
                    'sitk': t1_sitk,
-                   'img_fn': img_fn}
+                   'subject_id': subject_id}
 
     return
