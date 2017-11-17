@@ -38,7 +38,7 @@ To train a new model, run the train.py script:
 
 ### Monitoring
 
-For monitoring and metric tracking, spawn a tensorboard webserver and point the log directory to the model save_path:
+For monitoring and metric tracking, spawn a tensorboard webserver and point the log directory to the model_path:
 
   ```
   tensorboard --logdir /tmp/mrbrains_segmentation/
@@ -46,8 +46,8 @@ For monitoring and metric tracking, spawn a tensorboard webserver and point the 
   
 ### Deploy
 
-To deploy a model and run inference, run the deploy.py script and point to the model save_path:
+To deploy a model and run inference, run the deploy.py script and point to the model_path:
 
   ```
-  python -u deploy.py --save_path /tmp/mrbrains_segmentation/ MY_OPTIONS
+  python -u deploy.py --model_path /tmp/mrbrains_segmentation/ MY_OPTIONS
   ```

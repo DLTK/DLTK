@@ -30,7 +30,7 @@ def predict(args):
     # We trained on the first 4 subjects, so we predict on the rest
     file_names = file_names[-N_VALIDATION_SUBJECTS:]
 
-    # From the model save_path, parse the latest saved model and restore a
+    # From the model_path, parse the latest saved model and restore a
     # predictor from it
     export_dir = \
     [os.path.join(args.model_path, o) for o in sorted(os.listdir(args.model_path))

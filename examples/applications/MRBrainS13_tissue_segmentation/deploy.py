@@ -36,10 +36,10 @@ def predict(args):
     # We trained on the first 4 subjects, so we predict on the rest
     file_names = file_names[-N_VALIDATION_SUBJECTS:]
     
-    # From the model save_path, parse the latest saved model and restore a
+    # From the model_path, parse the latest saved model and restore a
     # predictor from it
-    export_dir = [os.path.join(args.save_path, o) for o in os.listdir(args.save_path)
-                  if os.path.isdir(os.path.join(args.save_path, o))
+    export_dir = [os.path.join(args.model_path, o) for o in os.listdir(args.model_path)
+                  if os.path.isdir(os.path.join(args.model_path, o))
                   and o.isdigit()][-1]
     print('Loading from {}'.format(export_dir))
     my_predictor = predictor.from_saved_model(export_dir)
@@ -79,7 +79,7 @@ def predict(args):
         # Save the file as .nii.gz using the header information from the
         # original sitk image
         file_identifier = str(output['img_fn']).split('/')[-2]
-        output_fn = os.path.join(args.save_path, '{}.nii.gz'.format(file_identifier))
+        output_fn = os.path.join(args.model_path, '{}.nii.gz'.format(file_identifier))
 
         new_sitk = sitk.GetImageFromArray(pred[0].astype(np.int32))
         new_sitk.CopyInformation(output['sitk'])
@@ -96,7 +96,7 @@ if __name__ == '__main__':
     parser.add_argument('--verbose', default=False, action='store_true')
     parser.add_argument('--cuda_devices', '-c', default='0')
 
-    parser.add_argument('--save_path', '-p', default='/tmp/mrbrains_segmentation/')
+    parser.add_argument('--model_path', '-p', default='/tmp/mrbrains_segmentation/')
     parser.add_argument('--csv', default='mrbrains.csv')
 
     args = parser.parse_args()

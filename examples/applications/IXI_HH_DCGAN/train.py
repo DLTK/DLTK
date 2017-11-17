@@ -103,11 +103,11 @@ def train(args):
         return disc['logits']
     
     # Hooks for training and validation summaries
-    step_cnt_hook = tf.train.StepCounterHook(output_dir=args.save_path)
+    step_cnt_hook = tf.train.StepCounterHook(output_dir=args.model_path)
 
     # Create GAN estimator.
     gan_estimator = tfgan.estimator.GANEstimator(
-        args.save_path,
+        args.model_path,
         generator_fn=generator_fn,
         discriminator_fn=discriminator_fn,
         generator_loss_fn=tfgan.losses.least_squares_generator_loss,
@@ -126,7 +126,7 @@ def train(args):
         pass
     print('Stopping now.')
     export_dir = gan_estimator.export_savedmodel(
-        export_dir_base=args.save_path,
+        export_dir_base=args.model_path,
         serving_input_receiver_fn=reader.serving_input_receiver_fn(reader_example_shapes))
     print('Model saved to {}.'.format(export_dir))
 
@@ -140,7 +140,7 @@ if __name__ == '__main__':
     parser.add_argument('--verbose', default=False, action='store_true')
     parser.add_argument('--cuda_devices', '-c', default='0')
     
-    parser.add_argument('--save_path', '-p', default='/tmp/IXI_dcgan/')
+    parser.add_argument('--model_path', '-p', default='/tmp/IXI_dcgan/')
     parser.add_argument('--data_csv', default='../../../data/IXI_HH/demographic_HH.csv')
     
     args = parser.parse_args()
@@ -159,12 +159,12 @@ if __name__ == '__main__':
     # Handle restarting and resuming training
     if args.restart:
         print('Restarting training from scratch.')
-        os.system('rm -rf {}'.format(args.save_path))
+        os.system('rm -rf {}'.format(args.model_path))
         
-    if not os.path.isdir(args.save_path):
-        os.system('mkdir -p {}'.format(args.save_path))
+    if not os.path.isdir(args.model_path):
+        os.system('mkdir -p {}'.format(args.model_path))
     else:
-        print('Resuming training on save_path {}'.format(args.save_path))
+        print('Resuming training on model_path {}'.format(args.model_path))
 
     # Call training
     train(args)
