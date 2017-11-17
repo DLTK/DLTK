@@ -116,7 +116,7 @@ def linear_upsample_3d(inputs,
         static_inp_shape, static_out_shape))
 
     upsampled = tf.nn.conv3d_transpose(
-        inputs=inputs,
+        value=inputs,
         filter=kernel,
         output_shape=dyn_out_shape,
         strides=strides_5d,
