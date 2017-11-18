@@ -14,7 +14,7 @@ install:
 - pip install --upgrade pytest
 - pip install -e '.[tests]'
 script:
-- pytest --cov dltk --flake8-v --cov-append
+- pytest --cov dltk --flake8 --cov-append
 after_success:
 - coveralls
 jobs:
