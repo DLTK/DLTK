@@ -10,13 +10,19 @@ except:
                     'CUDA-enabled GPU or with `pip install tensorflow` without '
                     'GPU support.')
 
+__version__ = None
+exec(open('dltk/version.py').read())
+
+test_require = ['pytest', 'pytest-pep8', 'pytest-cov', 'python-coveralls']
+
 setup(name='dltk',
-      version='0.2rc',
+      version=__version__,
       description='Deep Learning Toolkit for Medical Image Analysis',
       author='DLTK contributors',
       url='https://dltk.github.io',
-      packages=find_packages(exclude=['_docs', 'contrib', 'data', 'examples']),
-      keywords='machine learning tensorflow deep learning biomedical imaging',
+      packages=find_packages(exclude=['docs', 'contrib', 'data', 'examples']),
+      keywords=['machine learning', 'tensorflow', 'deep learning',
+                'biomedical imaging'],
       license='Apache License 2.0',
       classifiers=['Intended Audience :: Developers',
                    'Intended Audience :: Education',
@@ -31,5 +37,12 @@ setup(name='dltk',
                         'matplotlib>=1.5.3', 'future>=0.16.0', 'xlrd>=1.1.0',
                         'scikit-image>=0.13.0', 'SimpleITK>=1.0.0',
                         'jupyter>=1.0.0'],
-      extras_require={'doc': ['sphinx', 'sphinx-rtd-theme', 'recommonmark']}
+      tests_require=test_require,
+      extras_require={'doc': ['sphinx', 'sphinx-rtd-theme', 'recommonmark'],
+                      'tests': test_require}
       )
+
+print("\nWelcome to DLTK!")
+print("If any questions please visit documentation page "
+      "https://dltk.github.io/dltk")
+print("or join community chat on https://gitter.im/DLTK/DLTK")
