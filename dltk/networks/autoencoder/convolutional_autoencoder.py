@@ -1,6 +1,7 @@
+from __future__ import unicode_literals
+from __future__ import print_function
 from __future__ import division
 from __future__ import absolute_import
-from __future__ import print_function
 
 import tensorflow as tf
 import numpy as np
@@ -11,7 +12,7 @@ def convolutional_autoencoder_3d(inputs, num_convolutions=1,
                                  strides=((2, 2, 2), (2, 2, 2), (2, 2, 2)),
                                  mode=tf.estimator.ModeKeys.TRAIN,
                                  use_bias=False,
-                                 kernel_initializer=tf.uniform_unit_scaling_initializer(),
+                                 kernel_initializer=tf.initializers.variance_scaling(distribution='uniform'),
                                  bias_initializer=tf.zeros_initializer(),
                                  kernel_regularizer=None,
                                  bias_regularizer=None):

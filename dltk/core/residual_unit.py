@@ -1,18 +1,19 @@
+from __future__ import unicode_literals
+from __future__ import print_function
 from __future__ import division
 from __future__ import absolute_import
-from __future__ import print_function
 
 import tensorflow as tf
 import numpy as np
 
 
-def vanilla_residual_unit_3D(inputs,
+def vanilla_residual_unit_3d(inputs,
                              out_filters,
                              kernel_size=(3, 3, 3),
                              strides=(1, 1, 1),
                              mode=tf.estimator.ModeKeys.EVAL,
                              use_bias=False,
-                             kernel_initializer=tf.uniform_unit_scaling_initializer(),
+                             kernel_initializer=tf.initializers.variance_scaling(distribution='uniform'),
                              bias_initializer=tf.zeros_initializer(),
                              kernel_regularizer=None,
                              bias_regularizer=None):
@@ -104,9 +105,9 @@ def vanilla_residual_unit_3D(inputs,
         if in_filters < out_filters:
             orig_x = tf.pad(
                 tensor=orig_x,
-                paddings=[[0, 0]] * (len(x.get_shape().as_list()) - 1)
-                         + [[int(np.floor((out_filters - in_filters) / 2.)),
-                         int(np.ceil((out_filters - in_filters) / 2.))]])
+                paddings=[[0, 0]] * (len(x.get_shape().as_list()) - 1) + [[
+                    int(np.floor((out_filters - in_filters) / 2.)),
+                    int(np.ceil((out_filters - in_filters) / 2.))]])
 
         elif in_filters > out_filters:
             orig_x = tf.layers.conv3d(

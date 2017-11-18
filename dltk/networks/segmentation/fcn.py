@@ -1,11 +1,12 @@
+from __future__ import unicode_literals
+from __future__ import print_function
 from __future__ import division
 from __future__ import absolute_import
-from __future__ import print_function
 
 import tensorflow as tf
 
-from dltk.core.residual_unit import *
-from dltk.core.upsample import *
+from dltk.core.residual_unit import vanilla_residual_unit_3d
+from dltk.core.upsample import linear_upsample_3d
 
 
 def upscore_layer_3d(inputs,
@@ -14,7 +15,7 @@ def upscore_layer_3d(inputs,
                      in_filters=None,
                      strides=(2, 2, 2),
                      mode=tf.estimator.ModeKeys.EVAL, use_bias=False,
-                     kernel_initializer=tf.uniform_unit_scaling_initializer(),
+                     kernel_initializer=tf.initializers.variance_scaling(distribution='uniform'),
                      bias_initializer=tf.zeros_initializer(),
                      kernel_regularizer=None,
                      bias_regularizer=None):
@@ -100,16 +101,17 @@ def residual_fcn_3d(inputs,
                     strides=((1, 1, 1), (2, 2, 2), (2, 2, 2), (2, 2, 2)),
                     mode=tf.estimator.ModeKeys.EVAL,
                     use_bias=False,
-                    kernel_initializer=tf.uniform_unit_scaling_initializer(),
+                    kernel_initializer=tf.initializers.variance_scaling(distribution='uniform'),
                     bias_initializer=tf.zeros_initializer(),
                     kernel_regularizer=None,
                     bias_regularizer=None):
-    """Image segmentation network based on an FCN architecture [1] using
-        residual units [2] as feature extractors. Downsampling and upsampling
-        of features is done via strided convolutions and transpose convolutions,
-        respectively. On each resolution scale s are num_residual_units with
-        filter size = filters[s]. strides[s] determine the downsampling factor
-        at each resolution scale.
+    """
+    Image segmentation network based on an FCN architecture [1] using
+    residual units [2] as feature extractors. Downsampling and upsampling
+    of features is done via strided convolutions and transpose convolutions,
+    respectively. On each resolution scale s are num_residual_units with
+    filter size = filters[s]. strides[s] determine the downsampling factor
+    at each resolution scale.
 
     [1] J. Long et al. Fully convolutional networks for semantic segmentation.
         CVPR 2015.
@@ -139,7 +141,6 @@ def residual_fcn_3d(inputs,
 
     Returns:
         dict: dictionary of output tensors
-
     """
     outputs = {}
     assert len(strides) == len(filters)
@@ -174,7 +175,7 @@ def residual_fcn_3d(inputs,
         # in `strides` and subsequently saved
         with tf.variable_scope('unit_{}_0'.format(res_scale)):
 
-            x = vanilla_residual_unit_3D(
+            x = vanilla_residual_unit_3d(
                 inputs=x,
                 out_filters=filters[res_scale],
                 strides=strides[res_scale],
@@ -185,7 +186,7 @@ def residual_fcn_3d(inputs,
 
             with tf.variable_scope('unit_{}_{}'.format(res_scale, i)):
 
-                x = vanilla_residual_unit_3D(
+                x = vanilla_residual_unit_3d(
                     inputs=x,
                     out_filters=filters[res_scale],
                     strides=(1, 1, 1),

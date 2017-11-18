@@ -11,7 +11,7 @@ def simple_super_resolution_3d(inputs,
                                upsampling_factor=(2, 2, 2),
                                mode=tf.estimator.ModeKeys.EVAL,
                                use_bias=False,
-                               kernel_initializer=tf.uniform_unit_scaling_initializer(),
+                               kernel_initializer=tf.initializers.variance_scaling(distribution='uniform'),
                                bias_initializer=tf.zeros_initializer(),
                                kernel_regularizer=None,
                                bias_regularizer=None):

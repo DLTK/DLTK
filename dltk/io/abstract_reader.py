@@ -1,4 +1,7 @@
-from __future__ import unicode_literals, print_function
+from __future__ import unicode_literals
+from __future__ import print_function
+from __future__ import division
+from __future__ import absolute_import
 
 import tensorflow as tf
 import traceback
@@ -17,7 +20,7 @@ class IteratorInitializerHook(tf.train.SessionRunHook):
 
 
 class Reader(object):
-    """Wrapper for dataset generation given a read function and a save function"""
+    """Wrapper for dataset generation given a read function"""
 
     def __init__(self, read_fn, dtypes):
         """Constructs a Reader instance
@@ -77,21 +80,32 @@ class Reader(object):
                     for k in ex.keys():
                         if k not in compare.keys():
                             del ex[k]
-                        elif isinstance(ex[k], dict) and isinstance(compare[k], dict):
+                        elif isinstance(ex[k], dict) \
+                                and isinstance(compare[k], dict):
                             clean_ex(ex[k], compare[k])
-                        elif (isinstance(ex[k], dict) and not isinstance(compare[k], dict)
-                              or not isinstance(ex[k], dict) and isinstance(compare[k], dict)):
-                            raise ValueError('Entries between example and dtypes incompatible for key {}'.format(k))
-                        elif ((isinstance(ex[k], list) and not isinstance(compare[k], list))
-                              or (not isinstance(ex[k], list) and isinstance(compare[k], list))
-                              or (isinstance(ex[k], list) and isinstance(compare[k], list)
+                        elif (isinstance(ex[k], dict)
+                              and not isinstance(compare[k], dict)) \
+                                or (not isinstance(ex[k], dict)
+                                    and isinstance(compare[k], dict)):
+                            raise ValueError('Entries between example and '
+                                             'dtypes incompatible for key {}'
+                                             ''.format(k))
+                        elif ((isinstance(ex[k], list)
+                               and not isinstance(compare[k], list))
+                              or (not isinstance(ex[k], list)
+                                  and isinstance(compare[k], list))
+                              or (isinstance(ex[k], list)
+                                  and isinstance(compare[k], list)
                                   and not len(ex[k]) == len(compare[k]))):
-                            raise ValueError('Entries between example and dtypes incompatible for key {}'.format(k))
-                    for k in compare.keys():
+                            raise ValueError('Entries between example and '
+                                             'dtypes incompatible for key {}'
+                                             ''.format(k))
+                    for k in list(compare):
                         if k not in ex.keys():
-                            raise ValueError('Key {} not found in ex but is present in dtypes')
-                    return ex         
-                
+                            raise ValueError('Key {} not found in ex but is '
+                                             'present in dtypes')
+                    return ex
+
                 fn = self.read_fn(file_references, mode, params)
                 # iterate over all entries - this loop is terminated by the
                 # tf.errors.OutOfRangeError or StopIteration thrown by the
@@ -99,13 +113,14 @@ class Reader(object):
                 while True:
                     try:
                         ex = next(fn)
-                        
+
                         if ex.get('labels') is None:
                             ex['labels'] = None
-                        
+
                         if not isinstance(ex, dict):
-                            raise ValueError('The read_fn has to return dictionaries')
-                        
+                            raise ValueError('The read_fn has to return '
+                                             'dictionaries')
+
                         ex = clean_ex(ex, self.dtypes)
                         yield ex
                     except (tf.errors.OutOfRangeError, StopIteration):
@@ -115,7 +130,8 @@ class Reader(object):
                         print(traceback.format_exc())
                         raise
 
-            dataset = tf.data.Dataset.from_generator(f, self.dtypes, example_shapes)
+            dataset = tf.data.Dataset.from_generator(
+                f, self.dtypes, example_shapes)
             dataset = dataset.repeat(None)
             dataset = dataset.shuffle(shuffle_cache_size)
             dataset = dataset.batch(batch_size)
@@ -135,20 +151,21 @@ class Reader(object):
 
     def serving_input_receiver_fn(self, placeholder_shapes):
         """Build the serving inputs.
-        
+
         Args:
             placeholder_shapes: A nested structure of lists or tuples
                 corresponding to the shape of each component of the feature
                 elements yieled by the read_fn.
-            
+
         Returns:
             function: A function to be passed to the tf.estimator.Estimator
             instance when exporting a saved model with estimator.export_savedmodel.
         """
-        
+
         def f():
-            inputs = {k: tf.placeholder(shape=[None,] + list(placeholder_shapes['features'][k]),
-                                        dtype=self.dtypes['features'][k])
+            inputs = {k: tf.placeholder(
+                shape=[None] + list(placeholder_shapes['features'][k]),
+                dtype=self.dtypes['features'][k])
                       for k in self.dtypes['features'].keys()}
 
             return tf.estimator.export.ServingInputReceiver(inputs, inputs)

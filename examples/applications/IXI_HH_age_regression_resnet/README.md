@@ -51,7 +51,7 @@ In this example we use the first 150 datasets for training, the rest for validat
   
   ![Training loss](loss.png)
 
-- For monitoring and metric tracking, spawn a tensorboard webserver and point the log directory to the model save_path:
+- For monitoring and metric tracking, spawn a tensorboard webserver and point the log directory to the model_path:
 
   ```
   tensorboard --logdir /tmp/IXI_regression/
@@ -59,7 +59,7 @@ In this example we use the first 150 datasets for training, the rest for validat
   
   ![Mean absolute error and RMSE](metrics.png) 
   
-- To deploy a model and run inference, run the deploy.py script and point to the model save_path:
+- To deploy a model and run inference, run the deploy.py script and point to the model_path:
 
   ```
   python -u deploy.py --model_path /tmp/IXI_regression MY_OPTIONS

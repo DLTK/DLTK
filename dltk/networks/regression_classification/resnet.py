@@ -1,10 +1,11 @@
+from __future__ import unicode_literals
+from __future__ import print_function
 from __future__ import division
 from __future__ import absolute_import
-from __future__ import print_function
 
 import tensorflow as tf
 
-from dltk.core.residual_unit import *
+from dltk.core.residual_unit import vanilla_residual_unit_3d
 
 
 def resnet_3d(inputs,
@@ -14,14 +15,15 @@ def resnet_3d(inputs,
               strides=((1, 1, 1), (2, 2, 2), (2, 2, 2), (2, 2, 2)),
               mode=tf.estimator.ModeKeys.EVAL,
               use_bias=False,
-              kernel_initializer=tf.uniform_unit_scaling_initializer(),
+              kernel_initializer=tf.initializers.variance_scaling(distribution='uniform'),
               bias_initializer=tf.zeros_initializer(),
               kernel_regularizer=None, bias_regularizer=None):
-    """Regression/classification network based on a flexible resnet
-        architecture [1] using residual units proposed in [2]. The downsampling
-        of features is done via strided convolutions. On each resolution scale s
-         are num_convolutions with filter size = filters[s]. strides[s]
-         determine the downsampling factor at each resolution scale.
+    """
+    Regression/classification network based on a flexible resnet
+    architecture [1] using residual units proposed in [2]. The downsampling
+    of features is done via strided convolutions. On each resolution scale s
+    are num_convolutions with filter size = filters[s]. strides[s]
+    determine the downsampling factor at each resolution scale.
 
     [1] K. He et al. Deep residual learning for image recognition. CVPR 2016.
     [2] K. He et al. Identity Mappings in Deep Residual Networks. ECCV 2016.
@@ -83,7 +85,7 @@ def resnet_3d(inputs,
         # in `strides` and subsequently saved
         with tf.variable_scope('unit_{}_0'.format(res_scale)):
 
-            x = vanilla_residual_unit_3D(
+            x = vanilla_residual_unit_3d(
                 inputs=x,
                 out_filters=filters[res_scale],
                 strides=strides[res_scale],
@@ -94,7 +96,7 @@ def resnet_3d(inputs,
 
             with tf.variable_scope('unit_{}_{}'.format(res_scale, i)):
 
-                x = vanilla_residual_unit_3D(
+                x = vanilla_residual_unit_3d(
                     inputs=x,
                     out_filters=filters[res_scale],
                     strides=(1, 1, 1),

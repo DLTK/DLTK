@@ -50,7 +50,7 @@ In this example we use the first 150 datasets for training, the rest for validat
   ![Training loss](loss.png)
   
 
-- For monitoring and metric tracking, spawn a tensorboard webserver and point the log directory to the model save_path:
+- For monitoring and metric tracking, spawn a tensorboard webserver and point the log directory to the model_path:
 
   ```
   tensorboard --logdir /tmp/IXI_sex_classification/
@@ -59,10 +59,10 @@ In this example we use the first 150 datasets for training, the rest for validat
   ![Accuracy and precision](metrics.png)  
   
 
-- To deploy a model and run inference, run the deploy.py script and point to the model save_path:
+- To deploy a model and run inference, run the deploy.py script and point to the model_path:
 
   ```
-  python -u deploy.py --save_path /tmp/IXI_sex_classification MY_OPTIONS
+  python -u deploy.py --model_path /tmp/IXI_sex_classification MY_OPTIONS
   ```
   
   Note that during deploy we average the predictions of 4 random crops of a test input, so results may vary a bit from run to run. The expected output of deploy should look similar to the one below:

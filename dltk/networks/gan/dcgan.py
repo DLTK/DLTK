@@ -1,6 +1,7 @@
+from __future__ import unicode_literals
+from __future__ import print_function
 from __future__ import division
 from __future__ import absolute_import
-from __future__ import print_function
 
 import tensorflow as tf
 import numpy as np
@@ -12,7 +13,8 @@ def dcgan_generator_3d(inputs,
                        num_convolutions=1,
                        filters=(16, 32, 64),
                        strides=((2, 2, 2), (2, 2, 2), (2, 2, 2)),
-                       mode=tf.estimator.ModeKeys.TRAIN, use_bias=False):
+                       mode=tf.estimator.ModeKeys.TRAIN,
+                       use_bias=False):
     """
     Deep convolutional generative adversial network (DCGAN) generator
     network. with num_convolutions on len(filters) resolution scales. The
@@ -199,7 +201,7 @@ def dcgan_discriminator_3d(inputs,
     x = tf.reshape(x, (tf.shape(x)[0], np.prod(x_shape[1:])))
 
     x = tf.layers.dense(inputs=x,
-                        filters=1,
+                        units=1,
                         use_bias=True,
                         kernel_initializer=conv_params['kernel_initializer'],
                         bias_initializer=conv_params['bias_initializer'],

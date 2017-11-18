@@ -1,0 +1,42 @@
+language: python
+dist: trusty
+python:
+- 2.7.9
+- 2.7
+- 3.5
+- 3.6
+- nightly
+cache:
+  directories:
+  - "$HOME/.cache/pip"
+install:
+- travis_retry pip install -e '.[tests]'
+script:
+- pytest --cov dltk --pep8 -v --cov-append
+after_success:
+- coveralls
+jobs:
+  include:
+  - stage: docs
+    if: fork = false
+    install:
+    - pip install -e '.[docs, tests]'
+    script:
+    - eval "$(ssh-agent -s)"; touch docs/key; chmod 0600 docs/key
+    - openssl aes-256-cbc -K $encrypted_ed937517cf4d_key -iv $encrypted_ed937517cf4d_iv -in docs/key.enc -out docs/key -d && ssh-add docs/key
+    - git config --global user.email "builds@travis-ci.com"
+    - git config --global user.name "Travis CI"
+    - git remote set-url --push origin "git@github.com:$TRAVIS_REPO_SLUG"
+    - export ${!TRAVIS*}
+    - sphinx-versioning push docs gh-pages .
+  - stage: deploy
+    install: skip
+    script: skip
+    deploy:
+      provider: pypi
+      user: pawni
+      on:
+        branch: master
+        tags: true
+      password:
+        secure: "AgYc61upOjgS+T/1F3sxBXhs5mZDcAhewy4RuMYxDowMxOGTaGEM9obObHUA12ot3jTMnLGV3Ku8QoIC7VVQGDNnLNkFDKamuPuOIjWkF4G4QTgspiqaj90JHSmUan+3i1yfX9d1VEOhEd7EwdEzqkmmjTDzNtBl16Y5gbKHBvu57DVeaKEuIIx5Fb9k5hotsiMarrDh0Fk3Q3YGoOpROlMUeuQk6jz5lpJ30v2iU+narwWKj4ZegGmI1roL3gFIIOtYlub1pKp/NRbE64127L2JVwNlDJ4bP6cOHhdXAZSqrIe9BnMDSHT3er92eHtrf3VF7QcfKTBxuP2vwAfU8TINy6O6WnM+q5D+O5+SqVUOBae7iQ5gLIE6igbKyO9t3DbqamI0qK8r9qyDFCZL+hPDWJjAR3tWU+v+H4SXy3plcJSQDCm327vq9qkqckbECunLcfqpx+HhZNUWx8f90+DOLrAO/JfZTG0JGreHa+H65xws9yUauEZW2fwH9UX23pVKRCoQ9CYmNT+/DCj5gFvdkLU2S+C6p0CYnWsPaQ8qR4HlJIuNzFX5XiKVJ05wX/oQQAMRSMGQE1vgvUJukb6+m6lZzF30hxRZMovv19BiuJ8x4RuymyFS7Zut3Fopv/cbcPUYjCMSLcDIiVFHvtg2ukWSu1I42dpOO8fvgQ0="

@@ -30,12 +30,11 @@ def predict(args):
     # We trained on the first 4 subjects, so we predict on the rest
     file_names = file_names[-N_VALIDATION_SUBJECTS:]
 
-    # From the model save_path, parse the latest saved model and restore a
+    # From the model_path, parse the latest saved model and restore a
     # predictor from it
-    export_dir = \
-    [os.path.join(args.model_path, o) for o in sorted(os.listdir(args.model_path))
-     if os.path.isdir(os.path.join(args.model_path, o))
-     and o.isdigit()][-1]
+    export_dir = [os.path.join(args.model_path, o) for o in sorted(
+        os.listdir(args.model_path)) if os.path.isdir(
+        os.path.join(args.model_path, o)) and o.isdigit()][-1]
 
     print('Loading from {}'.format(export_dir))
     my_predictor = predictor.from_saved_model(export_dir)
@@ -74,7 +73,7 @@ def predict(args):
         y_ = np.mean(y_)
 
         # Calculate the absolute error for this subject
-        mae.append(np.abs(y_-lbl))
+        mae.append(np.abs(y_ - lbl))
 
         # Print outputs
         print('id={}; pred={:0.2f} yrs; true={:0.2f} yrs; run time={:0.2f} s; '

@@ -1,13 +1,16 @@
 # -*- coding: utf-8 -*-
-from __future__ import division
+from __future__ import unicode_literals
 from __future__ import print_function
+from __future__ import division
+from __future__ import absolute_import
 
 import argparse
 import os
 import pandas as pd
 import tensorflow as tf
+import numpy as np
 
-from dltk.core.upsample import *
+from dltk.core.upsample import linear_upsample_3d
 from dltk.networks.super_resolution.simple_super_resolution import simple_super_resolution_3d
 from dltk.io.abstract_reader import Reader
 
@@ -32,7 +35,7 @@ def model_fn(features, labels, mode, params):
         training targets (labels). Further, loss, optimiser, evaluation ops and
         custom tensorboard summary ops can be added. For additional information,
         please refer to https://www.tensorflow.org/api_docs/python/tf/estimator/Estimator#model_fn.
-    
+
     Args:
         features (tf.Tensor): Tensor of input features to train from. Required
             rank and dimensions are determined by the subsequent ops
@@ -42,7 +45,7 @@ def model_fn(features, labels, mode, params):
         mode (str): One of the tf.estimator.ModeKeys: TRAIN, EVAL or PREDICT
         params (dict, optional): A dictionary to parameterise the model_fn
             (e.g. learning_rate)
-    
+
     Returns:
         tf.estimator.EstimatorSpec: A custom EstimatorSpec for this experiment
     """
@@ -101,10 +104,10 @@ def model_fn(features, labels, mode, params):
 
     my_image_summaries = {}
     my_image_summaries['feat_hi_res'] = features['x'][0, 16, :, :, 0:1]
-    my_image_summaries['linear_up_hi_res'] =  tf.cast(lin_up, tf.float32)[0, 16, :, :, 0:1]
+    my_image_summaries['linear_up_hi_res'] = tf.cast(lin_up, tf.float32)[0, 16, :, :, 0:1]
     my_image_summaries['pred_hi_res'] = tf.cast(net_output_ops['x_'], tf.float32)[0, 16, :, :, 0:1]
 
-    expected_output_size = [1, 128, 128, 1] # [B, W, H, C]
+    expected_output_size = [1, 128, 128, 1]  # [B, W, H, C]
     [tf.summary.image(name, tf.reshape(image, expected_output_size))
      for name, image in my_image_summaries.items()]
 
@@ -117,7 +120,6 @@ def model_fn(features, labels, mode, params):
 
 
 def train(args):
-
     np.random.seed(42)
     tf.set_random_seed(42)
 
@@ -129,11 +131,11 @@ def train(args):
         dtype=object,
         keep_default_na=False,
         na_values=[]).as_matrix()
-    
+
     train_filenames = all_filenames[:100]
     val_filenames = all_filenames[100:]
-    
-    # Set up a data reader to handle the file i/o. 
+
+    # Set up a data reader to handle the file i/o.
     reader_params = {'n_examples': 8,
                      'example_size': [32, 128, 128],
                      'extract_examples': True}
@@ -150,7 +152,7 @@ def train(args):
         batch_size=BATCH_SIZE,
         shuffle_cache_size=SHUFFLE_CACHE_SIZE,
         params=reader_params)
-    
+
     val_input_fn, val_qinit_hook = reader.get_inputs(
         file_references=val_filenames,
         mode=tf.estimator.ModeKeys.EVAL,
@@ -158,21 +160,21 @@ def train(args):
         batch_size=BATCH_SIZE,
         shuffle_cache_size=SHUFFLE_CACHE_SIZE,
         params=reader_params)
-    
+
     # Instantiate the neural network estimator
     nn = tf.estimator.Estimator(
         model_fn=model_fn,
-        model_dir=args.save_path,
+        model_dir=args.model_path,
         params={'learning_rate': 0.01, 'upsampling_factor': UPSAMPLING_FACTOR},
         config=tf.estimator.RunConfig())
-    
+
     # Hooks for validation summaries
-    val_summary_hook  = tf.contrib.training.SummaryAtEndHook(
-        os.path.join(args.save_path, 'eval'))
+    val_summary_hook = tf.contrib.training.SummaryAtEndHook(
+        os.path.join(args.model_path, 'eval'))
     step_cnt_hook = tf.train.StepCounterHook(
         every_n_steps=EVAL_EVERY_N_STEPS,
-        output_dir=args.save_path)
-    
+        output_dir=args.model_path)
+
     print('Starting training...')
     try:
         for _ in range(MAX_STEPS // EVAL_EVERY_N_STEPS):
@@ -180,7 +182,7 @@ def train(args):
                 input_fn=train_input_fn,
                 hooks=[train_qinit_hook, step_cnt_hook],
                 steps=EVAL_EVERY_N_STEPS)
-            
+
             if args.run_validation:
                 results_val = nn.evaluate(
                     input_fn=val_input_fn,
@@ -194,14 +196,12 @@ def train(args):
 
     print('Stopping now.')
     export_dir = nn.export_savedmodel(
-        export_dir_base=args.save_path,
-        serving_input_receiver_fn=
-        reader.serving_input_receiver_fn(reader_example_shapes))
+        export_dir_base=args.model_path,
+        serving_input_receiver_fn=reader.serving_input_receiver_fn(reader_example_shapes))
     print('Model saved to {}.'.format(export_dir))
-        
-        
-if __name__ == '__main__':
 
+
+if __name__ == '__main__':
     # Set up argument parser
     parser = argparse.ArgumentParser(
         description='Example: IXI HH simple super-resolution training script')
@@ -209,12 +209,12 @@ if __name__ == '__main__':
     parser.add_argument('--restart', default=False, action='store_true')
     parser.add_argument('--verbose', default=False, action='store_true')
     parser.add_argument('--cuda_devices', '-c', default='0')
-    
-    parser.add_argument('--save_path', '-p', default='/tmp/IXI_super_resolution/')
+
+    parser.add_argument('--model_path', '-p', default='/tmp/IXI_super_resolution/')
     parser.add_argument('--data_csv', default='../../../data/IXI_HH/demographic_HH.csv')
-    
+
     args = parser.parse_args()
-        
+
     # Set verbosity
     if args.verbose:
         os.environ['TF_CPP_MIN_LOG_LEVEL'] = '1'
@@ -225,16 +225,16 @@ if __name__ == '__main__':
 
     # GPU allocation options
     os.environ["CUDA_VISIBLE_DEVICES"] = args.cuda_devices
-    
+
     # Handle restarting and resuming training
     if args.restart:
         print('Restarting training from scratch.')
-        os.system('rm -rf {}'.format(args.save_path))
-        
-    if not os.path.isdir(args.save_path):
-        os.system('mkdir -p {}'.format(args.save_path))
+        os.system('rm -rf {}'.format(args.model_path))
+
+    if not os.path.isdir(args.model_path):
+        os.system('mkdir -p {}'.format(args.model_path))
     else:
-        print('Resuming training on save_path {}'.format(args.save_path))
+        print('Resuming training on model_path {}'.format(args.model_path))
 
     # Call training
     train(args)

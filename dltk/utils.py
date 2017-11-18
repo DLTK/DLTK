@@ -1,6 +1,7 @@
-from __future__ import absolute_import
-from __future__ import division
+from __future__ import unicode_literals
 from __future__ import print_function
+from __future__ import division
+from __future__ import absolute_import
 
 import numpy as np
 
@@ -103,12 +104,13 @@ def sliding_window_segmentation_inference(session,
     """
 
     # TODO: asserts
+    assert batch_size > 0, 'Batch size has to be 1 or bigger'
 
-    pl_shape = list(sample_dict.keys()[0].get_shape().as_list())
+    pl_shape = list(sample_dict.keys())[0].get_shape().as_list()
 
     pl_bshape = pl_shape[1:-1]
 
-    inp_shape = list(sample_dict.values()[0].shape)
+    inp_shape = list(list(sample_dict.values())[0].shape)
     inp_bshape = inp_shape[1:-1]
 
     out_dummies = [np.zeros(
@@ -129,7 +131,7 @@ def sliding_window_segmentation_inference(session,
     padded_dict = {k: np.pad(v, padding, mode='constant') for k, v
                    in sample_dict.items()}
 
-    f_bshape = padded_dict.values()[0].shape[1:-1]
+    f_bshape = list(padded_dict.values())[0].shape[1:-1]
 
     striding = list(np.array(op_bshape) // 2) if all(out_diff == 0) else op_bshape
 
@@ -149,7 +151,7 @@ def sliding_window_segmentation_inference(session,
             done = True
 
         if batch_size == 1:
-            sw_dict = {k: v[slicer] for k,v in padded_dict.items()}
+            sw_dict = {k: v[slicer] for k, v in padded_dict.items()}
             op_parts = session.run(ops_list, feed_dict=sw_dict)
 
             for idx in range(len(op_parts)):

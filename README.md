@@ -29,14 +29,20 @@ If you use any application from the [DLTK Model Zoo](https://github.com/DLTK/mod
    source MY_CUDA_PATH/setup.sh
    ```
 
-2. Setup a virtual environment and activate it:
+2. Setup a virtual environment and activate it. If you intend to run this on machines with different system versions, use the --always-copy flag:
 
    ```shell
-   virtualenv venv_tf
+   virtualenv -p python3 --always-copy venv_tf
    source venv_tf/bin/activate
    ```
-
-3. Install DLTK:
+   
+3. Install TensorFlow (>=1.4.0) (preferred: with GPU support) for your system as described [here](https://www.tensorflow.org/install/):
+   
+   ```shell
+   pip install tensorflow-gpu>=1.4.0
+   ```
+   
+4. Install DLTK:
    There are two installation options available: You can simply install dltk as is from pypi via
    
    ```shell
