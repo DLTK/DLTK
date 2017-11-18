@@ -13,12 +13,12 @@ def dcgan_generator_3d(inputs,
                        filters=(16, 32, 64),
                        strides=((2, 2, 2), (2, 2, 2), (2, 2, 2)),
                        mode=tf.estimator.ModeKeys.TRAIN, use_bias=False):
-    """Deep convolutional generative adversial network (DCGAN) generator
-        network. with num_convolutions on len(filters) resolution scales. The
-        upsampling of features is done via strided transpose convolutions. On
-        each resolution scale s are num_convolutions with filter size =
-        filters[s]. strides[s] determine the upsampling factor at each
-        resolution scale.
+    """
+    Deep convolutional generative adversial network (DCGAN) generator
+    network. with num_convolutions on len(filters) resolution scales. The
+    upsampling of features is done via strided transpose convolutions. On
+    each resolution scale s are num_convolutions with filter size = filters[
+    s]. strides[s] determine the upsampling factor at each resolution scale.
 
     Args:
         inputs (tf.Tensor): Input noise tensor to the network.
@@ -35,6 +35,7 @@ def dcgan_generator_3d(inputs,
 
     Returns:
         dict: dictionary of output tensors
+
     """
     outputs = {}
     assert len(strides) == len(filters)
@@ -108,7 +109,7 @@ def dcgan_generator_3d(inputs,
 
     x = conv_op(inputs=x,
                 filters=out_filters,
-                kernel_size=(3, 3, 3),  #TODO  IS THIS CORRECT?
+                kernel_size=(3, 3, 3),  # TODO IS THIS CORRECT?
                 strides=(1, 1, 1), **conv_params)
 
     outputs['gen'] = x
@@ -122,11 +123,12 @@ def dcgan_discriminator_3d(inputs,
                            strides=((2, 2, 2), (2, 2, 2), (2, 2, 2)),
                            mode=tf.estimator.ModeKeys.EVAL,
                            use_bias=False):
-    """Deep convolutional generative adversarial network (DCGAN) discriminator
-        network with num_convolutions on len(filters) resolution scales. The
-        downsampling of features is done via strided convolutions. On each
-        resolution scale s are num_convolutions with filter size = filters[s].
-         strides[s] determine the downsampling factor at each resolution scale.
+    """
+    Deep convolutional generative adversarial network (DCGAN) discriminator
+    network with num_convolutions on len(filters) resolution scales. The
+    downsampling of features is done via strided convolutions. On each
+    resolution scale s are num_convolutions with filter size = filters[s].
+    strides[s] determine the downsampling factor at each resolution scale.
 
     Args:
         inputs (tf.Tensor): Input tensor to the network, required to be of
@@ -143,6 +145,7 @@ def dcgan_discriminator_3d(inputs,
 
     Returns:
         dict: dictionary of output tensors
+
     """
     outputs = {}
     assert len(strides) == len(filters)

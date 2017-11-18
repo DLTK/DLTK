@@ -20,16 +20,17 @@ class Reader(object):
     """Wrapper for dataset generation given a read function and a save function"""
 
     def __init__(self, read_fn, dtypes):
-        """
+        """Constructs a Reader instance
 
         Args:
             read_fn: Input function returning features which is a dictionary of
-        string feature name to `Tensor` or `SparseTensor`. If it returns a
-        tuple, first item is extracted as features. Prediction continues until
-        `input_fn` raises an end-of-input exception (`OutOfRangeError` or
-        `StopIteration`).
+                string feature name to `Tensor` or `SparseTensor`. If it
+                returns a tuple, first item is extracted as features.
+                Prediction continues until `input_fn` raises an end-of-input
+                exception (`OutOfRangeError` or `StopIteration`).
             dtypes:  A nested structure of tf.DType objects corresponding to
                 each component of an element yielded by generator.
+
         """
         self.dtypes = dtypes
 
@@ -74,7 +75,7 @@ class Reader(object):
                     # non-relevant entries. However, this does not look into
                     # dictionaries nested into lists
                     for k in ex.keys():
-                        if not k in compare.keys():
+                        if k not in compare.keys():
                             del ex[k]
                         elif isinstance(ex[k], dict) and isinstance(compare[k], dict):
                             clean_ex(ex[k], compare[k])

@@ -17,9 +17,12 @@ class SlidingWindow(object):
 
         Args:
             img_shape (array_like): shape of the image to slide over
+
             window_shape (array_like): shape of the window to extract
+
             has_batch_dim (bool, optional): flag to indicate whether a batch
                 dimension is present
+
             striding (array_like, optional): amount to move the window between
                 each position
         """
@@ -80,20 +83,23 @@ def sliding_window_segmentation_inference(session,
                                           ops_list,
                                           sample_dict,
                                           batch_size=1):
-    """Utility function to perform sliding window inference for segmentation
+    """
+    Utility function to perform sliding window inference for segmentation
 
     Args:
         session (tf.Session): TensorFlow session to run ops with
-        ops_list (array_like): Operators to fetch assemble with  sliding window
+
+        ops_list (array_like): Operators to fetch assemble with sliding window
+
         sample_dict (dict): Dictionary with tf.Placeholder keys mapping the
-            placeholders to their respective input
+        placeholders to their respective input
+
         batch_size (int, optional): Number of sliding windows to batch for
             calculation
 
     Returns:
         list: List of np.arrays corresponding to the assembled outputs of
             ops_list
-
     """
 
     # TODO: asserts
