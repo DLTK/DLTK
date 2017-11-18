@@ -10,7 +10,8 @@ cache:
   directories:
   - "$HOME/.cache/pip"
 install:
-- travis_retry pip install -e '.[tests]'
+- pip install tensorflow
+- pip install -e '.[tests]'
 script:
 - pytest --cov dltk --pep8 -v --cov-append
 after_success:
