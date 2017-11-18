@@ -138,7 +138,7 @@ if RESAMPLE_IMAGES:
 
     for i in df:
         IXI_id = i[0]
-        print ('Resampling {}'.format(IXI_id))
+        print('Resampling {}'.format(IXI_id))
 
         t1_fn = glob.glob('./orig/t1/{}*.nii.gz'.format(IXI_id))[0]
         t2_fn = glob.glob('./orig/t2/{}*.nii.gz'.format(IXI_id))[0]
@@ -160,10 +160,10 @@ if RESAMPLE_IMAGES:
         if not os.path.exists(output_dir):
             os.makedirs(output_dir)
 
-        print ('T1: {} {}'.format(t1_1mm.GetSize(), t1_1mm.GetSpacing()))
-        print ('T2: {} {}'.format(t2_1mm.GetSize(), t2_1mm.GetSpacing()))
-        print ('PD: {} {}'.format(pd_1mm.GetSize(), pd_1mm.GetSpacing()))
-        print ('MRA: {} {}'.format(mra_1mm.GetSize(), mra_1mm.GetSpacing()))
+        print('T1: {} {}'.format(t1_1mm.GetSize(), t1_1mm.GetSpacing()))
+        print('T2: {} {}'.format(t2_1mm.GetSize(), t2_1mm.GetSpacing()))
+        print('PD: {} {}'.format(pd_1mm.GetSize(), pd_1mm.GetSpacing()))
+        print('MRA: {} {}'.format(mra_1mm.GetSize(), mra_1mm.GetSpacing()))
 
         sitk.WriteImage(t1_1mm, os.path.join(output_dir, 'T1_1mm.nii.gz'))
         sitk.WriteImage(t2_1mm, os.path.join(output_dir, 'T2_1mm.nii.gz'))
@@ -180,10 +180,10 @@ if RESAMPLE_IMAGES:
         if not os.path.exists(output_dir):
             os.makedirs(output_dir)
 
-        print ('T1: {} {}'.format(t2_2mm.GetSize(), t1_2mm.GetSpacing()))
-        print ('T2: {} {}'.format(t2_2mm.GetSize(), t2_2mm.GetSpacing()))
-        print ('PD: {} {}'.format(pd_2mm.GetSize(), pd_2mm.GetSpacing()))
-        print ('MRA: {} {}'.format(mra_2mm.GetSize(), mra_2mm.GetSpacing()))
+        print('T1: {} {}'.format(t2_2mm.GetSize(), t1_2mm.GetSpacing()))
+        print('T2: {} {}'.format(t2_2mm.GetSize(), t2_2mm.GetSpacing()))
+        print('PD: {} {}'.format(pd_2mm.GetSize(), pd_2mm.GetSpacing()))
+        print('MRA: {} {}'.format(mra_2mm.GetSize(), mra_2mm.GetSpacing()))
 
         sitk.WriteImage(t1_2mm, os.path.join(output_dir, 'T1_2mm.nii.gz'))
         sitk.WriteImage(t2_2mm, os.path.join(output_dir, 'T2_2mm.nii.gz'))
