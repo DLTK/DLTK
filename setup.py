@@ -13,7 +13,7 @@ except ImportError:
 __version__ = None
 exec(open('dltk/version.py').read())
 
-test_require = ['pytest', 'pytest-pep8', 'pytest-cov', 'python-coveralls']
+test_require = ['pytest', 'pytest-flake8', 'pytest-cov', 'python-coveralls']
 
 setup(name='dltk',
       version=__version__,
