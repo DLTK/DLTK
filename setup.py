@@ -3,7 +3,7 @@
 from setuptools import setup, find_packages
 
 setup(name='dltk',
-      version='0.1',
+      version='0.1.1',
       description='Deep Learning Toolkit for Medical Image Analysis',
       author='DLTK Contributors',
       url='https://dltk.github.io',
