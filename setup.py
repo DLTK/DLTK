@@ -39,7 +39,7 @@ setup(name='dltk',
                         'jupyter>=1.0.0', 'argparse'],
       tests_require=test_require,
       extras_require={'docs': ['sphinx', 'sphinx-rtd-theme', 'recommonmark',
-                              'sphinx-autobuild', 'sphinxcontrib-versioning'],
+                               'sphinx-autobuild', 'sphinxcontrib-versioning'],
                       'tests': test_require}
       )
 
