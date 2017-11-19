@@ -38,8 +38,9 @@ setup(name='dltk',
                         'scikit-image>=0.13.0', 'SimpleITK>=1.0.0',
                         'jupyter>=1.0.0', 'argparse'],
       tests_require=test_require,
-      extras_require={'docs': ['sphinx', 'sphinx-rtd-theme', 'recommonmark',
-                               'sphinx-autobuild', 'sphinxcontrib-versioning'],
+      extras_require={'docs': ['sphinx==1.5.6', 'sphinx-rtd-theme',
+                               'recommonmark', 'sphinx-autobuild',
+                               'sphinxcontrib-versioning'],
                       'tests': test_require}
       )
 
