@@ -35,8 +35,7 @@ def predict(args):
     # predictor from it
     export_dir = \
         [os.path.join(args.model_path, o) for o in sorted(os.listdir(args.model_path))
-         if os.path.isdir(os.path.join(args.model_path, o))
-         and o.isdigit()][-1]
+         if os.path.isdir(os.path.join(args.model_path, o)) and o.isdigit()][-1]
     print('Loading from {}'.format(export_dir))
     my_predictor = predictor.from_saved_model(export_dir)
 
@@ -73,7 +72,7 @@ def predict(args):
         # Average the predictions on the cropped test inputs:
         y_ = np.mean(y_, axis=0)
         predicted_class = np.argmax(y_)
-        
+
         # Calculate the accuracy for this subject
         accuracy.append(predicted_class == lbl)
 

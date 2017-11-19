@@ -1,6 +1,7 @@
+from __future__ import unicode_literals
+from __future__ import print_function
 from __future__ import division
 from __future__ import absolute_import
-from __future__ import print_function
 
 import tensorflow as tf
 import numpy as np
@@ -18,8 +19,8 @@ def get_linear_upsampling_kernel(kernel_spatial_shape,
         kernel_spatial_shape (list or tuple): Spatial dimensions of the
             upsampling kernel. Is required to be of rank 2 or 3,
             (i.e. [dim_x, dim_y] or [dim_x, dim_y, dim_z])
-        out_filters (int): Number of output filters.  
-        in_filters (int): Number of input filters. 
+        out_filters (int): Number of output filters.
+        in_filters (int): Number of input filters.
         trainable (bool, optional): Flag to set the returned tf.Variable
             to be trainable or not.
 
@@ -28,7 +29,8 @@ def get_linear_upsampling_kernel(kernel_spatial_shape,
     """
 
     rank = len(list(kernel_spatial_shape))
-    assert 1 < rank < 4, 'Transposed convolutions are only supported in 2D and 3D'
+    assert 1 < rank < 4, \
+        'Transposed convolutions are only supported in 2D and 3D'
 
     kernel_shape = tuple(kernel_spatial_shape + [out_filters, in_filters])
     size = kernel_spatial_shape
@@ -88,7 +90,7 @@ def linear_upsample_3d(inputs,
         name (str, optional): Name of the layer.
 
     Returns:
-        tf.Tensor: Upsampled Tensor 
+        tf.Tensor: Upsampled Tensor
     """
     static_inp_shape = tuple(inputs.get_shape().as_list())
     dyn_inp_shape = tf.shape(inputs)

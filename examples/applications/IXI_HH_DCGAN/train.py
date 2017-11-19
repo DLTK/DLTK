@@ -1,13 +1,15 @@
 # -*- coding: utf-8 -*-
-from __future__ import division
+from __future__ import unicode_literals
 from __future__ import print_function
+from __future__ import division
+from __future__ import absolute_import
 
 import argparse
 import os
 import pandas as pd
 import tensorflow as tf
+import numpy as np
 
-from dltk.core.losses import *
 from dltk.networks.gan.dcgan import dcgan_discriminator_3d, dcgan_generator_3d
 from dltk.io.abstract_reader import Reader
 
@@ -18,7 +20,6 @@ MAX_STEPS = 35000
 
 
 def train(args):
-
     np.random.seed(42)
     tf.set_random_seed(42)
 
@@ -30,10 +31,10 @@ def train(args):
         dtype=object,
         keep_default_na=False,
         na_values=[]).as_matrix()
-    
+
     train_filenames = all_filenames
-    
-    # Set up a data reader to handle the file i/o. 
+
+    # Set up a data reader to handle the file i/o.
     reader_params = {'n_examples': 10,
                      'example_size': [4, 224, 224],
                      'extract_examples': True}
@@ -101,7 +102,7 @@ def train(args):
             mode=tf.estimator.ModeKeys.TRAIN)
 
         return disc['logits']
-    
+
     # Hooks for training and validation summaries
     step_cnt_hook = tf.train.StepCounterHook(output_dir=args.model_path)
 
@@ -114,7 +115,7 @@ def train(args):
         discriminator_loss_fn=tfgan.losses.least_squares_discriminator_loss,
         generator_optimizer=tf.train.AdamOptimizer(0.0005, 0.5, epsilon=1e-5),
         discriminator_optimizer=tf.train.AdamOptimizer(0.0005, 0.5, epsilon=1e-5))
-    
+
     print('Starting training...')
     try:
         gan_estimator.train(
@@ -132,19 +133,18 @@ def train(args):
 
 
 if __name__ == '__main__':
-
     # Set up argument parser
     parser = argparse.ArgumentParser(description='Example: IXI HH LSGAN training script')
     parser.add_argument('--run_validation', default=True)
     parser.add_argument('--restart', default=False, action='store_true')
     parser.add_argument('--verbose', default=False, action='store_true')
     parser.add_argument('--cuda_devices', '-c', default='0')
-    
+
     parser.add_argument('--model_path', '-p', default='/tmp/IXI_dcgan/')
     parser.add_argument('--data_csv', default='../../../data/IXI_HH/demographic_HH.csv')
-    
+
     args = parser.parse_args()
-        
+
     # Set verbosity
     if args.verbose:
         os.environ['TF_CPP_MIN_LOG_LEVEL'] = '1'
@@ -155,12 +155,12 @@ if __name__ == '__main__':
 
     # GPU allocation options
     os.environ["CUDA_VISIBLE_DEVICES"] = args.cuda_devices
-    
+
     # Handle restarting and resuming training
     if args.restart:
         print('Restarting training from scratch.')
         os.system('rm -rf {}'.format(args.model_path))
-        
+
     if not os.path.isdir(args.model_path):
         os.system('mkdir -p {}'.format(args.model_path))
     else:

@@ -1,14 +1,20 @@
+from __future__ import unicode_literals
+from __future__ import print_function
+from __future__ import division
+from __future__ import absolute_import
+
 import SimpleITK as sitk
 import tensorflow as tf
 import os
+import numpy as np
 
-from dltk.io.augmentation import *
-from dltk.io.preprocessing import *
+from dltk.io.augmentation import add_gaussian_noise, flip, extract_class_balanced_example_array
+from dltk.io.preprocessing import whitening
 
 
 def read_fn(file_references, mode, params=None):
     """A custom python read function for interfacing with nii image files.
-    
+
     Args:
         file_references (list): A list of lists containing file references, such
             as [['id_0', 'image_filename_0', target_value_0], ...,
@@ -18,16 +24,16 @@ def read_fn(file_references, mode, params=None):
         params (dict, optional): A dictionary to parameterise read_fn ouputs
             (e.g. reader_params = {'n_examples': 10, 'example_size':
             [64, 64, 64], 'extract_examples': True}, etc.).
-    
+
     Yields:
-        dict: A dictionary of reader outputs for dltk.io.abstract_reader. 
+        dict: A dictionary of reader outputs for dltk.io.abstract_reader.
     """
-    
+
     def _augment(img, lbl):
         """An image augmentation function"""
         img = add_gaussian_noise(img, sigma=0.1)
         [img, lbl] = flip([img, lbl], axis=1)
-        
+
         return img, lbl
 
     for f in file_references:
@@ -38,8 +44,10 @@ def read_fn(file_references, mode, params=None):
         # of an input
         t1_sitk = sitk.ReadImage(os.path.join(str(img_fn), 'T1.nii'))
         t1 = sitk.GetArrayFromImage(t1_sitk)
-        t1_ir = sitk.GetArrayFromImage(sitk.ReadImage(os.path.join(str(img_fn), 'T1_IR.nii')))
-        t2_fl = sitk.GetArrayFromImage(sitk.ReadImage(os.path.join(str(img_fn), 'T2_FLAIR.nii')))
+        t1_ir = sitk.GetArrayFromImage(
+            sitk.ReadImage(os.path.join(str(img_fn), 'T1_IR.nii')))
+        t2_fl = sitk.GetArrayFromImage(
+            sitk.ReadImage(os.path.join(str(img_fn), 'T2_FLAIR.nii')))
 
         # Normalise volume images
         t1 = whitening(t1)
@@ -57,18 +65,18 @@ def read_fn(file_references, mode, params=None):
 
         lbl = sitk.GetArrayFromImage(sitk.ReadImage(
             os.path.join(str(img_fn),
-            'LabelsForTraining.nii'))).astype(np.int32)
+                         'LabelsForTraining.nii'))).astype(np.int32)
 
         # Augment if used in training mode
         if mode == tf.estimator.ModeKeys.TRAIN:
             images, lbl = _augment(images, lbl)
-        
+
         # Check if the reader is supposed to return training examples or full
         #  images
         if params['extract_examples']:
             n_examples = params['n_examples']
             example_size = params['example_size']
-            
+
             images, lbl = extract_class_balanced_example_array(
                 image=images,
                 label=lbl,

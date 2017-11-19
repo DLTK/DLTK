@@ -25,25 +25,24 @@ N_VALIDATION_SUBJECTS = 1
 
 
 def predict(args):
-    
     # Read in the csv with the file names you would want to predict on
     file_names = pd.read_csv(
         args.csv,
         dtype=object,
         keep_default_na=False,
         na_values=[]).as_matrix()
-    
+
     # We trained on the first 4 subjects, so we predict on the rest
     file_names = file_names[-N_VALIDATION_SUBJECTS:]
-    
+
     # From the model_path, parse the latest saved model and restore a
     # predictor from it
     export_dir = [os.path.join(args.model_path, o) for o in os.listdir(args.model_path)
-                  if os.path.isdir(os.path.join(args.model_path, o))
-                  and o.isdigit()][-1]
+                  if os.path.isdir(os.path.join(args.model_path, o)) and
+                  o.isdigit()][-1]
     print('Loading from {}'.format(export_dir))
     my_predictor = predictor.from_saved_model(export_dir)
-    
+
     # Fetch the output probability op of the trained network
     y_prob = my_predictor._fetch_tensors['y_prob']
     num_classes = y_prob.get_shape().as_list()[-1]
@@ -53,14 +52,13 @@ def predict(args):
     for output in read_fn(file_references=file_names,
                           mode=tf.estimator.ModeKeys.EVAL,
                           params=READER_PARAMS):
-            
         t0 = time.time()
-                
+
         # Parse the read function output and add a dummy batch dimension as
         # required
         img = np.expand_dims(output['features']['x'], axis=0)
         lbl = np.expand_dims(output['labels']['y'], axis=0)
-                
+
         # Do a sliding window inference with our DLTK wrapper
         pred = sliding_window_segmentation_inference(
             session=my_predictor.session,
@@ -73,7 +71,7 @@ def predict(args):
 
         # Calculate the Dice coefficient
         dsc = metrics.dice(pred, lbl, num_classes)[1:].mean()
-        
+
         # Save the file as .nii.gz using the header information from the
         # original sitk image
         output_fn = os.path.join(args.model_path, '{}_seg.nii.gz'.format(output['subject_id']))
@@ -82,10 +80,10 @@ def predict(args):
         new_sitk.CopyInformation(output['sitk'])
 
         sitk.WriteImage(new_sitk, output_fn)
-        
-        # Print outputs 
+
+        # Print outputs
         print('Id={}; Dice={:0.4f}; time={:0.2} secs; output_path={};'.format(
-            output['subject_id'], dsc, time.time()-t0, output_fn))
+            output['subject_id'], dsc, time.time() - t0, output_fn))
 
 
 if __name__ == '__main__':

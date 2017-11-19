@@ -1,5 +1,7 @@
 ## Deep Learning Toolkit (DLTK) for Medical Imaging
 [![Gitter](https://badges.gitter.im/DLTK/DLTK.svg)](https://gitter.im/DLTK/DLTK?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+[![Coverage Status](https://coveralls.io/repos/github/DLTK/DLTK/badge.svg?branch=dev)](https://coveralls.io/github/DLTK/DLTK?branch=dev)
+[![Build Status](https://travis-ci.org/DLTK/DLTK.svg?branch=dev)](https://travis-ci.org/DLTK/DLTK)
 
 ![DLTK logo](logo.png)
 

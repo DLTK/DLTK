@@ -1,6 +1,7 @@
+from __future__ import unicode_literals
 from __future__ import print_function
-from __future__ import absolute_import
 from __future__ import division
+from __future__ import absolute_import
 
 import numpy as np
 
@@ -32,15 +33,15 @@ def normalise_one_one(image):
     return ret
 
 
-def resize_image_with_crop_or_pad(image, img_size=[64,64,64], **kwargs):
+def resize_image_with_crop_or_pad(image, img_size=(64, 64, 64), **kwargs):
     """Image resizing. Resizes image by cropping or padding dimension
      to fit specified size.
-    
+
     Args:
         image (np.ndarray): image to be resized
         img_size (list or tuple): new image size
         kwargs (): additional arguments to be passed to np.pad
-            
+
     Returns:
         np.ndarray: resized image
     """

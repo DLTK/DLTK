@@ -1,6 +1,7 @@
-from __future__ import absolute_import
-from __future__ import division
+from __future__ import unicode_literals
 from __future__ import print_function
+from __future__ import division
+from __future__ import absolute_import
 
 import numpy as np
 
@@ -17,9 +18,12 @@ class SlidingWindow(object):
 
         Args:
             img_shape (array_like): shape of the image to slide over
+
             window_shape (array_like): shape of the window to extract
+
             has_batch_dim (bool, optional): flag to indicate whether a batch
                 dimension is present
+
             striding (array_like, optional): amount to move the window between
                 each position
         """
@@ -80,23 +84,27 @@ def sliding_window_segmentation_inference(session,
                                           ops_list,
                                           sample_dict,
                                           batch_size=1):
-    """Utility function to perform sliding window inference for segmentation
+    """
+    Utility function to perform sliding window inference for segmentation
 
     Args:
         session (tf.Session): TensorFlow session to run ops with
-        ops_list (array_like): Operators to fetch assemble with  sliding window
+
+        ops_list (array_like): Operators to fetch assemble with sliding window
+
         sample_dict (dict): Dictionary with tf.Placeholder keys mapping the
-            placeholders to their respective input
+        placeholders to their respective input
+
         batch_size (int, optional): Number of sliding windows to batch for
             calculation
 
     Returns:
         list: List of np.arrays corresponding to the assembled outputs of
             ops_list
-
     """
 
     # TODO: asserts
+    assert batch_size > 0, 'Batch size has to be 1 or bigger'
 
     pl_shape = list(sample_dict.keys())[0].get_shape().as_list()
 
@@ -143,7 +151,7 @@ def sliding_window_segmentation_inference(session,
             done = True
 
         if batch_size == 1:
-            sw_dict = {k: v[slicer] for k,v in padded_dict.items()}
+            sw_dict = {k: v[slicer] for k, v in padded_dict.items()}
             op_parts = session.run(ops_list, feed_dict=sw_dict)
 
             for idx in range(len(op_parts)):
