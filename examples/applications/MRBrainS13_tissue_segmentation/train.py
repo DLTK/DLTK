@@ -78,13 +78,10 @@ def model_fn(features, labels, mode, params):
     # 3. define a training op and ops for updating moving averages
     # (i.e. for batch normalisation)
     global_step = tf.train.get_global_step()
-    #optimiser = tf.train.AdamOptimizer(
-    #    learning_rate=params["learning_rate"],
-    #    epsilon=1e-5)
     optimiser = tf.train.MomentumOptimizer(
-        learning_rate=params["learning_rate"], 
+        learning_rate=params["learning_rate"],
         momentum=0.9)
-      
+
     update_ops = tf.get_collection(tf.GraphKeys.UPDATE_OPS)
     with tf.control_dependencies(update_ops):
         train_op = optimiser.minimize(loss, global_step=global_step)
