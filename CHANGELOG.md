@@ -19,7 +19,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Changed
 - unet implementation now has convolutional blocks symmetrically in the encoder and decoder
-- core modularisation based on AbstractModule replaced by new tf.layer and tf.estimator classes
+- core modularisation based on AbstractModule replaced by tf.layer and tf.estimator
 - core io AbstractReader class now wraps tf.contrib.data.Dataset, replacing v0.1 reader and queuing classes
 - tutorials are now changed to explain how dltk modules can be used with tf 
 - improved readme in terms of contributing, installation instructions
@@ -27,5 +27,5 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Removed
 - sonnet like modularisation: AbstractModule classes
-- summary modules, instead relying on custom summaries in estimator model_fns
-- examples bsaed on natural images (MNIST, CIFAR10, etc.)
+- summary modules, instead relying on problem-specific tf.summaries in estimator model_fns
+- examples based on natural images (MNIST, CIFAR10, etc.)

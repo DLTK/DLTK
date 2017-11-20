@@ -47,11 +47,3 @@ For monitoring and metric tracking, spawn a tensorboard webserver and point the 
   ```
   tensorboard --logdir /tmp/IXI_super_resolution/
   ```
-  
-### Deploy
-
-To deploy a model and run inference, run the deploy.py script and point to the model_path:
-
-  ```
-  python -u deploy.py --model_path /tmp/IXI_super_resolution/  MY_OPTIONS
-  ```

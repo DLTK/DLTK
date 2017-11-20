@@ -43,9 +43,9 @@ def read_fn(file_references, mode, params=None):
         t2_fn = os.path.join(data_path, '{}/T2_1mm.nii.gz'.format(subject_id))
         pd_fn = os.path.join(data_path, '{}/PD_1mm.nii.gz'.format(subject_id))
 
-        t1 = sitk.GetArrayFromImage(sitk.ReadImage(t1_fn))
-        t2 = sitk.GetArrayFromImage(sitk.ReadImage(t2_fn))
-        pd = sitk.GetArrayFromImage(sitk.ReadImage(pd_fn))
+        t1 = sitk.GetArrayFromImage(sitk.ReadImage(str(t1_fn)))
+        t2 = sitk.GetArrayFromImage(sitk.ReadImage(str(t2_fn)))
+        pd = sitk.GetArrayFromImage(sitk.ReadImage(str(pd_fn)))
 
         # Normalise volume images
         t1 = whitening(t1)

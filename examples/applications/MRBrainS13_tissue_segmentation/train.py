@@ -25,7 +25,7 @@ NUM_CHANNELS = 3
 
 NUM_FEATURES_IN_SUMMARIES = min(4, NUM_CHANNELS)
 
-BATCH_SIZE = 4
+BATCH_SIZE = 16
 SHUFFLE_CACHE_SIZE = 64
 
 MAX_STEPS = 50000
@@ -78,9 +78,9 @@ def model_fn(features, labels, mode, params):
     # 3. define a training op and ops for updating moving averages
     # (i.e. for batch normalisation)
     global_step = tf.train.get_global_step()
-    optimiser = tf.train.AdamOptimizer(
+    optimiser = tf.train.MomentumOptimizer(
         learning_rate=params["learning_rate"],
-        epsilon=1e-5)
+        momentum=0.9)
 
     update_ops = tf.get_collection(tf.GraphKeys.UPDATE_OPS)
     with tf.control_dependencies(update_ops):
@@ -114,6 +114,7 @@ def model_fn(features, labels, mode, params):
 
 
 def train(args):
+
     np.random.seed(42)
     tf.set_random_seed(42)
 
@@ -198,6 +199,7 @@ def train(args):
 
 
 if __name__ == '__main__':
+
     # Set up argument parser
     parser = argparse.ArgumentParser(
         description='Example: MRBrainS13 example segmentation training script')

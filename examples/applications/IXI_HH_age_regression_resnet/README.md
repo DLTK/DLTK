@@ -41,6 +41,8 @@ In this example we use the first 150 datasets for training, the rest for validat
 
 
 ### Usage
+- You can download a pre-trained model for fine-tuning or deployment [here](http://www.doc.ic.ac.uk/~mrajchl/dltk_models/examples/applications/IXI_HH_age_regression.tar.gz). The archive contains both the tf.estimator export folder and the standard .index, .meta and .data-* files for continuing training. Extract the model folder from the .tar.gz file and point your MY_OPTIONS --model_path argument to its location (see below). 
+
 - To train a new model, run the train.py script:
 
   ```
