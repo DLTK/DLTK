@@ -37,7 +37,7 @@ def read_fn(file_references, mode, params=None):
 
         # Read the image nii with sitk
         t1_fn = os.path.join(data_path, '{}/T1_1mm.nii.gz'.format(subject_id))
-        t1 = sitk.GetArrayFromImage(sitk.ReadImage(t1_fn))
+        t1 = sitk.GetArrayFromImage(sitk.ReadImage(str(t1_fn)))
 
         # Normalise volume images
         t1 = t1[..., np.newaxis]
