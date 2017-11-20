@@ -2,14 +2,6 @@
 
 from setuptools import setup, find_packages
 
-try:
-    import tensorflow
-except ImportError:
-    raise Exception('We did not find TensorFlow on your system. Please install '
-                    'it via `pip install tensorflow-gpu` if you have a '
-                    'CUDA-enabled GPU or with `pip install tensorflow` without '
-                    'GPU support.')
-
 __version__ = None
 exec(open('dltk/version.py').read())
 
@@ -48,3 +40,11 @@ print("\nWelcome to DLTK!")
 print("If any questions please visit documentation page "
       "https://dltk.github.io/dltk")
 print("or join community chat on https://gitter.im/DLTK/DLTK")
+
+
+try:
+    import tensorflow
+except ImportError:
+    print('We did not find TensorFlow on your system. Please install it via '
+          '`pip install tensorflow-gpu` if you have a CUDA-enabled GPU or with '
+          '`pip install tensorflow` without GPU support.')
