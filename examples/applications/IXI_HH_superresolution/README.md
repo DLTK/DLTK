@@ -30,20 +30,36 @@ In `train.py`, the CSV is parsed and split into a training and validation set. A
 t1 = sitk.GetArrayFromImage(sitk.ReadImage(t1_fn))
 ...
 ```
+### Usage
+- You can download a pre-trained model for fine-tuning or deployment [here](http://www.doc.ic.ac.uk/~mrajchl/dltk_models/examples/applications/IXI_superresolution.tar.gz). 
+The archive contains both the tf.estimator export folder and the standard 
+.index, .meta and .data-* files for continuing training. Extract the model 
+folder from the .tar.gz file and point your ```--model_path``` MY_MODEL_PATH 
+argument to its location (see below). 
 
-### Training
-![L2 loss](loss.png)
-
-To train a new model, run the train.py script:
-
-  ```
-  python -u train.py MY_OPTIONS
-  ```
-
-### Monitoring
-
-For monitoring and metric tracking, spawn a tensorboard webserver and point the log directory to the model_path:
+- To train a new model, run the train.py script. Display run options with
+  ``` python train.py --help ```:  
 
   ```
-  tensorboard --logdir /tmp/IXI_super_resolution/
+  usage: train.py [-h] [--run_validation RUN_VALIDATION] [--restart] [--verbose]
+                    [--cuda_devices CUDA_DEVICES] [--model_path MODEL_PATH]
+                    [--data_csv DATA_CSV]  
+  ``` 
+  
+  To start training, run the training script with the desired options:  
+
+  ```
+  python train.py MY_OPTIONS
+  ```
+
+  The model and training events will be saved to a ```model_path``` 
+  MY_MODEL_PATH:   
+  
+  ![L2 loss](loss.png)
+
+- For monitoring and metric tracking, spawn a tensorboard webserver and point
+ the log directory to MY_MODEL_PATH:
+
+  ```
+  tensorboard --logdir MY_MODEL_PATH
   ```
