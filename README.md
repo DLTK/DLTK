@@ -25,26 +25,22 @@ If you use DLTK in your work please refer to this citation for the current versi
 If you use any application from the [DLTK Model Zoo](https://github.com/DLTK/models), additionally refer to the respective README.md files in the applications' folder to comply with its authors' instructions on referencing.
 
 ### Installation
-1. Install CUDA with cuDNN and add its path in ~/.bashrc by sourcing setup.sh:
-
-   ```shell
-   source MY_CUDA_PATH/setup.sh
-   ```
-
-2. Setup a virtual environment and activate it. If you intend to run this on machines with different system versions, use the --always-copy flag:
+1. Setup a virtual environment and activate it. If you intend to run this on 
+machines with different system versions, use the --always-copy flag:
 
    ```shell
    virtualenv -p python3 --always-copy venv_tf
    source venv_tf/bin/activate
    ```
    
-3. Install TensorFlow (>=1.4.0) (preferred: with GPU support) for your system as described [here](https://www.tensorflow.org/install/):
+2. Install TensorFlow (>=1.4.0) (preferred: with GPU support) for your system
+ as described [here](https://www.tensorflow.org/install/):
    
    ```shell
    pip install tensorflow-gpu>=1.4.0
    ```
    
-4. Install DLTK:
+3. Install DLTK:
    There are two installation options available: You can simply install dltk as is from pypi via
    
    ```shell
