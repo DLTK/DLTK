@@ -41,30 +41,46 @@ In this example we use the first 150 datasets for training, the rest for validat
 
 
 ### Usage
-- You can download a pre-trained model for fine-tuning or deployment [here](http://www.doc.ic.ac.uk/~mrajchl/dltk_models/examples/applications/IXI_HH_age_regression.tar.gz). The archive contains both the tf.estimator export folder and the standard .index, .meta and .data-* files for continuing training. Extract the model folder from the .tar.gz file and point your MY_OPTIONS --model_path argument to its location (see below). 
+- You can download a pre-trained model for fine-tuning or deployment [here](http://www.doc.ic.ac.uk/~mrajchl/dltk_models/examples/applications/IXI_HH_age_regression.tar.gz). 
+The archive contains both the tf.estimator export folder and the standard 
+.index, .meta and .data-* files for continuing training. Extract the model 
+folder from the .tar.gz file and point your ```--model_path``` MY_MODEL_PATH 
+argument to its location (see below). 
 
-- To train a new model, run the train.py script:
+- To train a new model, run the train.py script. Display run options with
+  ``` python train.py --help ```:  
 
   ```
-  python -u train.py MY_OPTIONS
+  usage: train.py [-h] [--run_validation RUN_VALIDATION] [--restart] [--verbose]
+                    [--cuda_devices CUDA_DEVICES] [--model_path MODEL_PATH]
+                    [--data_csv DATA_CSV]  
+  ``` 
+  
+  To start training, run the training script with the desired options:  
+
+  ```
+  python train.py MY_OPTIONS
   ```
 
-  The model and training events will be saved to a temporary folder: `/tmp/IXI_regression`.
+  The model and training events will be saved to a ```model_path``` 
+  MY_MODEL_PATH:   
   
   ![Training loss](loss.png)
 
-- For monitoring and metric tracking, spawn a tensorboard webserver and point the log directory to the model_path:
+- For monitoring and metric tracking, spawn a tensorboard webserver and point
+ the log directory to MY_MODEL_PATH:
 
   ```
-  tensorboard --logdir /tmp/IXI_regression/
+  tensorboard --logdir MY_MODEL_PATH
   ```
   
   ![Mean absolute error and RMSE](metrics.png) 
   
-- To deploy a model and run inference, run the deploy.py script and point to the model_path:
+- To deploy a model and run inference, run the deploy.py script and point to 
+the trained model:
 
   ```
-  python -u deploy.py --model_path /tmp/IXI_regression MY_OPTIONS
+  python -u deploy.py --model_path MY_MODEL_PATH
   ```
   
   Note that during deploy we average the predictions of 4 random crops of a test input, so results may vary a bit from run to run. The expected output of deploy should look similar to the one below: 
