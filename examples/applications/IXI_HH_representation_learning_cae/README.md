@@ -29,30 +29,36 @@ t2 = sitk.GetArrayFromImage(sitk.ReadImage(t2_fn))
 pd = sitk.GetArrayFromImage(sitk.ReadImage(pd_fn))
 ...
 ```
+### Usage
+- You can download a pre-trained model for fine-tuning or deployment [here](http://www.doc.ic.ac.uk/~mrajchl/dltk_models/examples/applications/IXI_HH_representation_learning_cae.tar.gz). 
+The archive contains both the tf.estimator export folder and the standard 
+.index, .meta and .data-* files for continuing training. Extract the model 
+folder from the .tar.gz file and point your ```--model_path``` MY_MODEL_PATH 
+argument to its location (see below). 
 
-### Training
-- You can download a pre-trained model for fine-tuning or deployment [here](http://www.doc.ic.ac.uk/~mrajchl/dltk_models/examples/applications/IXI_HH_representation_learning_cae.tar.gz). The archive contains both the tf.estimator export folder and the standard .index, .meta and .data-* files for continuing training. Extract the model folder from the .tar.gz file and point your MY_OPTIONS --model_path argument to its location (see below). 
-
-![L2 loss](loss.png)
-
-To train a new model, run the train.py script:
-
-  ```
-  python -u train.py MY_OPTIONS
-  ```
-
-### Monitoring
-
-For monitoring and metric tracking, spawn a tensorboard webserver and point the log directory to the model_path:
+- To train a new model, run the train.py script. Display run options with
+  ``` python train.py --help ```:  
 
   ```
-  tensorboard --logdir /tmp/IXI_autoencoder/
-  ```
+  usage: train.py [-h] [--run_validation RUN_VALIDATION] [--restart] [--verbose]
+                    [--cuda_devices CUDA_DEVICES] [--model_path MODEL_PATH]
+                    [--data_csv DATA_CSV]  
+  ``` 
   
-### Deploy
-
-To deploy a model and run inference, run the deploy.py script and point to the model_path:
+  To start training, run the training script with the desired options:  
 
   ```
-  python -u deploy.py --model_path /tmp/IXI_autoencoder MY_OPTIONS
+  python train.py MY_OPTIONS
+  ```
+
+  The model and training events will be saved to a ```model_path``` 
+  MY_MODEL_PATH:   
+  
+  ![L2 loss](loss.png)
+
+- For monitoring and metric tracking, spawn a tensorboard webserver and point
+ the log directory to MY_MODEL_PATH:
+
+  ```
+  tensorboard --logdir MY_MODEL_PATH
   ```
