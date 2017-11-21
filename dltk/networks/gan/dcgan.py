@@ -6,13 +6,15 @@ from __future__ import absolute_import
 import tensorflow as tf
 import numpy as np
 from dltk.core.upsample import linear_upsample_3d
+from dltk.core.activations import leaky_relu
 
 
 def dcgan_generator_3d(inputs,
-                       out_filters,
-                       num_convolutions=1,
-                       filters=(16, 32, 64),
-                       strides=((2, 2, 2), (2, 2, 2), (2, 2, 2)),
+                       filters=(256, 128, 64, 32, 1),
+                       kernel_size=((4, 4, 4), (3, 3, 3), (3, 3, 3), (3, 3, 3),
+                                    (4, 4, 4)),
+                       strides=((4, 4, 4), (1, 2, 2), (1, 2, 2), (1, 2, 2),
+                                (1, 2, 2)),
                        mode=tf.estimator.ModeKeys.TRAIN,
                        use_bias=False):
     """
@@ -45,8 +47,6 @@ def dcgan_generator_3d(inputs,
         'inputs are required to have a rank of 5.'
 
     conv_op = tf.layers.conv3d
-    relu_op = tf.nn.relu6
-    upsample_op = linear_upsample_3d
 
     conv_params = {'padding': 'same',
                    'use_bias': use_bias,
@@ -59,60 +59,27 @@ def dcgan_generator_3d(inputs,
     tf.logging.info('Input tensor shape {}'.format(x.get_shape()))
 
     for res_scale in range(0, len(filters)):
-        for i in range(0, num_convolutions - 1):
-
-            with tf.variable_scope('gen_unit_{}_{}'.format(res_scale, i)):
-
-                x = conv_op(inputs=x,
-                            filters=filters[res_scale],
-                            kernel_size=(3, 3, 3),
-                            strides=(1, 1, 1),
-                            **conv_params)
-
-                x = tf.layers.batch_normalization(
-                    x, training=mode == tf.estimator.ModeKeys.TRAIN)
-
-                x = relu_op(x)
-
-        with tf.variable_scope('gen_unit_{}_{}'.format(
-                res_scale, num_convolutions)):
+        with tf.variable_scope('gen_unit_{}'.format(res_scale)):
 
             tf.logging.info('Generator at res_scale before up {} tensor '
                             'shape: {}'.format(res_scale, x.get_shape()))
 
-            x = upsample_op(inputs=x,
-                            strides=strides[res_scale],
-                            use_bias=use_bias)
+            x = linear_upsample_3d(x, strides[res_scale], trainable=True)
+
+            x = conv_op(inputs=x,
+                        filters=filters[res_scale],
+                        kernel_size=kernel_size[res_scale],
+                        **conv_params)
 
             tf.logging.info('Generator at res_scale after up {} tensor '
                             'shape: {}'.format(res_scale, x.get_shape()))
 
             x = tf.layers.batch_normalization(
-                x, training=mode == tf.estimator.ModeKeys.TRAIN)
+               x, training=mode == tf.estimator.ModeKeys.TRAIN)
 
-            x = relu_op(x)
+            x = leaky_relu(x, 0.2)
             tf.logging.info('Generator at res_scale {} tensor shape: '
                             '{}'.format(res_scale, x.get_shape()))
-
-    for i in range(0, num_convolutions - 1):
-
-        with tf.variable_scope('gen_unit_{}_{}'.format(len(filters), i)):
-
-            x = conv_op(inputs=x,
-                        filters=filters[-1],
-                        kernel_size=(3, 3, 3),
-                        strides=(1, 1, 1),
-                        **conv_params)
-
-            x = tf.layers.batch_normalization(
-                x, training=mode == tf.estimator.ModeKeys.TRAIN)
-
-            x = relu_op(x)
-
-    x = conv_op(inputs=x,
-                filters=out_filters,
-                kernel_size=(3, 3, 3),  # TODO IS THIS CORRECT?
-                strides=(1, 1, 1), **conv_params)
 
     outputs['gen'] = x
 
@@ -120,9 +87,8 @@ def dcgan_generator_3d(inputs,
 
 
 def dcgan_discriminator_3d(inputs,
-                           num_convolutions=1,
-                           filters=(16, 32, 64),
-                           strides=((2, 2, 2), (2, 2, 2), (2, 2, 2)),
+                           filters=(64, 128, 256, 512),
+                           strides=((2, 2, 2), (2, 2, 2), (1, 2, 2), (1, 2, 2)),
                            mode=tf.estimator.ModeKeys.EVAL,
                            use_bias=False):
     """
@@ -155,7 +121,6 @@ def dcgan_discriminator_3d(inputs,
         'inputs are required to have a rank of 5.'
 
     conv_op = tf.layers.conv3d
-    relu_op = tf.nn.relu6
 
     conv_params = {'padding': 'same',
                    'use_bias': use_bias,
@@ -168,34 +133,18 @@ def dcgan_discriminator_3d(inputs,
     tf.logging.info('Input tensor shape {}'.format(x.get_shape()))
 
     for res_scale in range(0, len(filters)):
-        for i in range(0, num_convolutions - 1):
-
-            with tf.variable_scope('disc_unit_{}_{}'.format(res_scale, i)):
-
-                x = conv_op(inputs=x,
-                            filters=filters[res_scale],
-                            kernel_size=(3, 3, 3),
-                            strides=(1, 1, 1),
-                            **conv_params)
-
-                x = relu_op(x)
-
-        # Employ strided convolutions to downsample
-        with tf.variable_scope('disc_unit_{}_{}'.format(
-                res_scale, num_convolutions)):
-
-            # Adjust the strided conv kernel size to prevent losing information
-            k_size = [s * 2 if s > 1 else 3 for s in strides[res_scale]]
+        with tf.variable_scope('disc_unit_{}'.format(res_scale)):
 
             x = conv_op(inputs=x,
                         filters=filters[res_scale],
-                        kernel_size=k_size,
+                        kernel_size=(3, 3, 3),
                         strides=strides[res_scale],
                         **conv_params)
 
-            x = relu_op(x)
-            tf.logging.info('Discriminator at res_scale {} tensor shape: '
-                            '{}'.format(res_scale, x.get_shape()))
+            x = tf.layers.batch_normalization(
+                x, training=mode == tf.estimator.ModeKeys.TRAIN)
+
+            x = leaky_relu(x, 0.2)
 
     x_shape = x.get_shape().as_list()
     x = tf.reshape(x, (tf.shape(x)[0], np.prod(x_shape[1:])))
