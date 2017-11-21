@@ -1,8 +1,10 @@
 ## Generative modeling of 3T T1 brain MR images
 Exemplary training script for generative modeling of T1w brain MR images, based on the [IXI dataset](http://brain-development.org/ixi-dataset/) [1]. We are using a custom DCGAN-like [2] architecture.
 
-[1] IXI – Information eXtraction from Images (EPSRC GR/S21533/02)
+[1] IXI – Information eXtraction from Images (EPSRC GR/S21533/02)  
 [2] Radford et al. Unsupervised representation learning with deep convolutional generative adversarial networks. 2015
+
+![Training loss](example.png)
 
 ### Data
 The data can be downloaded via the script in dltk/data/IXI_HH. It includes 178 datasets and corresponding demographic information. The download script
@@ -28,16 +30,38 @@ t1 = sitk.GetArrayFromImage(sitk.ReadImage(t1_fn))
 ```
 
 ### Usage
-- To train a new model, run the train.py script:
+- You can download a pre-trained model for fine-tuning or deployment [here](http://www.doc.ic.ac.uk/~mrajchl/dltk_models/examples/applications/IXI_HH_DCGAN.tar.gz). 
+The archive contains both the tf.estimator export folder and the standard 
+.index, .meta and .data-* files for continuing training. Extract the model 
+folder from the .tar.gz file and point your ```--model_path``` MY_MODEL_PATH 
+argument to its location (see below). 
+
+- To train a new model, run the train.py script. Display run options with
+  ``` python train.py --help ```:  
 
   ```
-  python -u train.py MY_OPTIONS
-  ```
+  usage: train.py [-h] [--run_validation RUN_VALIDATION] [--restart] [--verbose]
+                    [--cuda_devices CUDA_DEVICES] [--model_path MODEL_PATH]
+                    [--data_csv DATA_CSV]  
+  ``` 
+  
+  To start training, run the training script with the desired options:  
 
-  The model and training events will be saved to a temporary folder: `/tmp/IXI_dcgan`.
+  ```
+  python train.py MY_OPTIONS
+  ```
+  
+  ![Training loss](loss.png)
 
-- For monitoring and metric tracking, spawn a tensorboard webserver and point the log directory to the model save_path:
+  The model and training events will be saved to a ```model_path``` 
+  MY_MODEL_PATH.
+  
+- For monitoring and metric tracking, spawn a tensorboard webserver and point
+ the log directory to MY_MODEL_PATH:
 
   ```
-  tensorboard --logdir /tmp/IXI_dcgan/
+  tensorboard --logdir MY_MODEL_PATH
   ```
+  
+  
+  
