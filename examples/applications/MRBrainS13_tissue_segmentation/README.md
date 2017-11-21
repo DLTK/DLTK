@@ -27,27 +27,45 @@ t1_ir = sitk.GetArrayFromImage(sitk.ReadImage(os.path.join(str(img_fn), 'T1_IR.n
 ...
 ```
 
-### Training
-![Dice_similarity_coefficient](dsc.png)
 
-To train a new model, run the train.py script:
+### Usage
+- You can download a pre-trained model for fine-tuning or deployment [here](http://www.doc.ic.ac.uk/~mrajchl/dltk_models/examples/applications/MRBrainS13_tissue_segmentation.tar.gz). 
+The archive contains both the tf.estimator export folder and the standard 
+.index, .meta and .data-* files for continuing training. Extract the model 
+folder from the .tar.gz file and point your ```--model_path``` MY_MODEL_PATH 
+argument to its location (see below). 
 
-  ```
-  python -u train.py MY_OPTIONS
-  ```
-
-### Monitoring
-
-For monitoring and metric tracking, spawn a tensorboard webserver and point the log directory to the model_path:
+- To train a new model, run the train.py script. Display run options with
+  ``` python train.py --help ```:  
 
   ```
-  tensorboard --logdir /tmp/mrbrains_segmentation/
+  usage: train.py [-h] [--run_validation RUN_VALIDATION] [--restart] [--verbose]
+                    [--cuda_devices CUDA_DEVICES] [--model_path MODEL_PATH]
+                    [--data_csv DATA_CSV]  
+  ``` 
+  
+  To start training, run the training script with the desired options:  
+
+  ```
+  python train.py MY_OPTIONS
+  ```
+
+  The model and training events will be saved to a ```model_path``` 
+  MY_MODEL_PATH.   
+  
+
+- For monitoring and metric tracking, spawn a tensorboard webserver and point
+ the log directory to MY_MODEL_PATH:
+
+  ```
+  tensorboard --logdir MY_MODEL_PATH
   ```
   
-### Deploy
-
-To deploy a model and run inference, run the deploy.py script and point to the model_path:
+  ![Dice_similarity_coefficient](dsc.png)
+  
+- To deploy a model and run inference, run the deploy.py script and point to 
+the trained model:
 
   ```
-  python -u deploy.py --model_path /tmp/mrbrains_segmentation/ MY_OPTIONS
+  python -u deploy.py --model_path MY_MODEL_PATH
   ```
