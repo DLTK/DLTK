@@ -223,13 +223,15 @@
 <span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">dltk.core.upsample</span> <span class="k">import</span> <span class="n">linear_upsample_3d</span>
+<span class="kn">from</span> <span class="nn">dltk.core.activations</span> <span class="k">import</span> <span class="n">leaky_relu</span>
 
 
 <div class="viewcode-block" id="dcgan_generator_3d"><a class="viewcode-back" href="../../../../api/dltk.networks.gan.html#dltk.networks.gan.dcgan.dcgan_generator_3d">[docs]</a><span class="k">def</span> <span class="nf">dcgan_generator_3d</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span>
-                       <span class="n">out_filters</span><span class="p">,</span>
-                       <span class="n">num_convolutions</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-                       <span class="n">filters</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">64</span><span class="p">),</span>
-                       <span class="n">strides</span><span class="o">=</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)),</span>
+                       <span class="n">filters</span><span class="o">=</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+                       <span class="n">kernel_size</span><span class="o">=</span><span class="p">((</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span>
+                                    <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">)),</span>
+                       <span class="n">strides</span><span class="o">=</span><span class="p">((</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
+                                <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)),</span>
                        <span class="n">mode</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">estimator</span><span class="o">.</span><span class="n">ModeKeys</span><span class="o">.</span><span class="n">TRAIN</span><span class="p">,</span>
                        <span class="n">use_bias</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -262,8 +264,6 @@
         <span class="s1">&#39;inputs are required to have a rank of 5.&#39;</span>
 
     <span class="n">conv_op</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">conv3d</span>
-    <span class="n">relu_op</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">relu6</span>
-    <span class="n">upsample_op</span> <span class="o">=</span> <span class="n">linear_upsample_3d</span>
 
     <span class="n">conv_params</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;padding&#39;</span><span class="p">:</span> <span class="s1">&#39;same&#39;</span><span class="p">,</span>
                    <span class="s1">&#39;use_bias&#39;</span><span class="p">:</span> <span class="n">use_bias</span><span class="p">,</span>
@@ -276,60 +276,27 @@
     <span class="n">tf</span><span class="o">.</span><span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Input tensor shape </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">get_shape</span><span class="p">()))</span>
 
     <span class="k">for</span> <span class="n">res_scale</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">filters</span><span class="p">)):</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">num_convolutions</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
-
-            <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">variable_scope</span><span class="p">(</span><span class="s1">&#39;gen_unit_</span><span class="si">{}</span><span class="s1">_</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">res_scale</span><span class="p">,</span> <span class="n">i</span><span class="p">)):</span>
-
-                <span class="n">x</span> <span class="o">=</span> <span class="n">conv_op</span><span class="p">(</span><span class="n">inputs</span><span class="o">=</span><span class="n">x</span><span class="p">,</span>
-                            <span class="n">filters</span><span class="o">=</span><span class="n">filters</span><span class="p">[</span><span class="n">res_scale</span><span class="p">],</span>
-                            <span class="n">kernel_size</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span>
-                            <span class="n">strides</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
-                            <span class="o">**</span><span class="n">conv_params</span><span class="p">)</span>
-
-                <span class="n">x</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">batch_normalization</span><span class="p">(</span>
-                    <span class="n">x</span><span class="p">,</span> <span class="n">training</span><span class="o">=</span><span class="n">mode</span> <span class="o">==</span> <span class="n">tf</span><span class="o">.</span><span class="n">estimator</span><span class="o">.</span><span class="n">ModeKeys</span><span class="o">.</span><span class="n">TRAIN</span><span class="p">)</span>
-
-                <span class="n">x</span> <span class="o">=</span> <span class="n">relu_op</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-
-        <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">variable_scope</span><span class="p">(</span><span class="s1">&#39;gen_unit_</span><span class="si">{}</span><span class="s1">_</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                <span class="n">res_scale</span><span class="p">,</span> <span class="n">num_convolutions</span><span class="p">)):</span>
+        <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">variable_scope</span><span class="p">(</span><span class="s1">&#39;gen_unit_</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">res_scale</span><span class="p">)):</span>
 
             <span class="n">tf</span><span class="o">.</span><span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Generator at res_scale before up </span><span class="si">{}</span><span class="s1"> tensor &#39;</span>
                             <span class="s1">&#39;shape: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">res_scale</span><span class="p">,</span> <span class="n">x</span><span class="o">.</span><span class="n">get_shape</span><span class="p">()))</span>
 
-            <span class="n">x</span> <span class="o">=</span> <span class="n">upsample_op</span><span class="p">(</span><span class="n">inputs</span><span class="o">=</span><span class="n">x</span><span class="p">,</span>
-                            <span class="n">strides</span><span class="o">=</span><span class="n">strides</span><span class="p">[</span><span class="n">res_scale</span><span class="p">],</span>
-                            <span class="n">use_bias</span><span class="o">=</span><span class="n">use_bias</span><span class="p">)</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">linear_upsample_3d</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">strides</span><span class="p">[</span><span class="n">res_scale</span><span class="p">],</span> <span class="n">trainable</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+            <span class="n">x</span> <span class="o">=</span> <span class="n">conv_op</span><span class="p">(</span><span class="n">inputs</span><span class="o">=</span><span class="n">x</span><span class="p">,</span>
+                        <span class="n">filters</span><span class="o">=</span><span class="n">filters</span><span class="p">[</span><span class="n">res_scale</span><span class="p">],</span>
+                        <span class="n">kernel_size</span><span class="o">=</span><span class="n">kernel_size</span><span class="p">[</span><span class="n">res_scale</span><span class="p">],</span>
+                        <span class="o">**</span><span class="n">conv_params</span><span class="p">)</span>
 
             <span class="n">tf</span><span class="o">.</span><span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Generator at res_scale after up </span><span class="si">{}</span><span class="s1"> tensor &#39;</span>
                             <span class="s1">&#39;shape: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">res_scale</span><span class="p">,</span> <span class="n">x</span><span class="o">.</span><span class="n">get_shape</span><span class="p">()))</span>
 
             <span class="n">x</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">batch_normalization</span><span class="p">(</span>
-                <span class="n">x</span><span class="p">,</span> <span class="n">training</span><span class="o">=</span><span class="n">mode</span> <span class="o">==</span> <span class="n">tf</span><span class="o">.</span><span class="n">estimator</span><span class="o">.</span><span class="n">ModeKeys</span><span class="o">.</span><span class="n">TRAIN</span><span class="p">)</span>
+               <span class="n">x</span><span class="p">,</span> <span class="n">training</span><span class="o">=</span><span class="n">mode</span> <span class="o">==</span> <span class="n">tf</span><span class="o">.</span><span class="n">estimator</span><span class="o">.</span><span class="n">ModeKeys</span><span class="o">.</span><span class="n">TRAIN</span><span class="p">)</span>
 
-            <span class="n">x</span> <span class="o">=</span> <span class="n">relu_op</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">leaky_relu</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">)</span>
             <span class="n">tf</span><span class="o">.</span><span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Generator at res_scale </span><span class="si">{}</span><span class="s1"> tensor shape: &#39;</span>
                             <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">res_scale</span><span class="p">,</span> <span class="n">x</span><span class="o">.</span><span class="n">get_shape</span><span class="p">()))</span>
-
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">num_convolutions</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
-
-        <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">variable_scope</span><span class="p">(</span><span class="s1">&#39;gen_unit_</span><span class="si">{}</span><span class="s1">_</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">filters</span><span class="p">),</span> <span class="n">i</span><span class="p">)):</span>
-
-            <span class="n">x</span> <span class="o">=</span> <span class="n">conv_op</span><span class="p">(</span><span class="n">inputs</span><span class="o">=</span><span class="n">x</span><span class="p">,</span>
-                        <span class="n">filters</span><span class="o">=</span><span class="n">filters</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
-                        <span class="n">kernel_size</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span>
-                        <span class="n">strides</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
-                        <span class="o">**</span><span class="n">conv_params</span><span class="p">)</span>
-
-            <span class="n">x</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">batch_normalization</span><span class="p">(</span>
-                <span class="n">x</span><span class="p">,</span> <span class="n">training</span><span class="o">=</span><span class="n">mode</span> <span class="o">==</span> <span class="n">tf</span><span class="o">.</span><span class="n">estimator</span><span class="o">.</span><span class="n">ModeKeys</span><span class="o">.</span><span class="n">TRAIN</span><span class="p">)</span>
-
-            <span class="n">x</span> <span class="o">=</span> <span class="n">relu_op</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-
-    <span class="n">x</span> <span class="o">=</span> <span class="n">conv_op</span><span class="p">(</span><span class="n">inputs</span><span class="o">=</span><span class="n">x</span><span class="p">,</span>
-                <span class="n">filters</span><span class="o">=</span><span class="n">out_filters</span><span class="p">,</span>
-                <span class="n">kernel_size</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span>  <span class="c1"># TODO IS THIS CORRECT?</span>
-                <span class="n">strides</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="o">**</span><span class="n">conv_params</span><span class="p">)</span>
 
     <span class="n">outputs</span><span class="p">[</span><span class="s1">&#39;gen&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span>
 
@@ -337,9 +304,8 @@
 
 
 <div class="viewcode-block" id="dcgan_discriminator_3d"><a class="viewcode-back" href="../../../../api/dltk.networks.gan.html#dltk.networks.gan.dcgan.dcgan_discriminator_3d">[docs]</a><span class="k">def</span> <span class="nf">dcgan_discriminator_3d</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span>
-                           <span class="n">num_convolutions</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-                           <span class="n">filters</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">64</span><span class="p">),</span>
-                           <span class="n">strides</span><span class="o">=</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)),</span>
+                           <span class="n">filters</span><span class="o">=</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">256</span><span class="p">,</span> <span class="mi">512</span><span class="p">),</span>
+                           <span class="n">strides</span><span class="o">=</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)),</span>
                            <span class="n">mode</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">estimator</span><span class="o">.</span><span class="n">ModeKeys</span><span class="o">.</span><span class="n">EVAL</span><span class="p">,</span>
                            <span class="n">use_bias</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -372,7 +338,6 @@
         <span class="s1">&#39;inputs are required to have a rank of 5.&#39;</span>
 
     <span class="n">conv_op</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">conv3d</span>
-    <span class="n">relu_op</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">relu6</span>
 
     <span class="n">conv_params</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;padding&#39;</span><span class="p">:</span> <span class="s1">&#39;same&#39;</span><span class="p">,</span>
                    <span class="s1">&#39;use_bias&#39;</span><span class="p">:</span> <span class="n">use_bias</span><span class="p">,</span>
@@ -385,34 +350,18 @@
     <span class="n">tf</span><span class="o">.</span><span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Input tensor shape </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">get_shape</span><span class="p">()))</span>
 
     <span class="k">for</span> <span class="n">res_scale</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">filters</span><span class="p">)):</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">num_convolutions</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
-
-            <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">variable_scope</span><span class="p">(</span><span class="s1">&#39;disc_unit_</span><span class="si">{}</span><span class="s1">_</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">res_scale</span><span class="p">,</span> <span class="n">i</span><span class="p">)):</span>
-
-                <span class="n">x</span> <span class="o">=</span> <span class="n">conv_op</span><span class="p">(</span><span class="n">inputs</span><span class="o">=</span><span class="n">x</span><span class="p">,</span>
-                            <span class="n">filters</span><span class="o">=</span><span class="n">filters</span><span class="p">[</span><span class="n">res_scale</span><span class="p">],</span>
-                            <span class="n">kernel_size</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span>
-                            <span class="n">strides</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
-                            <span class="o">**</span><span class="n">conv_params</span><span class="p">)</span>
-
-                <span class="n">x</span> <span class="o">=</span> <span class="n">relu_op</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-
-        <span class="c1"># Employ strided convolutions to downsample</span>
-        <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">variable_scope</span><span class="p">(</span><span class="s1">&#39;disc_unit_</span><span class="si">{}</span><span class="s1">_</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                <span class="n">res_scale</span><span class="p">,</span> <span class="n">num_convolutions</span><span class="p">)):</span>
-
-            <span class="c1"># Adjust the strided conv kernel size to prevent losing information</span>
-            <span class="n">k_size</span> <span class="o">=</span> <span class="p">[</span><span class="n">s</span> <span class="o">*</span> <span class="mi">2</span> <span class="k">if</span> <span class="n">s</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="k">else</span> <span class="mi">3</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">strides</span><span class="p">[</span><span class="n">res_scale</span><span class="p">]]</span>
+        <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">variable_scope</span><span class="p">(</span><span class="s1">&#39;disc_unit_</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">res_scale</span><span class="p">)):</span>
 
             <span class="n">x</span> <span class="o">=</span> <span class="n">conv_op</span><span class="p">(</span><span class="n">inputs</span><span class="o">=</span><span class="n">x</span><span class="p">,</span>
                         <span class="n">filters</span><span class="o">=</span><span class="n">filters</span><span class="p">[</span><span class="n">res_scale</span><span class="p">],</span>
-                        <span class="n">kernel_size</span><span class="o">=</span><span class="n">k_size</span><span class="p">,</span>
+                        <span class="n">kernel_size</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span>
                         <span class="n">strides</span><span class="o">=</span><span class="n">strides</span><span class="p">[</span><span class="n">res_scale</span><span class="p">],</span>
                         <span class="o">**</span><span class="n">conv_params</span><span class="p">)</span>
 
-            <span class="n">x</span> <span class="o">=</span> <span class="n">relu_op</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-            <span class="n">tf</span><span class="o">.</span><span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Discriminator at res_scale </span><span class="si">{}</span><span class="s1"> tensor shape: &#39;</span>
-                            <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">res_scale</span><span class="p">,</span> <span class="n">x</span><span class="o">.</span><span class="n">get_shape</span><span class="p">()))</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">batch_normalization</span><span class="p">(</span>
+                <span class="n">x</span><span class="p">,</span> <span class="n">training</span><span class="o">=</span><span class="n">mode</span> <span class="o">==</span> <span class="n">tf</span><span class="o">.</span><span class="n">estimator</span><span class="o">.</span><span class="n">ModeKeys</span><span class="o">.</span><span class="n">TRAIN</span><span class="p">)</span>
+
+            <span class="n">x</span> <span class="o">=</span> <span class="n">leaky_relu</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">)</span>
 
     <span class="n">x_shape</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">get_shape</span><span class="p">()</span><span class="o">.</span><span class="n">as_list</span><span class="p">()</span>
     <span class="n">x</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">x</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">x_shape</span><span class="p">[</span><span class="mi">1</span><span class="p">:])))</span>
