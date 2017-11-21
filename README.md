@@ -104,7 +104,7 @@ documentation in a webbrowser of your choice by pointing it at
  
 ### The team
 DLTK is currently maintained by [@pawni](https://github.com/pawni) and [@mrajchl](https://github.com/mrajchl) with greatly appreciated contributions coming from individual researchers and engineers listed here in alphabetical order: 
- [@ericspod](https://github.com/ericspod) [@ghisvail](https://github.com/ghisvail) [@mauinz](https://github.com/mauinz) [@michaeld123](https://github.com/michaeld123) [@sk1712](https://github.com/sk1712)
+[@CarloBiffi](https://github.com/CarloBiffi) [@ericspod](https://github.com/ericspod) [@ghisvail](https://github.com/ghisvail) [@mauinz](https://github.com/mauinz) [@michaeld123](https://github.com/michaeld123) [@sk1712](https://github.com/sk1712)
 
 ### License
 See [LICENSE](https://github.com/DLTK/DLTK/blob/master/LICENSE)
