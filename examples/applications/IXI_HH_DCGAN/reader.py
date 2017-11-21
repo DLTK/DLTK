@@ -9,7 +9,7 @@ import os
 import numpy as np
 
 from dltk.io.augmentation import extract_random_example_array
-from dltk.io.preprocessing import normalise_zero_one
+from dltk.io.preprocessing import normalise_one_one
 import scipy
 
 
@@ -45,7 +45,7 @@ def read_fn(file_references, mode, params=None):
         # restrict to slices around center slice
         t1 = t1[len(t1) // 2 - 5:len(t1) // 2 + 5]
 
-        t1 = normalise_zero_one(t1)
+        t1 = normalise_one_one(t1)
 
         images = t1
 
