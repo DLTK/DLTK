@@ -91,7 +91,21 @@ We appreciate any contributions to the DLTK and its Model Zoo. If you have impro
 - Python coding style: Like TensorFlow, we loosely adhere to [google coding style](https://google.github.io/styleguide/pyguide.html) and [google docstrings](https://google.github.io/styleguide/pyguide.html#Comments).
 - Entirely new features should be committed to ```dltk/contrib``` before we can sensibly integrate it into the core.
 - Standalone problem-specific applications or (re-)implementations of published methods should be committed to the [DLTK Model Zoo](https://github.com/DLTK/models) repo and provide a README.md file with author/coder contact information. 
-    
+
+#### Running tests locally
+To run the tests on your machine, you can install the ``tests`` extras by 
+running `pip installe -e '.[tests]'` inside the DLTK root directory. This 
+will install all necessary dependencies for testing. You can then run 
+`pytest --cov dltk --flake8 --cov-append` to see whether your code passes.
+ 
+#### Building docs locally
+To run the tests on your machine, you can install the ``docs`` extras by 
+running `pip installe -e '.[docs]'` inside the DLTK root directory. This 
+will install all necessary dependencies for the documentation. You can then run 
+`make -C docs html` to build the documentation. You can access this 
+documentation in a webbrowser of your choice by pointing it at 
+`docs/build/html/index.html`.
+ 
 ### The team
 DLTK is currently maintained by [@pawni](https://github.com/pawni) and [@mrajchl](https://github.com/mrajchl) with greatly appreciated contributions coming from individual researchers and engineers listed here in alphabetical order: 
  [@ericspod](https://github.com/ericspod) [@ghisvail](https://github.com/ghisvail) [@mauinz](https://github.com/mauinz) [@michaeld123](https://github.com/michaeld123) [@sk1712](https://github.com/sk1712)
