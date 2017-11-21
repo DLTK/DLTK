@@ -1,0 +1,423 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>dltk.core.residual_unit &mdash; DLTK 0.2.0rc0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../_static/theme_overrides.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="DLTK 0.2.0rc0 documentation" href="../../../index.html"/>
+        <link rel="up" title="Module code" href="../../index.html"/> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html">
+          
+
+          
+            
+            <img src="../../../_static/logo-dltk.svg" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.2
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../index.html">Home</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Package Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/dltk.html">dltk package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/dltk.core.html">dltk.core package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/dltk.core.html#module-dltk.core.activations">dltk.core.activations module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/dltk.core.html#module-dltk.core.losses">dltk.core.losses module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/dltk.core.html#module-dltk.core.metrics">dltk.core.metrics module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/dltk.core.html#module-dltk.core.residual_unit">dltk.core.residual_unit module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/dltk.core.html#module-dltk.core.upsample">dltk.core.upsample module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/dltk.core.html#module-dltk.core">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/dltk.io.html">dltk.io package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/dltk.io.html#module-dltk.io.augmentation">dltk.io.augmentation module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/dltk.io.html#module-dltk.io.preprocessing">dltk.io.preprocessing module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/dltk.io.html#module-dltk.io.abstract_reader">dltk.core.io.abstract_reader module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/dltk.io.html#module-dltk.io">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/dltk.networks.html">dltk.networks package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/dltk.networks.autoencoder.html">dltk.networks.autoencoder package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/dltk.networks.autoencoder.html#module-dltk.networks.autoencoder.convolutional_autoencoder">dltk.networks.autoencoder.convolutional_autoencoder module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/dltk.networks.autoencoder.html#module-dltk.networks.autoencoder">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/dltk.networks.gan.html">dltk.networks.gan package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/dltk.networks.gan.html#module-dltk.networks.gan.dcgan">dltk.networks.gan.dcgan module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/dltk.networks.gan.html#module-dltk.networks.gan">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/dltk.networks.regression_classification.html">dltk.networks.regression_classification package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/dltk.networks.regression_classification.html#module-dltk.networks.regression_classification.resnet">dltk.networks.regression_classification.resnet module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/dltk.networks.regression_classification.html#module-dltk.networks.regression_classification">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/dltk.networks.segmentation.html">dltk.networks.segmentation package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/dltk.networks.segmentation.html#module-dltk.networks.segmentation.deepmedic">dltk.networks.segmentation.deepmedic module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/dltk.networks.segmentation.html#module-dltk.networks.segmentation.fcn">dltk.networks.segmentation.fcn module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/dltk.networks.segmentation.html#module-dltk.networks.segmentation.unet">dltk.networks.segmentation.unet module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/dltk.networks.segmentation.html#module-dltk.networks.segmentation">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/dltk.networks.super_resolution.html">dltk.networks.super_resolution package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/dltk.networks.super_resolution.html#module-dltk.networks.super_resolution.simple_super_resolution">dltk.networks.super_resolution.simple_super_resolution module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/dltk.networks.super_resolution.html#module-dltk.networks.super_resolution">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/dltk.networks.html#module-dltk.networks">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/dltk.html#module-dltk.utils">dltk.utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/dltk.html#module-dltk">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">DLTK</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>dltk.core.residual_unit</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for dltk.core.residual_unit</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">unicode_literals</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">absolute_import</span>
+
+<span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+
+<div class="viewcode-block" id="vanilla_residual_unit_3d"><a class="viewcode-back" href="../../../api/dltk.core.html#dltk.core.residual_unit.vanilla_residual_unit_3d">[docs]</a><span class="k">def</span> <span class="nf">vanilla_residual_unit_3d</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span>
+                             <span class="n">out_filters</span><span class="p">,</span>
+                             <span class="n">kernel_size</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span>
+                             <span class="n">strides</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+                             <span class="n">mode</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">estimator</span><span class="o">.</span><span class="n">ModeKeys</span><span class="o">.</span><span class="n">EVAL</span><span class="p">,</span>
+                             <span class="n">use_bias</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                             <span class="n">kernel_initializer</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">initializers</span><span class="o">.</span><span class="n">variance_scaling</span><span class="p">(</span><span class="n">distribution</span><span class="o">=</span><span class="s1">&#39;uniform&#39;</span><span class="p">),</span>
+                             <span class="n">bias_initializer</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">zeros_initializer</span><span class="p">(),</span>
+                             <span class="n">kernel_regularizer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                             <span class="n">bias_regularizer</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Implementation of a 3D residual unit according to [1]. This</span>
+<span class="sd">        implementation supports strided convolutions and automatically</span>
+<span class="sd">        handles different input and output filters.</span>
+
+<span class="sd">    [1] K. He et al. Identity Mappings in Deep Residual Networks. ECCV 2016.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        inputs (tf.Tensor): Input tensor to the residual unit. Is required to</span>
+<span class="sd">            have a rank of 5 (i.e. [batch, x, y, z, channels]).</span>
+<span class="sd">        out_filters (int): Number of convolutional filters used in</span>
+<span class="sd">            the sub units.</span>
+<span class="sd">        kernel_size (tuple, optional): Size of the convoltional kernels</span>
+<span class="sd">            used in the sub units</span>
+<span class="sd">        strides (tuple, optional): Convolution strides in (x,y,z) of sub</span>
+<span class="sd">            unit 0. Allows downsampling of the input tensor via strides</span>
+<span class="sd">            convolutions.</span>
+<span class="sd">        mode (str, optional): One of the tf.estimator.ModeKeys: TRAIN, EVAL or</span>
+<span class="sd">            PREDICT</span>
+<span class="sd">        use_bias (bool, optional): Train a bias with each convolution.</span>
+<span class="sd">        kernel_initializer (TYPE, optional): Initialisation of convolution kernels</span>
+<span class="sd">        bias_initializer (TYPE, optional): Initialisation of bias</span>
+<span class="sd">        kernel_regularizer (None, optional): Additional regularisation op</span>
+<span class="sd">        bias_regularizer (None, optional): Additional regularisation op</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        tf.Tensor: Output of the residual unit</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">relu_op</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">relu6</span>  <span class="c1"># or tf.nn.relu</span>
+    <span class="n">pool_op</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">max_pooling3d</span>
+
+    <span class="n">conv_params</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;padding&#39;</span><span class="p">:</span> <span class="s1">&#39;same&#39;</span><span class="p">,</span>
+                   <span class="s1">&#39;use_bias&#39;</span><span class="p">:</span> <span class="n">use_bias</span><span class="p">,</span>
+                   <span class="s1">&#39;kernel_initializer&#39;</span><span class="p">:</span> <span class="n">kernel_initializer</span><span class="p">,</span>
+                   <span class="s1">&#39;bias_initializer&#39;</span><span class="p">:</span> <span class="n">bias_initializer</span><span class="p">,</span>
+                   <span class="s1">&#39;kernel_regularizer&#39;</span><span class="p">:</span> <span class="n">kernel_regularizer</span><span class="p">,</span>
+                   <span class="s1">&#39;bias_regularizer&#39;</span><span class="p">:</span> <span class="n">bias_regularizer</span><span class="p">}</span>
+
+    <span class="n">in_filters</span> <span class="o">=</span> <span class="n">inputs</span><span class="o">.</span><span class="n">get_shape</span><span class="p">()</span><span class="o">.</span><span class="n">as_list</span><span class="p">()[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">assert</span> <span class="n">in_filters</span> <span class="o">==</span> <span class="n">inputs</span><span class="o">.</span><span class="n">get_shape</span><span class="p">()</span><span class="o">.</span><span class="n">as_list</span><span class="p">()[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> \
+        <span class="s1">&#39;Module was initialised for a different input shape&#39;</span>
+
+    <span class="n">x</span> <span class="o">=</span> <span class="n">inputs</span>
+    <span class="n">orig_x</span> <span class="o">=</span> <span class="n">x</span>
+
+    <span class="c1"># Handle strided convolutions</span>
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">strides</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">orig_x</span> <span class="o">=</span> <span class="n">pool_op</span><span class="p">(</span><span class="n">inputs</span><span class="o">=</span><span class="n">orig_x</span><span class="p">,</span>
+                         <span class="n">pool_size</span><span class="o">=</span><span class="n">strides</span><span class="p">,</span>
+                         <span class="n">strides</span><span class="o">=</span><span class="n">strides</span><span class="p">,</span>
+                         <span class="n">padding</span><span class="o">=</span><span class="s1">&#39;valid&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Sub unit 0</span>
+    <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">variable_scope</span><span class="p">(</span><span class="s1">&#39;sub_unit0&#39;</span><span class="p">):</span>
+
+        <span class="c1"># Adjust the strided conv kernel size to prevent losing information</span>
+        <span class="n">k</span> <span class="o">=</span> <span class="p">[</span><span class="n">s</span> <span class="o">*</span> <span class="mi">2</span> <span class="k">if</span> <span class="n">s</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">k</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">kernel_size</span><span class="p">,</span> <span class="n">strides</span><span class="p">)]</span>
+
+        <span class="n">x</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">batch_normalization</span><span class="p">(</span>
+            <span class="n">x</span><span class="p">,</span> <span class="n">training</span><span class="o">=</span><span class="n">mode</span> <span class="o">==</span> <span class="n">tf</span><span class="o">.</span><span class="n">estimator</span><span class="o">.</span><span class="n">ModeKeys</span><span class="o">.</span><span class="n">TRAIN</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">relu_op</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+        <span class="n">x</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">conv3d</span><span class="p">(</span>
+            <span class="n">inputs</span><span class="o">=</span><span class="n">x</span><span class="p">,</span>
+            <span class="n">filters</span><span class="o">=</span><span class="n">out_filters</span><span class="p">,</span>
+            <span class="n">kernel_size</span><span class="o">=</span><span class="n">k</span><span class="p">,</span> <span class="n">strides</span><span class="o">=</span><span class="n">strides</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">conv_params</span><span class="p">)</span>
+
+    <span class="c1"># Sub unit 1</span>
+    <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">variable_scope</span><span class="p">(</span><span class="s1">&#39;sub_unit1&#39;</span><span class="p">):</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">batch_normalization</span><span class="p">(</span>
+            <span class="n">x</span><span class="p">,</span> <span class="n">training</span><span class="o">=</span><span class="n">mode</span> <span class="o">==</span> <span class="n">tf</span><span class="o">.</span><span class="n">estimator</span><span class="o">.</span><span class="n">ModeKeys</span><span class="o">.</span><span class="n">TRAIN</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">relu_op</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+        <span class="n">x</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">conv3d</span><span class="p">(</span>
+            <span class="n">inputs</span><span class="o">=</span><span class="n">x</span><span class="p">,</span>
+            <span class="n">filters</span><span class="o">=</span><span class="n">out_filters</span><span class="p">,</span>
+            <span class="n">kernel_size</span><span class="o">=</span><span class="n">kernel_size</span><span class="p">,</span>
+            <span class="n">strides</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+            <span class="o">**</span><span class="n">conv_params</span><span class="p">)</span>
+
+    <span class="c1"># Add the residual</span>
+    <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">variable_scope</span><span class="p">(</span><span class="s1">&#39;sub_unit_add&#39;</span><span class="p">):</span>
+
+        <span class="c1"># Handle differences in input and output filter sizes</span>
+        <span class="k">if</span> <span class="n">in_filters</span> <span class="o">&lt;</span> <span class="n">out_filters</span><span class="p">:</span>
+            <span class="n">orig_x</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">pad</span><span class="p">(</span>
+                <span class="n">tensor</span><span class="o">=</span><span class="n">orig_x</span><span class="p">,</span>
+                <span class="n">paddings</span><span class="o">=</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]]</span> <span class="o">*</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">get_shape</span><span class="p">()</span><span class="o">.</span><span class="n">as_list</span><span class="p">())</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="p">[[</span>
+                    <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">((</span><span class="n">out_filters</span> <span class="o">-</span> <span class="n">in_filters</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.</span><span class="p">)),</span>
+                    <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">((</span><span class="n">out_filters</span> <span class="o">-</span> <span class="n">in_filters</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.</span><span class="p">))]])</span>
+
+        <span class="k">elif</span> <span class="n">in_filters</span> <span class="o">&gt;</span> <span class="n">out_filters</span><span class="p">:</span>
+            <span class="n">orig_x</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">conv3d</span><span class="p">(</span>
+                <span class="n">inputs</span><span class="o">=</span><span class="n">orig_x</span><span class="p">,</span>
+                <span class="n">filters</span><span class="o">=</span><span class="n">out_filters</span><span class="p">,</span>
+                <span class="n">kernel_size</span><span class="o">=</span><span class="n">kernel_size</span><span class="p">,</span>
+                <span class="n">strides</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+                <span class="o">**</span><span class="n">conv_params</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">+=</span> <span class="n">orig_x</span>
+
+    <span class="k">return</span> <span class="n">x</span></div>
+</pre></div>
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, DLTK contributors.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+        <span class="fa fa-book"> Other Versions</span>
+        v: master
+        <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+        <dl>
+            <dt>Tags</dt>
+            <dd><a href="../../../0.1.1/index.html">0.1.1</a></dd>
+            <dd><a href="../../../0.2.0rc0/index.html">0.2.0rc0</a></dd>
+        </dl>
+        <dl>
+            <dt>Branches</dt>
+            <dd><a href="../../../dev/index.html">dev</a></dd>
+            <dd><a href="../../../master/_modules/dltk/core/residual_unit.html">master</a></dd>
+        </dl>
+    </div>
+</div>
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'0.2.0rc0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

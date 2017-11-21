@@ -4,7 +4,16 @@ dltk package
 .. toctree::
 
     dltk.core
-    dltk.models
+    dltk.io
+    dltk.networks
+
+dltk\.utils module
+--------------------------------------
+
+.. automodule:: dltk.utils
+    :members:
+    :undoc-members:
+    :show-inheritance:
 
 Module contents
 ---------------

@@ -4,11 +4,6 @@
    :hidden:
 
    Home <self>
-   user_guide/getting_started
-   user_guide/module
-   user_guide/model
-   user_guide/reader
-   user_guide/usage
 
 .. toctree::
    :hidden:
@@ -20,61 +15,45 @@
 DLTK documentation
 ==================
 
-DLTK is a neural networks toolkit written in python, on top of `Tensorflow <https://github.com/tensorflow/tensorflow>`_. Its modular architecture is closely inspired by `sonnet <https://github.com/deepmind/sonnet>`_ and it was developed to enable fast prototyping and ensure reproducibility in image analysis applications, with a particular focus on medical imaging. Its goal is to provide the community with state of the art methods and models and to accelerate research in this exciting field.
+DLTK is a neural networks toolkit written in python, on top of `TensorFlow
+<https://github.com/tensorflow/tensorflow>`_. It is developed to enable fast
+prototyping with a low entry threshold and ensure reproducibility in image
+analysis applications, with a particular focus on medical imaging. Its goal is
+to provide the community with state of the art methods and models and to
+accelerate research in this exciting field.
 
-Road map
---------
+Getting started
+---------------
 
-Over the course of the next months we will add more content to DLTK. This road map outlines the immediate plans for what you will be seeing in DLTK soon:
+For installation instructions and getting started please refer to the
+`README.md <https://github.com/DLTK/DLTK/tree/master>`_. DLTK-specific
+tutorials and notebooks can be found in `dltk/examples/tutorials
+<https://github.com/DLTK/DLTK/tree/master/examples/tutorials>`_ and full
+examples with downloadable pre-trained models in
+`dltk/examples/applications <https://github
+.com/DLTK/DLTK/tree/master/examples/applications>`_ in the source.
 
-Medical model zoo
-  Pre-trained models on medical images and deploy scripts
-  
-Core
-  Losses: Dice loss, frequency reweighted losses, adversial training
-  Normalisation: layer norm, weight norm
+Model Zoo
+---------
 
-Network architectures
-  deepmedic, densenet, VGG, super-resolution networks
+We also provide a `model zoo <https://github.com/DLTK/models>`_ in a separate
+repository for hosting (re-)implementations of existing or newly published
+work. For additional information and contact details, please refer to the
+individual README.md file in the code.
 
-Other
-  Augmentation via elastic deformations
-  Sampling with fixed class frequencies
-  
-
-
-Installation
-------------
-
-DLTK uses the following dependencies:
-
-* numpy
-* scipy
-* Tensorflow: `Installation Instructions <https://www.tensorflow.org/install/>`_
-
-Use *pip* to install **DLTK**::
-
-  pip install dltk
-  
 Contact
 -------
 
-Twitter: `@dltk_ <https://twitter.com/dltk_>`_  
+Twitter: `@dltk_ <https://twitter.com/dltk_>`_
+Source on `github.com <https://github.com/DLTK/DLTK>`_
+Gitter chat: `link <https://gitter.im/DLTK/DLTK>`_
 
-Source on `github.com <https://github.com/DLTK/DLTK>`_  
+Team
+----
 
-Core Team
----------
-
-`Martin Rajchl <http://www.imperial.ac.uk/people/m.rajchl>`_ [`github <https://github.com/mrajchl>`_, `twitter <https://twitter.com/m_rajchl>`_]
-
-`Nick Pawlowski <http://nickpawlowski.de/>`_ [`github <https://github.com/pawni>`_, `twitter <https://twitter.com/pwnic>`_]
-
-`Ira Ktena <https://biomedia.doc.ic.ac.uk/person/ira-ktena/>`_ [`github <https://github.com/sk1712>`_, `twitter <https://twitter.com/s0f1ra>`_]  
-
-`Matt Lee <https://biomedia.doc.ic.ac.uk/person/matthew-lee/>`_ [`github <https://github.com/mauinz>`_]
-
-`BioMedIA group <https://biomedia.doc.ic.ac.uk/>`_, Dept. of Computing, Imperial College London
+DLTK is currently maintained by `Nick Pawlowski <https://github.com/pawni>`_
+and `Martin Rajchl <https://github.com/mrajchl>`_ with greatly appreciated
+contributions coming from individual researchers and engineers.
 
 Indices and tables
 ==================
