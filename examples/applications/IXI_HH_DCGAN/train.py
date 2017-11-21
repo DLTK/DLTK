@@ -17,6 +17,7 @@ from reader import read_fn
 
 BATCH_SIZE = 8
 MAX_STEPS = 35000
+SAVE_SUMMARY_STEPS = 100
 
 
 def train(args):
@@ -53,8 +54,6 @@ def train(args):
         batch_size=BATCH_SIZE,
         params=reader_params)
 
-    tfgan = tf.contrib.gan
-
     # See TFGAN's `train.py` for a description of the generator and
     # discriminator API.
     def generator_fn(generator_inputs):
@@ -71,14 +70,9 @@ def train(args):
         """
         gen = dcgan_generator_3d(
             inputs=generator_inputs['noise'],
-            out_filters=1,
-            num_convolutions=2,
-            filters=(256, 128, 64, 32, 16),
-            strides=((4, 4, 4), (1, 2, 2), (1, 2, 2), (1, 2, 2), (1, 2, 2)),
             mode=tf.estimator.ModeKeys.TRAIN)
         gen = gen['gen']
-        gen = tf.nn.sigmoid(gen)
-        tf.summary.image('pred', gen[:, 0])
+        gen = tf.nn.tanh(gen)
         return gen
 
     def discriminator_fn(data, conditioning):
@@ -97,39 +91,113 @@ def train(args):
 
         disc = dcgan_discriminator_3d(
             inputs=data,
-            filters=(32, 64, 128, 256),
-            strides=((1, 2, 2), (2, 2, 2), (2, 2, 2), (1, 2, 2)),
             mode=tf.estimator.ModeKeys.TRAIN)
 
         return disc['logits']
 
-    # Hooks for training and validation summaries
-    step_cnt_hook = tf.train.StepCounterHook(output_dir=args.model_path)
+    # get input tensors from queue
+    features, labels = train_input_fn()
 
-    # Create GAN estimator.
-    gan_estimator = tfgan.estimator.GANEstimator(
-        args.model_path,
-        generator_fn=generator_fn,
-        discriminator_fn=discriminator_fn,
-        generator_loss_fn=tfgan.losses.least_squares_generator_loss,
-        discriminator_loss_fn=tfgan.losses.least_squares_discriminator_loss,
-        generator_optimizer=tf.train.AdamOptimizer(0.0005, 0.5, epsilon=1e-5),
-        discriminator_optimizer=tf.train.AdamOptimizer(0.0005, 0.5, epsilon=1e-5))
+    # build generator
+    with tf.variable_scope('generator'):
+        gen = generator_fn(features)
 
+    # build discriminator on fake data
+    with tf.variable_scope('discriminator'):
+        disc_fake = discriminator_fn(gen, None)
+
+    # build discriminator on real data, reusing the previously created variables
+    with tf.variable_scope('discriminator', reuse=True):
+        disc_real = discriminator_fn(labels, None)
+
+    # building an LSGAN loss for the real examples
+    d_loss_real = tf.losses.mean_squared_error(
+        disc_real, tf.ones_like(disc_real))
+
+    # calculating a pseudo accuracy for the discriminator detecting a real
+    # sample and logging that
+    d_pred_real = tf.cast(tf.greater(disc_real, 0.5), tf.float32)
+    _, d_acc_real = tf.metrics.accuracy(tf.ones_like(disc_real), d_pred_real)
+    tf.summary.scalar('disc/real_acc', d_acc_real)
+
+    # building an LSGAN loss for the fake examples
+    d_loss_fake = tf.losses.mean_squared_error(
+        disc_fake, tf.zeros_like(disc_fake))
+
+    # calculating a pseudo accuracy for the discriminator detecting a fake
+    # sample and logging that
+    d_pred_fake = tf.cast(tf.greater(disc_fake, 0.5), tf.float32)
+    _, d_acc_fake = tf.metrics.accuracy(tf.zeros_like(disc_fake), d_pred_fake)
+    tf.summary.scalar('disc/fake_acc', d_acc_fake)
+
+    # building an LSGAN loss for the generator
+    g_loss = tf.losses.mean_squared_error(
+        disc_fake, tf.ones_like(disc_fake))
+    tf.summary.scalar('loss/gen', g_loss)
+
+    # combining the discriminator losses
+    d_loss = d_loss_fake + d_loss_real
+    tf.summary.scalar('loss/disc', d_loss)
+
+    # getting the list of discriminator variables
+    d_vars = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES,
+                               'discriminator')
+
+    # building the discriminator optimizer
+    d_opt = tf.train.AdamOptimizer(
+        0.001, 0.5, epsilon=1e-5).minimize(d_loss, var_list=d_vars)
+
+    # getting the list of generator variables
+    g_vars = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES,
+                               'generator')
+
+    # building the generator optimizer
+    g_opt = tf.train.AdamOptimizer(
+        0.001, 0.5, epsilon=1e-5).minimize(g_loss, var_list=g_vars)
+
+    # getting a variable to hold the global step
+    global_step = tf.train.get_or_create_global_step()
+    # build op to increment the global step - important for TensorBoard logging
+    inc_step = global_step.assign_add(1)
+
+    # build the training session.
+    # NOTE: we are not using a tf.estimator here, because they prevent some
+    # flexibility in the training procedure
+    s = tf.train.MonitoredTrainingSession(checkpoint_dir=args.model_path,
+                                          save_summaries_steps=100,
+                                          save_summaries_secs=None,
+                                          hooks=[train_qinit_hook])
+
+    # build dummy logging string
+    log = 'Step {} with Loss D: {}, Loss G: {}, Acc Real: {} Acc Fake: {}'
+
+    # start training
     print('Starting training...')
+    loss_d = 0
+    loss_g = 0
     try:
-        gan_estimator.train(
-            input_fn=train_input_fn,
-            hooks=[train_qinit_hook, step_cnt_hook],
-            steps=MAX_STEPS)
+        for step in range(MAX_STEPS):
+            # if discriminator is too good, only train generator
+            if not loss_g > 3 * loss_d:
+                s.run(d_opt)
 
+            # if generator is too good, only train discriminator
+            if not loss_d > 3 * loss_g:
+                s.run(g_opt)
+
+            # increment global step for logging hooks
+            s.run(inc_step)
+
+            # get statistics for training scheduling
+            loss_d, loss_g, acc_d, acc_g = s.run(
+                [d_loss, g_loss, d_acc_real, d_acc_fake])
+
+            # print stats for information
+            if step % SAVE_SUMMARY_STEPS == 0:
+                print(log.format(step, loss_d, loss_g, acc_d, acc_g))
     except KeyboardInterrupt:
         pass
     print('Stopping now.')
-    export_dir = gan_estimator.export_savedmodel(
-        export_dir_base=args.model_path,
-        serving_input_receiver_fn=reader.serving_input_receiver_fn(reader_example_shapes))
-    print('Model saved to {}.'.format(export_dir))
 
 
 if __name__ == '__main__':
