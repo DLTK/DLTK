@@ -17,7 +17,7 @@ If you use DLTK in your work please refer to this citation for the current versi
 @article{pawlowski2017state,
   title={DLTK: State of the Art Reference Implementations for Deep Learning on Medical Images},
   author={Nick Pawlowski and S. Ira Ktena, and Matthew C.H. Lee and Bernhard Kainz and Daniel Rueckert and Ben Glocker and Martin Rajchl},
-  journal={arXiv preprint arXiv:SOME_ID},
+  journal={arXiv preprint arXiv:1711.06853},
   year={2017}
 }
 ```
