@@ -77,8 +77,8 @@ class Reader(object):
                     # Clean example dictionary by recursively deleting
                     # non-relevant entries. However, this does not look into
                     # dictionaries nested into lists
-                    for k in ex.keys():
-                        if k not in compare.keys():
+                    for k in list(ex.keys()):
+                        if k not in list(compare.keys()):
                             del ex[k]
                         elif isinstance(ex[k], dict) \
                                 and isinstance(compare[k], dict):
@@ -101,7 +101,7 @@ class Reader(object):
                                              'dtypes incompatible for key {}'
                                              ''.format(k))
                     for k in list(compare):
-                        if k not in ex.keys():
+                        if k not in list(ex.keys()):
                             raise ValueError('Key {} not found in ex but is '
                                              'present in dtypes')
                     return ex
@@ -166,7 +166,7 @@ class Reader(object):
             inputs = {k: tf.placeholder(
                 shape=[None] + list(placeholder_shapes['features'][k]),
                 dtype=self.dtypes['features'][k])
-                      for k in self.dtypes['features'].keys()}
+                      for k in list(self.dtypes['features'].keys())}
 
             return tf.estimator.export.ServingInputReceiver(inputs, inputs)
         return f
