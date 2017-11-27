@@ -421,7 +421,7 @@ coefficient for</li>
 <span id="dltk-core-residual-unit-module"></span><h2>dltk.core.residual_unit module<a class="headerlink" href="#module-dltk.core.residual_unit" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="dltk.core.residual_unit.vanilla_residual_unit_3d">
-<code class="descclassname">dltk.core.residual_unit.</code><code class="descname">vanilla_residual_unit_3d</code><span class="sig-paren">(</span><em>inputs</em>, <em>out_filters</em>, <em>kernel_size=(3</em>, <em>3</em>, <em>3)</em>, <em>strides=(1</em>, <em>1</em>, <em>1)</em>, <em>mode='eval'</em>, <em>use_bias=False</em>, <em>kernel_initializer=&lt;tensorflow.python.ops.init_ops.VarianceScaling object&gt;</em>, <em>bias_initializer=&lt;tensorflow.python.ops.init_ops.Zeros object&gt;</em>, <em>kernel_regularizer=None</em>, <em>bias_regularizer=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dltk/core/residual_unit.html#vanilla_residual_unit_3d"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dltk.core.residual_unit.vanilla_residual_unit_3d" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">dltk.core.residual_unit.</code><code class="descname">vanilla_residual_unit_3d</code><span class="sig-paren">(</span><em>inputs</em>, <em>out_filters</em>, <em>kernel_size=(3</em>, <em>3</em>, <em>3)</em>, <em>strides=(1</em>, <em>1</em>, <em>1)</em>, <em>mode='eval'</em>, <em>use_bias=False</em>, <em>activation=&lt;function relu6&gt;</em>, <em>kernel_initializer=&lt;tensorflow.python.ops.init_ops.VarianceScaling object&gt;</em>, <em>bias_initializer=&lt;tensorflow.python.ops.init_ops.Zeros object&gt;</em>, <em>kernel_regularizer=None</em>, <em>bias_regularizer=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dltk/core/residual_unit.html#vanilla_residual_unit_3d"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dltk.core.residual_unit.vanilla_residual_unit_3d" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="docutils">
 <dt>Implementation of a 3D residual unit according to [1]. This</dt>
 <dd>implementation supports strided convolutions and automatically
@@ -444,6 +444,7 @@ unit 0. Allows downsampling of the input tensor via strides
 convolutions.</li>
 <li><strong>mode</strong> (<em>str, optional</em>) &#8211; One of the tf.estimator.ModeKeys: TRAIN, EVAL or
 PREDICT</li>
+<li><strong>activation</strong> (<em>optional</em>) &#8211; A function to use as activation function.</li>
 <li><strong>use_bias</strong> (<em>bool, optional</em>) &#8211; Train a bias with each convolution.</li>
 <li><strong>kernel_initializer</strong> (<em>TYPE, optional</em>) &#8211; Initialisation of convolution kernels</li>
 <li><strong>bias_initializer</strong> (<em>TYPE, optional</em>) &#8211; Initialisation of bias</li>

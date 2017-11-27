@@ -315,7 +315,7 @@ vector.</li>
 <span id="dltk-networks-segmentation-fcn-module"></span><h2>dltk.networks.segmentation.fcn module<a class="headerlink" href="#module-dltk.networks.segmentation.fcn" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="dltk.networks.segmentation.fcn.residual_fcn_3d">
-<code class="descclassname">dltk.networks.segmentation.fcn.</code><code class="descname">residual_fcn_3d</code><span class="sig-paren">(</span><em>inputs</em>, <em>num_classes</em>, <em>num_res_units=1</em>, <em>filters=(16</em>, <em>32</em>, <em>64</em>, <em>128)</em>, <em>strides=((1</em>, <em>1</em>, <em>1)</em>, <em>(2</em>, <em>2</em>, <em>2)</em>, <em>(2</em>, <em>2</em>, <em>2)</em>, <em>(2</em>, <em>2</em>, <em>2))</em>, <em>mode='eval'</em>, <em>use_bias=False</em>, <em>kernel_initializer=&lt;tensorflow.python.ops.init_ops.VarianceScaling object&gt;</em>, <em>bias_initializer=&lt;tensorflow.python.ops.init_ops.Zeros object&gt;</em>, <em>kernel_regularizer=None</em>, <em>bias_regularizer=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dltk/networks/segmentation/fcn.html#residual_fcn_3d"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dltk.networks.segmentation.fcn.residual_fcn_3d" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">dltk.networks.segmentation.fcn.</code><code class="descname">residual_fcn_3d</code><span class="sig-paren">(</span><em>inputs</em>, <em>num_classes</em>, <em>num_res_units=1</em>, <em>filters=(16</em>, <em>32</em>, <em>64</em>, <em>128)</em>, <em>strides=((1</em>, <em>1</em>, <em>1)</em>, <em>(2</em>, <em>2</em>, <em>2)</em>, <em>(2</em>, <em>2</em>, <em>2)</em>, <em>(2</em>, <em>2</em>, <em>2))</em>, <em>mode='eval'</em>, <em>use_bias=False</em>, <em>activation=&lt;function relu6&gt;</em>, <em>kernel_initializer=&lt;tensorflow.python.ops.init_ops.VarianceScaling object&gt;</em>, <em>bias_initializer=&lt;tensorflow.python.ops.init_ops.Zeros object&gt;</em>, <em>kernel_regularizer=None</em>, <em>bias_regularizer=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dltk/networks/segmentation/fcn.html#residual_fcn_3d"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dltk.networks.segmentation.fcn.residual_fcn_3d" title="Permalink to this definition">¶</a></dt>
 <dd><p>Image segmentation network based on an FCN architecture [1] using
 residual units [2] as feature extractors. Downsampling and upsampling
 of features is done via strided convolutions and transpose convolutions,
@@ -344,6 +344,7 @@ scale.</li>
 <li><strong>mode</strong> (<em>TYPE, optional</em>) &#8211; One of the tf.estimator.ModeKeys strings:
 TRAIN, EVAL or PREDICT</li>
 <li><strong>use_bias</strong> (<em>bool, optional</em>) &#8211; Boolean, whether the layer uses a bias.</li>
+<li><strong>activation</strong> (<em>optional</em>) &#8211; A function to use as activation function.</li>
 <li><strong>kernel_initializer</strong> (<em>TYPE, optional</em>) &#8211; An initializer for the convolution
 kernel.</li>
 <li><strong>bias_initializer</strong> (<em>TYPE, optional</em>) &#8211; An initializer for the bias vector.
@@ -412,7 +413,7 @@ vector.</li>
 <span id="dltk-networks-segmentation-unet-module"></span><h2>dltk.networks.segmentation.unet module<a class="headerlink" href="#module-dltk.networks.segmentation.unet" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="dltk.networks.segmentation.unet.asymmetric_residual_unet_3d">
-<code class="descclassname">dltk.networks.segmentation.unet.</code><code class="descname">asymmetric_residual_unet_3d</code><span class="sig-paren">(</span><em>inputs</em>, <em>num_classes</em>, <em>num_res_units=1</em>, <em>filters=(16</em>, <em>32</em>, <em>64</em>, <em>128)</em>, <em>strides=((1</em>, <em>1</em>, <em>1)</em>, <em>(2</em>, <em>2</em>, <em>2)</em>, <em>(2</em>, <em>2</em>, <em>2)</em>, <em>(2</em>, <em>2</em>, <em>2))</em>, <em>mode='eval'</em>, <em>use_bias=False</em>, <em>kernel_initializer=&lt;tensorflow.python.ops.init_ops.VarianceScaling object&gt;</em>, <em>bias_initializer=&lt;tensorflow.python.ops.init_ops.Zeros object&gt;</em>, <em>kernel_regularizer=None</em>, <em>bias_regularizer=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dltk/networks/segmentation/unet.html#asymmetric_residual_unet_3d"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dltk.networks.segmentation.unet.asymmetric_residual_unet_3d" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">dltk.networks.segmentation.unet.</code><code class="descname">asymmetric_residual_unet_3d</code><span class="sig-paren">(</span><em>inputs</em>, <em>num_classes</em>, <em>num_res_units=1</em>, <em>filters=(16</em>, <em>32</em>, <em>64</em>, <em>128)</em>, <em>strides=((1</em>, <em>1</em>, <em>1)</em>, <em>(2</em>, <em>2</em>, <em>2)</em>, <em>(2</em>, <em>2</em>, <em>2)</em>, <em>(2</em>, <em>2</em>, <em>2))</em>, <em>mode='eval'</em>, <em>use_bias=False</em>, <em>activation=&lt;function relu6&gt;</em>, <em>kernel_initializer=&lt;tensorflow.python.ops.init_ops.VarianceScaling object&gt;</em>, <em>bias_initializer=&lt;tensorflow.python.ops.init_ops.Zeros object&gt;</em>, <em>kernel_regularizer=None</em>, <em>bias_regularizer=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dltk/networks/segmentation/unet.html#asymmetric_residual_unet_3d"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dltk.networks.segmentation.unet.asymmetric_residual_unet_3d" title="Permalink to this definition">¶</a></dt>
 <dd><p>Image segmentation network based on a flexible UNET architecture [1]
 using residual units [2] as feature extractors. Downsampling and
 upsampling of features is done via strided convolutions and transpose
@@ -441,6 +442,7 @@ scale.</li>
 <li><strong>mode</strong> (<em>TYPE, optional</em>) &#8211; One of the tf.estimator.ModeKeys strings: TRAIN,
 EVAL or PREDICT</li>
 <li><strong>use_bias</strong> (<em>bool, optional</em>) &#8211; Boolean, whether the layer uses a bias.</li>
+<li><strong>activation</strong> (<em>optional</em>) &#8211; A function to use as activation function.</li>
 <li><strong>kernel_initializer</strong> (<em>TYPE, optional</em>) &#8211; An initializer for the convolution
 kernel.</li>
 <li><strong>bias_initializer</strong> (<em>TYPE, optional</em>) &#8211; An initializer for the bias vector.
@@ -464,7 +466,7 @@ vector.</li>
 
 <dl class="function">
 <dt id="dltk.networks.segmentation.unet.residual_unet_3d">
-<code class="descclassname">dltk.networks.segmentation.unet.</code><code class="descname">residual_unet_3d</code><span class="sig-paren">(</span><em>inputs</em>, <em>num_classes</em>, <em>num_res_units=1</em>, <em>filters=(16</em>, <em>32</em>, <em>64</em>, <em>128)</em>, <em>strides=((1</em>, <em>1</em>, <em>1)</em>, <em>(2</em>, <em>2</em>, <em>2)</em>, <em>(2</em>, <em>2</em>, <em>2)</em>, <em>(2</em>, <em>2</em>, <em>2))</em>, <em>mode='eval'</em>, <em>use_bias=False</em>, <em>kernel_initializer=&lt;tensorflow.python.ops.init_ops.VarianceScaling object&gt;</em>, <em>bias_initializer=&lt;tensorflow.python.ops.init_ops.Zeros object&gt;</em>, <em>kernel_regularizer=None</em>, <em>bias_regularizer=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dltk/networks/segmentation/unet.html#residual_unet_3d"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dltk.networks.segmentation.unet.residual_unet_3d" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">dltk.networks.segmentation.unet.</code><code class="descname">residual_unet_3d</code><span class="sig-paren">(</span><em>inputs</em>, <em>num_classes</em>, <em>num_res_units=1</em>, <em>filters=(16</em>, <em>32</em>, <em>64</em>, <em>128)</em>, <em>strides=((1</em>, <em>1</em>, <em>1)</em>, <em>(2</em>, <em>2</em>, <em>2)</em>, <em>(2</em>, <em>2</em>, <em>2)</em>, <em>(2</em>, <em>2</em>, <em>2))</em>, <em>mode='eval'</em>, <em>use_bias=False</em>, <em>activation=&lt;function relu6&gt;</em>, <em>kernel_initializer=&lt;tensorflow.python.ops.init_ops.VarianceScaling object&gt;</em>, <em>bias_initializer=&lt;tensorflow.python.ops.init_ops.Zeros object&gt;</em>, <em>kernel_regularizer=None</em>, <em>bias_regularizer=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dltk/networks/segmentation/unet.html#residual_unet_3d"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dltk.networks.segmentation.unet.residual_unet_3d" title="Permalink to this definition">¶</a></dt>
 <dd><p>Image segmentation network based on a flexible UNET architecture [1]
 using residual units [2] as feature extractors. Downsampling and
 upsampling of features is done via strided convolutions and transpose
@@ -493,6 +495,7 @@ scale.</li>
 <li><strong>mode</strong> (<em>TYPE, optional</em>) &#8211; One of the tf.estimator.ModeKeys strings: TRAIN,
 EVAL or PREDICT</li>
 <li><strong>use_bias</strong> (<em>bool, optional</em>) &#8211; Boolean, whether the layer uses a bias.</li>
+<li><strong>activation</strong> (<em>optional</em>) &#8211; A function to use as activation function.</li>
 <li><strong>kernel_initializer</strong> (<em>TYPE, optional</em>) &#8211; An initializer for the convolution
 kernel.</li>
 <li><strong>bias_initializer</strong> (<em>TYPE, optional</em>) &#8211; An initializer for the bias vector.
