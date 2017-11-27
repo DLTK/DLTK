@@ -43,6 +43,7 @@ def residual_unet_3d(inputs,
                      strides=((1, 1, 1), (2, 2, 2), (2, 2, 2), (2, 2, 2)),
                      mode=tf.estimator.ModeKeys.EVAL,
                      use_bias=False,
+                     activation=tf.nn.relu6,
                      kernel_initializer=tf.initializers.variance_scaling(distribution='uniform'),
                      bias_initializer=tf.zeros_initializer(),
                      kernel_regularizer=None,
@@ -72,6 +73,7 @@ def residual_unet_3d(inputs,
         mode (TYPE, optional): One of the tf.estimator.ModeKeys strings: TRAIN,
             EVAL or PREDICT
         use_bias (bool, optional): Boolean, whether the layer uses a bias.
+        activation (optional): A function to use as activation function.
         kernel_initializer (TYPE, optional): An initializer for the convolution
             kernel.
         bias_initializer (TYPE, optional): An initializer for the bias vector.
@@ -122,6 +124,7 @@ def residual_unet_3d(inputs,
                 inputs=x,
                 out_filters=filters[res_scale],
                 strides=strides[res_scale],
+                activation=activation,
                 mode=mode)
         saved_strides.append(strides[res_scale])
 
@@ -133,6 +136,7 @@ def residual_unet_3d(inputs,
                     inputs=x,
                     out_filters=filters[res_scale],
                     strides=(1, 1, 1),
+                    activation=activation,
                     mode=mode)
         res_scales.append(x)
 
@@ -197,6 +201,7 @@ def asymmetric_residual_unet_3d(
         strides=((1, 1, 1), (2, 2, 2), (2, 2, 2), (2, 2, 2)),
         mode=tf.estimator.ModeKeys.EVAL,
         use_bias=False,
+        activation=tf.nn.relu6,
         kernel_initializer=tf.initializers.variance_scaling(distribution='uniform'),
         bias_initializer=tf.zeros_initializer(),
         kernel_regularizer=None,
@@ -226,6 +231,7 @@ def asymmetric_residual_unet_3d(
         mode (TYPE, optional): One of the tf.estimator.ModeKeys strings: TRAIN,
             EVAL or PREDICT
         use_bias (bool, optional): Boolean, whether the layer uses a bias.
+        activation (optional): A function to use as activation function.
         kernel_initializer (TYPE, optional): An initializer for the convolution
             kernel.
         bias_initializer (TYPE, optional): An initializer for the bias vector.
@@ -276,6 +282,7 @@ def asymmetric_residual_unet_3d(
                 inputs=x,
                 out_filters=filters[res_scale],
                 strides=strides[res_scale],
+                activation=activation,
                 mode=mode)
         saved_strides.append(strides[res_scale])
 
@@ -287,6 +294,7 @@ def asymmetric_residual_unet_3d(
                     inputs=x,
                     out_filters=filters[res_scale],
                     strides=(1, 1, 1),
+                    activation=activation,
                     mode=mode)
         res_scales.append(x)
 
@@ -310,6 +318,7 @@ def asymmetric_residual_unet_3d(
                 inputs=x,
                 out_filters=filters[res_scale],
                 strides=(1, 1, 1),
+                activation=activation,
                 mode=mode)
         tf.logging.info('Decoder at res_scale {} tensor shape: {}'.format(
             res_scale, x.get_shape()))

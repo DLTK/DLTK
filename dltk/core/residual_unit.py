@@ -13,6 +13,7 @@ def vanilla_residual_unit_3d(inputs,
                              strides=(1, 1, 1),
                              mode=tf.estimator.ModeKeys.EVAL,
                              use_bias=False,
+                             activation=tf.nn.relu6,
                              kernel_initializer=tf.initializers.variance_scaling(distribution='uniform'),
                              bias_initializer=tf.zeros_initializer(),
                              kernel_regularizer=None,
@@ -35,6 +36,7 @@ def vanilla_residual_unit_3d(inputs,
             convolutions.
         mode (str, optional): One of the tf.estimator.ModeKeys: TRAIN, EVAL or
             PREDICT
+        activation (optional): A function to use as activation function.
         use_bias (bool, optional): Train a bias with each convolution.
         kernel_initializer (TYPE, optional): Initialisation of convolution kernels
         bias_initializer (TYPE, optional): Initialisation of bias
@@ -45,7 +47,6 @@ def vanilla_residual_unit_3d(inputs,
         tf.Tensor: Output of the residual unit
     """
 
-    relu_op = tf.nn.relu6  # or tf.nn.relu
     pool_op = tf.layers.max_pooling3d
 
     conv_params = {'padding': 'same',
@@ -77,7 +78,7 @@ def vanilla_residual_unit_3d(inputs,
 
         x = tf.layers.batch_normalization(
             x, training=mode == tf.estimator.ModeKeys.TRAIN)
-        x = relu_op(x)
+        x = activation(x)
 
         x = tf.layers.conv3d(
             inputs=x,
@@ -89,7 +90,7 @@ def vanilla_residual_unit_3d(inputs,
     with tf.variable_scope('sub_unit1'):
         x = tf.layers.batch_normalization(
             x, training=mode == tf.estimator.ModeKeys.TRAIN)
-        x = relu_op(x)
+        x = activation(x)
 
         x = tf.layers.conv3d(
             inputs=x,

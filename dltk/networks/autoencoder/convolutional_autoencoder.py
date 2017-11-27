@@ -12,6 +12,7 @@ def convolutional_autoencoder_3d(inputs, num_convolutions=1,
                                  strides=((2, 2, 2), (2, 2, 2), (2, 2, 2)),
                                  mode=tf.estimator.ModeKeys.TRAIN,
                                  use_bias=False,
+                                 activation=tf.nn.relu6,
                                  kernel_initializer=tf.initializers.variance_scaling(distribution='uniform'),
                                  bias_initializer=tf.zeros_initializer(),
                                  kernel_regularizer=None,
@@ -35,6 +36,7 @@ def convolutional_autoencoder_3d(inputs, num_convolutions=1,
         mode (str, optional): One of the tf.estimator.ModeKeys strings: TRAIN,
             EVAL or PREDICT
         use_bias (bool, optional): Boolean, whether the layer uses a bias.
+        activation (optional): A function to use as activation function.
         kernel_initializer (TYPE, optional): An initializer for the convolution
             kernel.
         bias_initializer (TYPE, optional): An initializer for the bias vector.
@@ -55,7 +57,6 @@ def convolutional_autoencoder_3d(inputs, num_convolutions=1,
 
     conv_op = tf.layers.conv3d
     tp_conv_op = tf.layers.conv3d_transpose
-    relu_op = tf.nn.relu6
 
     conv_params = {'padding': 'same',
                    'use_bias': use_bias,
@@ -82,7 +83,7 @@ def convolutional_autoencoder_3d(inputs, num_convolutions=1,
                 x = tf.layers.batch_normalization(
                     inputs=x,
                     training=mode == tf.estimator.ModeKeys.TRAIN)
-                x = relu_op(x)
+                x = activation(x)
                 tf.logging.info('Encoder at res_scale {} shape: {}'.format(
                     res_scale, x.get_shape()))
 
@@ -102,7 +103,7 @@ def convolutional_autoencoder_3d(inputs, num_convolutions=1,
 
             x = tf.layers.batch_normalization(
                 x, training=mode == tf.estimator.ModeKeys.TRAIN)
-            x = relu_op(x)
+            x = activation(x)
             tf.logging.info('Encoder at res_scale {} tensor shape: {}'.format(
                 res_scale, x.get_shape()))
 
@@ -124,7 +125,7 @@ def convolutional_autoencoder_3d(inputs, num_convolutions=1,
 
     x = tf.layers.dense(inputs=x,
                         units=np.prod(x_shape[1:]),
-                        activation=relu_op,
+                        activation=activation,
                         use_bias=conv_params['use_bias'],
                         kernel_initializer=conv_params['kernel_initializer'],
                         bias_initializer=conv_params['bias_initializer'],
@@ -153,7 +154,7 @@ def convolutional_autoencoder_3d(inputs, num_convolutions=1,
 
             x = tf.layers.batch_normalization(
                 x, training=mode == tf.estimator.ModeKeys.TRAIN)
-            x = relu_op(x)
+            x = activation(x)
             tf.logging.info('Decoder at res_scale {} tensor shape: {}'.format(
                 res_scale, x.get_shape()))
 
@@ -168,7 +169,7 @@ def convolutional_autoencoder_3d(inputs, num_convolutions=1,
 
                 x = tf.layers.batch_normalization(
                     x, training=mode == tf.estimator.ModeKeys.TRAIN)
-                x = relu_op(x)
+                x = activation(x)
             tf.logging.info('Decoder at res_scale {} tensor shape: {}'.format(
                 res_scale, x.get_shape()))
 

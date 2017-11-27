@@ -11,6 +11,7 @@ def simple_super_resolution_3d(inputs,
                                upsampling_factor=(2, 2, 2),
                                mode=tf.estimator.ModeKeys.EVAL,
                                use_bias=False,
+                               activation=tf.nn.relu6,
                                kernel_initializer=tf.initializers.variance_scaling(distribution='uniform'),
                                bias_initializer=tf.zeros_initializer(),
                                kernel_regularizer=None,
@@ -29,6 +30,7 @@ def simple_super_resolution_3d(inputs,
         mode (TYPE, optional): One of the tf.estimator.ModeKeys strings: TRAIN,
             EVAL or PREDICT
         use_bias (bool, optional): Boolean, whether the layer uses a bias.
+        activation (optional): A function to use as activation function.
         kernel_initializer (TYPE, optional): An initializer for the convolution
             kernel.
         bias_initializer (TYPE, optional): An initializer for the bias vector.
@@ -51,7 +53,6 @@ def simple_super_resolution_3d(inputs,
 
     conv_op = tf.layers.conv3d
     tp_conv_op = tf.layers.conv3d_transpose
-    relu_op = tf.nn.relu6
 
     conv_params = {'padding': 'same',
                    'use_bias': use_bias,
@@ -80,7 +81,7 @@ def simple_super_resolution_3d(inputs,
                 x = tf.layers.batch_normalization(
                     x, training=mode == tf.estimator.ModeKeys.TRAIN)
 
-                x = relu_op(x)
+                x = activation(x)
 
                 tf.logging.info('Encoder at unit_{}_{} tensor '
                                 'shape: {}'.format(unit, i, x.get_shape()))
