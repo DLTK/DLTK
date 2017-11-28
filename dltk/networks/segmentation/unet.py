@@ -7,6 +7,7 @@ import tensorflow as tf
 
 from dltk.core.residual_unit import vanilla_residual_unit_3d
 from dltk.core.upsample import linear_upsample_3d
+from dltk.core.activations import leaky_relu
 
 
 def upsample_and_concat(inputs, inputs2, strides=(2, 2, 2)):
@@ -43,7 +44,7 @@ def residual_unet_3d(inputs,
                      strides=((1, 1, 1), (2, 2, 2), (2, 2, 2), (2, 2, 2)),
                      mode=tf.estimator.ModeKeys.EVAL,
                      use_bias=False,
-                     activation=tf.nn.relu6,
+                     activation=leaky_relu,
                      kernel_initializer=tf.initializers.variance_scaling(distribution='uniform'),
                      bias_initializer=tf.zeros_initializer(),
                      kernel_regularizer=None,
@@ -201,7 +202,7 @@ def asymmetric_residual_unet_3d(
         strides=((1, 1, 1), (2, 2, 2), (2, 2, 2), (2, 2, 2)),
         mode=tf.estimator.ModeKeys.EVAL,
         use_bias=False,
-        activation=tf.nn.relu6,
+        activation=leaky_relu,
         kernel_initializer=tf.initializers.variance_scaling(distribution='uniform'),
         bias_initializer=tf.zeros_initializer(),
         kernel_regularizer=None,
