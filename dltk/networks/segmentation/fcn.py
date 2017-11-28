@@ -14,7 +14,8 @@ def upscore_layer_3d(inputs,
                      out_filters,
                      in_filters=None,
                      strides=(2, 2, 2),
-                     mode=tf.estimator.ModeKeys.EVAL, use_bias=False,
+                     mode=tf.estimator.ModeKeys.EVAL,
+                     use_bias=False,
                      kernel_initializer=tf.initializers.variance_scaling(distribution='uniform'),
                      bias_initializer=tf.zeros_initializer(),
                      kernel_regularizer=None,
@@ -101,6 +102,7 @@ def residual_fcn_3d(inputs,
                     strides=((1, 1, 1), (2, 2, 2), (2, 2, 2), (2, 2, 2)),
                     mode=tf.estimator.ModeKeys.EVAL,
                     use_bias=False,
+                    activation=tf.nn.relu6,
                     kernel_initializer=tf.initializers.variance_scaling(distribution='uniform'),
                     bias_initializer=tf.zeros_initializer(),
                     kernel_regularizer=None,
@@ -130,6 +132,7 @@ def residual_fcn_3d(inputs,
         mode (TYPE, optional): One of the tf.estimator.ModeKeys strings:
             TRAIN, EVAL or PREDICT
         use_bias (bool, optional): Boolean, whether the layer uses a bias.
+        activation (optional): A function to use as activation function.
         kernel_initializer (TYPE, optional): An initializer for the convolution
             kernel.
         bias_initializer (TYPE, optional): An initializer for the bias vector.
@@ -179,6 +182,7 @@ def residual_fcn_3d(inputs,
                 inputs=x,
                 out_filters=filters[res_scale],
                 strides=strides[res_scale],
+                activation=activation,
                 mode=mode)
         saved_strides.append(strides[res_scale])
 
@@ -190,6 +194,7 @@ def residual_fcn_3d(inputs,
                     inputs=x,
                     out_filters=filters[res_scale],
                     strides=(1, 1, 1),
+                    activation=activation,
                     mode=mode)
         res_scales.append(x)
 
