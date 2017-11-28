@@ -25,7 +25,7 @@ def prelu(inputs, alpha_initializer=tf.constant_initializer()):
     return leaky_relu(inputs, alpha)
 
 
-def leaky_relu(inputs, alpha=0.01):
+def leaky_relu(inputs, alpha=0.1):
     """Leaky ReLu activation function
 
     Args:
