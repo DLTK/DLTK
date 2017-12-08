@@ -1,6 +1,6 @@
 # Docker support
 
-A simple implementation of docker. The Dockerfile will build an docker image based on tensorflow 1.4.0-py3, or whichever is stated in the Dockerfile. By default it will start a Jupyter notebook with tensorflow and DLTK tutorials available. To avoid downloading DLTK example data multiple times (70GB+), keep your data folder persistent, see below.
+A simple implementation of docker. By default the Dockerfile will build a docker image based on tensorflow 1.4.0-py3, and start a Jupyter notebook with tensorflow and DLTK tutorials available. To avoid downloading DLTK example data multiple times (70GB+), make sure you keep your data folder persistent, see below.
 
 ### Intructions
 Prerequisites: docker
@@ -18,15 +18,17 @@ No data or notebooks will be persistent.
 #### Run notebook with persistent data
 `docker run --rm -it -v /path/to/DTLK/data:/data -p 8888:8888 tensorflow-dltk`
 
-You data will be available from /data.
+You data will be available from /data. Notebooks will not be persistent.
 
 #### Run notebook with persistent data and notebooks
 `docker run --rm -it -v /path/to/mydata:/data  -v /path/to/own/notebooks:/notebooks/your-notebook-folder-name  -p 8888:8888 tensorflow-dltk`
 
-You data will be available from /data, and notebooks available in the Jupyter Notebook home page.
+You data will be available from /data, and notebooks available from the Jupyter Notebook home page.
 
 #### Run bash
 `docker run --rm -it tensorflow-dltk bash`
+
+See [Docker documenation](https://docs.docker.com/) for more options.
 
 #### CUDA/GPU SUPPORT
 Prerequisites: nvidia-docker
