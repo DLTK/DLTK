@@ -1,3 +1,12 @@
+# WARNING/NOTE
+# This implementation is work in progress and an attempt to implement a 
+# scalable version of the original DeepMedic [1] source. It will NOT 
+# yield the same accuracy performance as described in the paper.
+# If you are running comparative experiments, please refer to the 
+# original code base in [1].
+#
+# [1] https://github.com/Kamnitsask/deepmedic
+
 from __future__ import unicode_literals
 from __future__ import print_function
 from __future__ import division
