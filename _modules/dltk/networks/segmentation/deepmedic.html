@@ -215,7 +215,16 @@
            <div itemprop="articleBody">
             
   <h1>Source code for dltk.networks.segmentation.deepmedic</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">unicode_literals</span>
+<span></span><span class="c1"># WARNING/NOTE</span>
+<span class="c1"># This implementation is work in progress and an attempt to implement a</span>
+<span class="c1"># scalable version of the original DeepMedic [1] source. It will NOT</span>
+<span class="c1"># yield the same accuracy performance as described in the paper.</span>
+<span class="c1"># If you are running comparative experiments, please refer to the</span>
+<span class="c1"># original code base in [1].</span>
+<span class="c1">#</span>
+<span class="c1"># [1] https://github.com/Kamnitsask/deepmedic</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">unicode_literals</span>
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span>
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">absolute_import</span>
@@ -552,7 +561,6 @@
         <dl>
             <dt>Branches</dt>
             <dd><a href="../../../../dev/index.html">dev</a></dd>
-            <dd><a href="../../../../feature-asym-unet/index.html">feature-asym-unet</a></dd>
             <dd><a href="../../../../master/_modules/dltk/networks/segmentation/deepmedic.html">master</a></dd>
         </dl>
     </div>
