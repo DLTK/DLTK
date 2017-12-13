@@ -1,8 +1,8 @@
 # WARNING/NOTE
-# This implementation is work in progress and an attempt to implement a 
-# scalable version of the original DeepMedic [1] source. It will NOT 
+# This implementation is work in progress and an attempt to implement a
+# scalable version of the original DeepMedic [1] source. It will NOT
 # yield the same accuracy performance as described in the paper.
-# If you are running comparative experiments, please refer to the 
+# If you are running comparative experiments, please refer to the
 # original code base in [1].
 #
 # [1] https://github.com/Kamnitsask/deepmedic
