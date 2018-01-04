@@ -1,39 +1,40 @@
-# Docker support
+# DLTK Docker
 
-A simple implementation of docker. By default the Dockerfile will build a docker image based on tensorflow 1.4.0-py3, and start a Jupyter notebook with tensorflow and DLTK tutorials available. To avoid downloading DLTK example data multiple times (70GB+), make sure you keep your data folder persistent, see below.
+Docker image with DLTK and tensorflow, and Jupyter Notebook tutorials. To avoid re-downloading DLTK example data(70GB+), make sure to keep the data folder persistent, see below. For more info, see [Docker documenation](https://docs.docker.com/).
 
 ### Intructions
-Prerequisites: docker
+Prerequisites: [docker](https://www.docker.com/)
 
-#### Build image
-From tools/docker, run
+#### Pull image
+`docker pull dltk/dltk`
 
-`docker build -t tensorflow-dltk .`
-
-#### Run notebook
-`docker run --rm -it -p 8888:8888 tensorflow-dltk`
+#### Run Notebook
+`docker run --rm -it -p 8888:8888 dltk/dltk`
 
 No data or notebooks will be persistent.
 
-#### Run notebook with persistent data
-`docker run --rm -it -v /path/to/DTLK/data:/data -p 8888:8888 tensorflow-dltk`
+#### Run Notebook with persistent data
+`docker run --rm -it -v /path/to/DTLK/data:/data -p 8888:8888 dltk/dltk`
 
-You data will be available from /data. Notebooks will not be persistent.
+You persistent data is available at `/data`. Notebooks will not be persistent.
 
-#### Run notebook with persistent data and notebooks
-`docker run --rm -it -v /path/to/mydata:/data  -v /path/to/own/notebooks:/notebooks/your-notebook-folder-name  -p 8888:8888 tensorflow-dltk`
+#### Run Notebook with persistent data and notebooks
+`docker run --rm -it -v /path/to/mydata:/data  -v /path/to/own/notebooks:/notebooks/your-notebook-folder-name  -p 8888:8888 dltk/dltk`
 
-You data will be available from /data, and notebooks available from the Jupyter Notebook home page.
+You persistent data is available at `/data`. Your own notebooks will be persistent. Tutorials will not be persisent.
+
+#### Note: Setting Notebook password
+By default Jupyter Notebook will create access token for login. To set a password, set environment variable `PASSWORD` at container deployment, for example run docker with `-e PASSWORD=password1234`.
 
 #### Run bash
-`docker run --rm -it tensorflow-dltk bash`
+`docker run --rm -it dltk/dltk bash`
 
-See [Docker documenation](https://docs.docker.com/) for more options.
+#### Build image from Dockerfile
+From folder `tools/docker`, run `docker build -t dltk/dltk:yourbuildtag .` Run with `docker run --rm -it dltk/dltk:yourbuildtag`.
+
+Tip: Change tensorflow version by editing the Dockerfile base image tag to one from https://hub.docker.com/r/tensorflow/tensorflow/tags/ (includes release candidates, nightlies, gpu, etc).
 
 #### CUDA/GPU SUPPORT
-Prerequisites: nvidia-docker
+Prerequisites: [nvidia-docker](https://github.com/NVIDIA/nvidia-docker/)
 
-In the Dockerfile, change the base image to one of the gpu tagged images from https://hub.docker.com/r/tensorflow/tensorflow/tags/. Rebuild the image, and run by using `nvidia-docker` instead of `docker` with any of the examples above.
-
-#### Examples
-Non-official example images can be found at https://hub.docker.com/r/mdjaere/tensorflow-dltk/
+Change the Dockerfile base image to one of the gpu tagged images from https://hub.docker.com/r/tensorflow/tensorflow/tags/. Build the image, and run docker with `--runtime=nvidia`. See https://github.com/NVIDIA/nvidia-docker for more info.
