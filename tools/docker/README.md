@@ -35,4 +35,4 @@ Tip: You can change tensorflow version by editing the Dockerfile base image tag 
 #### CUDA/GPU SUPPORT
 Prerequisites: [nvidia-docker](https://github.com/NVIDIA/nvidia-docker/)
 
-Change the Dockerfile base image to one of the gpu tagged images from https://hub.docker.com/r/tensorflow/tensorflow/tags/. Build the image, and run docker with `--runtime=nvidia`. See https://github.com/NVIDIA/nvidia-docker for more info.
+To add GPU support, edit the Dockerfile base image to one of the gpu tagged images from https://hub.docker.com/r/tensorflow/tensorflow/tags/. Rebuild the image, and run with `docker run --runtime=nvidia …`. See https://github.com/NVIDIA/nvidia-docker for more info.
