@@ -225,7 +225,7 @@
 <span id="dltk-networks-super-resolution-simple-super-resolution-module"></span><h2>dltk.networks.super_resolution.simple_super_resolution module<a class="headerlink" href="#module-dltk.networks.super_resolution.simple_super_resolution" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="dltk.networks.super_resolution.simple_super_resolution.simple_super_resolution_3d">
-<code class="descclassname">dltk.networks.super_resolution.simple_super_resolution.</code><code class="descname">simple_super_resolution_3d</code><span class="sig-paren">(</span><em>inputs</em>, <em>num_convolutions=1</em>, <em>filters=(16</em>, <em>32</em>, <em>64)</em>, <em>upsampling_factor=(2</em>, <em>2</em>, <em>2)</em>, <em>mode='eval'</em>, <em>use_bias=False</em>, <em>kernel_initializer=&lt;tensorflow.python.ops.init_ops.VarianceScaling object&gt;</em>, <em>bias_initializer=&lt;tensorflow.python.ops.init_ops.Zeros object&gt;</em>, <em>kernel_regularizer=None</em>, <em>bias_regularizer=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dltk/networks/super_resolution/simple_super_resolution.html#simple_super_resolution_3d"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dltk.networks.super_resolution.simple_super_resolution.simple_super_resolution_3d" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">dltk.networks.super_resolution.simple_super_resolution.</code><code class="descname">simple_super_resolution_3d</code><span class="sig-paren">(</span><em>inputs</em>, <em>num_convolutions=1</em>, <em>filters=(16</em>, <em>32</em>, <em>64)</em>, <em>upsampling_factor=(2</em>, <em>2</em>, <em>2)</em>, <em>mode='eval'</em>, <em>use_bias=False</em>, <em>activation=&lt;function relu6&gt;</em>, <em>kernel_initializer=&lt;tensorflow.python.ops.init_ops.VarianceScaling object&gt;</em>, <em>bias_initializer=&lt;tensorflow.python.ops.init_ops.Zeros object&gt;</em>, <em>kernel_regularizer=None</em>, <em>bias_regularizer=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dltk/networks/super_resolution/simple_super_resolution.html#simple_super_resolution_3d"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dltk.networks.super_resolution.simple_super_resolution.simple_super_resolution_3d" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="docutils">
 <dt>Simple super resolution network with num_convolutions per feature</dt>
 <dd>extraction block. Each convolution in a block b has a filter size
@@ -245,6 +245,7 @@ resolution to the high resolution image.</li>
 <li><strong>mode</strong> (<em>TYPE, optional</em>) &#8211; One of the tf.estimator.ModeKeys strings: TRAIN,
 EVAL or PREDICT</li>
 <li><strong>use_bias</strong> (<em>bool, optional</em>) &#8211; Boolean, whether the layer uses a bias.</li>
+<li><strong>activation</strong> (<em>optional</em>) &#8211; A function to use as activation function.</li>
 <li><strong>kernel_initializer</strong> (<em>TYPE, optional</em>) &#8211; An initializer for the convolution
 kernel.</li>
 <li><strong>bias_initializer</strong> (<em>TYPE, optional</em>) &#8211; An initializer for the bias vector.
@@ -318,6 +319,7 @@ vector.</li>
             <dt>Tags</dt>
             <dd><a href="../../0.1.1/index.html">0.1.1</a></dd>
             <dd><a href="../../0.2.0/api/dltk.networks.super_resolution.html">0.2.0</a></dd>
+            <dd><a href="../../0.2.1/api/dltk.networks.super_resolution.html">0.2.1</a></dd>
         </dl>
         <dl>
             <dt>Branches</dt>
