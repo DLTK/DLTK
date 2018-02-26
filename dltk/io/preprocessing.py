@@ -25,7 +25,7 @@ def normalise_zero_one(image):
     """Image normalisation. Normalises image to fit [0, 1] range."""
 
     image = image.astype(np.float32)
-    
+
     minimum = np.min(image)
     maximum = np.max(image)
 
