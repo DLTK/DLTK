@@ -9,6 +9,7 @@ cache:
   directories:
   - "$HOME/.cache/pip"
 install:
+- pip install numpy>=1.14.0
 - pip install tensorflow
 - pip install --upgrade pytest
 - pip install -e '.[tests]'
@@ -21,6 +22,7 @@ jobs:
   - stage: docs
     if: fork = false
     install:
+    - pip install numpy>=1.14.0
     - pip install tensorflow
     - pip install -e '.[docs, tests]'
     script:
