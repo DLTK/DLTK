@@ -15,8 +15,8 @@ def whitening(image):
     std = np.std(image)
 
     if std > 0:
-        ret = (image - mean) / std 
-    else: 
+        ret = (image - mean) / std
+    else:
         ret = image * 0.
     return ret
 
