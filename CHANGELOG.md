@@ -6,11 +6,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
-
+#### Added
+- Docker template for containerisation, with image in [docker hub](https://hub.docker.com/r/dltk/dltk/)
 
 ## [0.2]
 
-### Added 
+### Added
 - download scripts for example data
 - model zoo repo
 - simple super-resolution network
@@ -21,7 +22,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - unet implementation now has convolutional blocks symmetrically in the encoder and decoder
 - core modularisation based on AbstractModule replaced by tf.layer and tf.estimator
 - core io AbstractReader class now wraps tf.contrib.data.Dataset, replacing v0.1 reader and queuing classes
-- tutorials are now changed to explain how dltk modules can be used with tf 
+- tutorials are now changed to explain how dltk modules can be used with tf
 - improved readme in terms of contributing, installation instructions
 - switched to google docstrings and loose coding style
 
