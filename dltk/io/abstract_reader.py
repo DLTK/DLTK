@@ -80,23 +80,17 @@ class Reader(object):
                     for k in list(ex.keys()):
                         if k not in list(compare.keys()):
                             del ex[k]
-                        elif isinstance(ex[k], dict) \
-                                and isinstance(compare[k], dict):
+                        elif isinstance(ex[k], dict) and isinstance(compare[k], dict):
                             clean_ex(ex[k], compare[k])
-                        elif (isinstance(ex[k], dict)
-                              and not isinstance(compare[k], dict)) \
-                                or (not isinstance(ex[k], dict)
-                                    and isinstance(compare[k], dict)):
+                        elif (isinstance(ex[k], dict) and not isinstance(compare[k], dict)) or \
+                             (not isinstance(ex[k], dict) and isinstance(compare[k], dict)):
                             raise ValueError('Entries between example and '
                                              'dtypes incompatible for key {}'
                                              ''.format(k))
-                        elif ((isinstance(ex[k], list)
-                               and not isinstance(compare[k], list))
-                              or (not isinstance(ex[k], list)
-                                  and isinstance(compare[k], list))
-                              or (isinstance(ex[k], list)
-                                  and isinstance(compare[k], list)
-                                  and not len(ex[k]) == len(compare[k]))):
+                        elif ((isinstance(ex[k], list) and not isinstance(compare[k], list)) or
+                              (not isinstance(ex[k], list) and isinstance(compare[k], list)) or
+                              (isinstance(ex[k], list) and isinstance(compare[k], list) and
+                               not len(ex[k]) == len(compare[k]))):
                             raise ValueError('Entries between example and '
                                              'dtypes incompatible for key {}'
                                              ''.format(k))
@@ -165,8 +159,7 @@ class Reader(object):
         def f():
             inputs = {k: tf.placeholder(
                 shape=[None] + list(placeholder_shapes['features'][k]),
-                dtype=self.dtypes['features'][k])
-                      for k in list(self.dtypes['features'].keys())}
+                dtype=self.dtypes['features'][k]) for k in list(self.dtypes['features'].keys())}
 
             return tf.estimator.export.ServingInputReceiver(inputs, inputs)
         return f

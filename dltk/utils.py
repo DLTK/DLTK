@@ -115,8 +115,7 @@ def sliding_window_segmentation_inference(session,
 
     out_dummies = [np.zeros(
         [inp_shape[0], ] + inp_bshape + [op.get_shape().as_list()[-1]]
-        if len(op.get_shape().as_list()) == len(inp_shape) else [])
-                   for op in ops_list]
+        if len(op.get_shape().as_list()) == len(inp_shape) else []) for op in ops_list]
 
     out_dummy_counter = [np.zeros_like(o) for o in out_dummies]
 
@@ -162,8 +161,7 @@ def sliding_window_segmentation_inference(session,
             out_slicers.append(out_slicer)
             if len(slicers) == batch_size or done:
                 slices_dict = {k: np.concatenate(
-                    [v[slicer] for slicer in slicers], 0)
-                               for k, v in padded_dict.items()}
+                    [v[slicer] for slicer in slicers], 0) for k, v in padded_dict.items()}
 
                 all_op_parts = session.run(ops_list, feed_dict=slices_dict)
 
