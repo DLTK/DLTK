@@ -1,0 +1,618 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>dltk.core package &mdash; DLTK 0.2.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/theme_overrides.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="dltk.io package" href="dltk.io.html" />
+    <link rel="prev" title="dltk package" href="dltk.html" /> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html">
+          
+
+          
+            
+            <img src="../_static/logo-dltk.svg" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.2
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Home</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Package Reference</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="dltk.html">dltk package</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">dltk.core package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#module-dltk.core.activations">dltk.core.activations module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-dltk.core.losses">dltk.core.losses module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-dltk.core.metrics">dltk.core.metrics module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-dltk.core.residual_unit">dltk.core.residual_unit module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-dltk.core.upsample">dltk.core.upsample module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-dltk.core">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="dltk.io.html">dltk.io package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="dltk.io.html#module-dltk.io.augmentation">dltk.io.augmentation module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dltk.io.html#module-dltk.io.preprocessing">dltk.io.preprocessing module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dltk.io.html#module-dltk.io.abstract_reader">dltk.core.io.abstract_reader module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dltk.io.html#module-dltk.io">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="dltk.networks.html">dltk.networks package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="dltk.networks.autoencoder.html">dltk.networks.autoencoder package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="dltk.networks.autoencoder.html#module-dltk.networks.autoencoder.convolutional_autoencoder">dltk.networks.autoencoder.convolutional_autoencoder module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dltk.networks.autoencoder.html#module-dltk.networks.autoencoder">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="dltk.networks.gan.html">dltk.networks.gan package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="dltk.networks.gan.html#module-dltk.networks.gan.dcgan">dltk.networks.gan.dcgan module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dltk.networks.gan.html#module-dltk.networks.gan">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="dltk.networks.regression_classification.html">dltk.networks.regression_classification package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="dltk.networks.regression_classification.html#module-dltk.networks.regression_classification.resnet">dltk.networks.regression_classification.resnet module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dltk.networks.regression_classification.html#module-dltk.networks.regression_classification">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="dltk.networks.segmentation.html">dltk.networks.segmentation package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="dltk.networks.segmentation.html#module-dltk.networks.segmentation.deepmedic">dltk.networks.segmentation.deepmedic module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dltk.networks.segmentation.html#module-dltk.networks.segmentation.fcn">dltk.networks.segmentation.fcn module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dltk.networks.segmentation.html#module-dltk.networks.segmentation.unet">dltk.networks.segmentation.unet module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dltk.networks.segmentation.html#module-dltk.networks.segmentation">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="dltk.networks.super_resolution.html">dltk.networks.super_resolution package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="dltk.networks.super_resolution.html#module-dltk.networks.super_resolution.simple_super_resolution">dltk.networks.super_resolution.simple_super_resolution module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dltk.networks.super_resolution.html#module-dltk.networks.super_resolution">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="dltk.networks.html#module-dltk.networks">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="dltk.html#module-dltk.utils">dltk.utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dltk.html#module-dltk">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">DLTK</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="dltk.html">dltk package</a> &raquo;</li>
+        
+      <li>dltk.core package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/api/dltk.core.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="dltk-core-package">
+<h1>dltk.core package<a class="headerlink" href="#dltk-core-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-dltk.core.activations">
+<span id="dltk-core-activations-module"></span><h2>dltk.core.activations module<a class="headerlink" href="#module-dltk.core.activations" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="dltk.core.activations.leaky_relu">
+<code class="descclassname">dltk.core.activations.</code><code class="descname">leaky_relu</code><span class="sig-paren">(</span><em>inputs</em>, <em>alpha=0.1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dltk/core/activations.html#leaky_relu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dltk.core.activations.leaky_relu" title="Permalink to this definition">¶</a></dt>
+<dd><p>Leaky ReLu activation function</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>inputs</strong> (<em>tf.Tensor</em>) &#8211; input Tensor</li>
+<li><strong>alpha</strong> (<em>float</em>) &#8211; leakiness parameter</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">a leaky ReLu activated tensor</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">tf.Tensor</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="dltk.core.activations.prelu">
+<code class="descclassname">dltk.core.activations.</code><code class="descname">prelu</code><span class="sig-paren">(</span><em>inputs</em>, <em>alpha_initializer=&lt;tensorflow.python.ops.init_ops.Constant object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dltk/core/activations.html#prelu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dltk.core.activations.prelu" title="Permalink to this definition">¶</a></dt>
+<dd><p>Probabilistic ReLu activation function</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>(tf.Tensor)</strong> &#8211; input Tensor</li>
+<li><strong>alpha_initializer</strong> (<em>float, optional</em>) &#8211; an initial value for alpha</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">a PreLu activated tensor</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">tf.Tensor</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-dltk.core.losses">
+<span id="dltk-core-losses-module"></span><h2>dltk.core.losses module<a class="headerlink" href="#module-dltk.core.losses" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="dltk.core.losses.dice_loss">
+<code class="descclassname">dltk.core.losses.</code><code class="descname">dice_loss</code><span class="sig-paren">(</span><em>logits</em>, <em>labels</em>, <em>num_classes</em>, <em>smooth=1e-05</em>, <em>include_background=True</em>, <em>only_present=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dltk/core/losses.html#dice_loss"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dltk.core.losses.dice_loss" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates a smooth Dice coefficient loss from sparse labels.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>logits</strong> (<em>tf.Tensor</em>) &#8211; logits prediction for which to calculate
+crossentropy error</li>
+<li><strong>labels</strong> (<em>tf.Tensor</em>) &#8211; sparse labels used for crossentropy error
+calculation</li>
+<li><strong>num_classes</strong> (<em>int</em>) &#8211; number of class labels to evaluate on</li>
+<li><strong>smooth</strong> (<em>float</em>) &#8211; smoothing coefficient for the loss computation</li>
+<li><strong>include_background</strong> (<em>bool</em>) &#8211; flag to include a loss on the background
+label or not</li>
+<li><strong>only_present</strong> (<em>bool</em>) &#8211; flag to include only labels present in the
+inputs or not</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Tensor scalar representing the loss</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">tf.Tensor</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="dltk.core.losses.sparse_balanced_crossentropy">
+<code class="descclassname">dltk.core.losses.</code><code class="descname">sparse_balanced_crossentropy</code><span class="sig-paren">(</span><em>logits</em>, <em>labels</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dltk/core/losses.html#sparse_balanced_crossentropy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dltk.core.losses.sparse_balanced_crossentropy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates a class frequency balanced crossentropy loss from sparse labels.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>logits</strong> (<em>tf.Tensor</em>) &#8211; logits prediction for which to calculate
+crossentropy error</li>
+<li><strong>labels</strong> (<em>tf.Tensor</em>) &#8211; sparse labels used for crossentropy error
+calculation</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Tensor scalar representing the mean loss</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">tf.Tensor</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-dltk.core.metrics">
+<span id="dltk-core-metrics-module"></span><h2>dltk.core.metrics module<a class="headerlink" href="#module-dltk.core.metrics" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="dltk.core.metrics.abs_vol_difference">
+<code class="descclassname">dltk.core.metrics.</code><code class="descname">abs_vol_difference</code><span class="sig-paren">(</span><em>predictions</em>, <em>labels</em>, <em>num_classes</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dltk/core/metrics.html#abs_vol_difference"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dltk.core.metrics.abs_vol_difference" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Calculates the absolute volume difference for each class between</dt>
+<dd>labels and predictions.</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>predictions</strong> (<em>np.ndarray</em>) &#8211; predictions</li>
+<li><strong>labels</strong> (<em>np.ndarray</em>) &#8211; labels</li>
+<li><strong>num_classes</strong> (<em>int</em>) &#8211; number of classes to calculate avd for</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">avd per class</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">np.ndarray</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="dltk.core.metrics.crossentropy">
+<code class="descclassname">dltk.core.metrics.</code><code class="descname">crossentropy</code><span class="sig-paren">(</span><em>predictions</em>, <em>labels</em>, <em>logits=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dltk/core/metrics.html#crossentropy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dltk.core.metrics.crossentropy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the crossentropy loss between predictions and labels</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>prediction</strong> (<em>np.ndarray</em>) &#8211; predictions</li>
+<li><strong>labels</strong> (<em>np.ndarray</em>) &#8211; labels</li>
+<li><strong>logits</strong> (<em>bool</em>) &#8211; flag whether predictions are logits or probabilities</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">crossentropy error</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">float</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="dltk.core.metrics.dice">
+<code class="descclassname">dltk.core.metrics.</code><code class="descname">dice</code><span class="sig-paren">(</span><em>predictions</em>, <em>labels</em>, <em>num_classes</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dltk/core/metrics.html#dice"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dltk.core.metrics.dice" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Calculates the categorical Dice similarity coefficients for each class</dt>
+<dd>between labels and predictions.</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>predictions</strong> (<em>np.ndarray</em>) &#8211; predictions</li>
+<li><strong>labels</strong> (<em>np.ndarray</em>) &#8211; labels</li>
+<li><strong>num_classes</strong> (<em>int</em>) &#8211; number of classes to calculate the dice
+coefficient for</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">dice coefficient per class</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">np.ndarray</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-dltk.core.residual_unit">
+<span id="dltk-core-residual-unit-module"></span><h2>dltk.core.residual_unit module<a class="headerlink" href="#module-dltk.core.residual_unit" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="dltk.core.residual_unit.vanilla_residual_unit_3d">
+<code class="descclassname">dltk.core.residual_unit.</code><code class="descname">vanilla_residual_unit_3d</code><span class="sig-paren">(</span><em>inputs</em>, <em>out_filters</em>, <em>kernel_size=(3</em>, <em>3</em>, <em>3)</em>, <em>strides=(1</em>, <em>1</em>, <em>1)</em>, <em>mode='eval'</em>, <em>use_bias=False</em>, <em>activation=&lt;function relu6&gt;</em>, <em>kernel_initializer=&lt;tensorflow.python.ops.init_ops.VarianceScaling object&gt;</em>, <em>bias_initializer=&lt;tensorflow.python.ops.init_ops.Zeros object&gt;</em>, <em>kernel_regularizer=None</em>, <em>bias_regularizer=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dltk/core/residual_unit.html#vanilla_residual_unit_3d"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dltk.core.residual_unit.vanilla_residual_unit_3d" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Implementation of a 3D residual unit according to [1]. This</dt>
+<dd>implementation supports strided convolutions and automatically
+handles different input and output filters.</dd>
+</dl>
+<p>[1] K. He et al. Identity Mappings in Deep Residual Networks. ECCV 2016.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>inputs</strong> (<em>tf.Tensor</em>) &#8211; Input tensor to the residual unit. Is required to
+have a rank of 5 (i.e. [batch, x, y, z, channels]).</li>
+<li><strong>out_filters</strong> (<em>int</em>) &#8211; Number of convolutional filters used in
+the sub units.</li>
+<li><strong>kernel_size</strong> (<em>tuple, optional</em>) &#8211; Size of the convoltional kernels
+used in the sub units</li>
+<li><strong>strides</strong> (<em>tuple, optional</em>) &#8211; Convolution strides in (x,y,z) of sub
+unit 0. Allows downsampling of the input tensor via strides
+convolutions.</li>
+<li><strong>mode</strong> (<em>str, optional</em>) &#8211; One of the tf.estimator.ModeKeys: TRAIN, EVAL or
+PREDICT</li>
+<li><strong>activation</strong> (<em>optional</em>) &#8211; A function to use as activation function.</li>
+<li><strong>use_bias</strong> (<em>bool, optional</em>) &#8211; Train a bias with each convolution.</li>
+<li><strong>kernel_initializer</strong> (<em>TYPE, optional</em>) &#8211; Initialisation of convolution kernels</li>
+<li><strong>bias_initializer</strong> (<em>TYPE, optional</em>) &#8211; Initialisation of bias</li>
+<li><strong>kernel_regularizer</strong> (<em>None, optional</em>) &#8211; Additional regularisation op</li>
+<li><strong>bias_regularizer</strong> (<em>None, optional</em>) &#8211; Additional regularisation op</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Output of the residual unit</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">tf.Tensor</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-dltk.core.upsample">
+<span id="dltk-core-upsample-module"></span><h2>dltk.core.upsample module<a class="headerlink" href="#module-dltk.core.upsample" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="dltk.core.upsample.get_linear_upsampling_kernel">
+<code class="descclassname">dltk.core.upsample.</code><code class="descname">get_linear_upsampling_kernel</code><span class="sig-paren">(</span><em>kernel_spatial_shape</em>, <em>out_filters</em>, <em>in_filters</em>, <em>trainable=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dltk/core/upsample.html#get_linear_upsampling_kernel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dltk.core.upsample.get_linear_upsampling_kernel" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Builds a kernel for linear upsampling with the shape</dt>
+<dd>[kernel_spatial_shape] + [out_filters, in_filters]. Can be set to
+trainable to potentially learn a better upsamling.</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>kernel_spatial_shape</strong> (<em>list or tuple</em>) &#8211; Spatial dimensions of the
+upsampling kernel. Is required to be of rank 2 or 3,
+(i.e. [dim_x, dim_y] or [dim_x, dim_y, dim_z])</li>
+<li><strong>out_filters</strong> (<em>int</em>) &#8211; Number of output filters.</li>
+<li><strong>in_filters</strong> (<em>int</em>) &#8211; Number of input filters.</li>
+<li><strong>trainable</strong> (<em>bool, optional</em>) &#8211; Flag to set the returned tf.Variable
+to be trainable or not.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Linear upsampling kernel</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">tf.Variable</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="dltk.core.upsample.linear_upsample_3d">
+<code class="descclassname">dltk.core.upsample.</code><code class="descname">linear_upsample_3d</code><span class="sig-paren">(</span><em>inputs</em>, <em>strides=(2</em>, <em>2</em>, <em>2)</em>, <em>use_bias=False</em>, <em>trainable=False</em>, <em>name=u'linear_upsample_3d'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dltk/core/upsample.html#linear_upsample_3d"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dltk.core.upsample.linear_upsample_3d" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Linear upsampling layer in 3D using strided transpose convolutions. The</dt>
+<dd>upsampling kernel size will be automatically computed to avoid
+information loss.</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>inputs</strong> (<em>tf.Tensor</em>) &#8211; Input tensor to be upsampled</li>
+<li><strong>strides</strong> (<em>tuple, optional</em>) &#8211; The strides determine the upsampling factor
+in each dimension.</li>
+<li><strong>use_bias</strong> (<em>bool, optional</em>) &#8211; Flag to train an additional bias.</li>
+<li><strong>trainable</strong> (<em>bool, optional</em>) &#8211; Flag to set the variables to be trainable or not.</li>
+<li><strong>name</strong> (<em>str, optional</em>) &#8211; Name of the layer.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Upsampled Tensor</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">tf.Tensor</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-dltk.core">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-dltk.core" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="dltk.io.html" class="btn btn-neutral float-right" title="dltk.io package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="dltk.html" class="btn btn-neutral" title="dltk package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, DLTK contributors.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+        <span class="fa fa-book"> Other Versions</span>
+        v: blog
+        <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+        <dl>
+            <dt>Tags</dt>
+            <dd><a href="../../0.1.1/api/dltk.core.html">0.1.1</a></dd>
+            <dd><a href="../../0.2.0/api/dltk.core.html">0.2.0</a></dd>
+            <dd><a href="../../0.2.1/api/dltk.core.html">0.2.1</a></dd>
+        </dl>
+        <dl>
+            <dt>Branches</dt>
+            <dd><a href="dltk.core.html">blog</a></dd>
+            <dd><a href="../../dev/api/dltk.core.html">dev</a></dd>
+            <dd><a href="../../master/api/dltk.core.html">master</a></dd>
+        </dl>
+    </div>
+</div>
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.2.1',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
