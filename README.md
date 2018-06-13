@@ -90,7 +90,7 @@ We appreciate any contributions to the DLTK and its Model Zoo. If you have impro
 
 #### Running tests locally
 To run the tests on your machine, you can install the ``tests`` extras by 
-running `pip installe -e '.[tests]'` inside the DLTK root directory. This 
+running `pip install -e '.[tests]'` inside the DLTK root directory. This 
 will install all necessary dependencies for testing. You can then run 
 `pytest --cov dltk --flake8 --cov-append` to see whether your code passes.
  
