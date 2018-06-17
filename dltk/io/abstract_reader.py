@@ -97,7 +97,8 @@ class Reader(object):
                     for k in list(compare):
                         if k not in list(ex.keys()):
                             raise ValueError('Key {} not found in ex but is '
-                                             'present in dtypes')
+                                             'present in dtypes. Found keys: '
+                                             '{}'.format(k, ex.keys()))
                     return ex
 
                 fn = self.read_fn(file_references, mode, params)
@@ -129,6 +130,7 @@ class Reader(object):
             dataset = dataset.repeat(None)
             dataset = dataset.shuffle(shuffle_cache_size)
             dataset = dataset.batch(batch_size)
+            dataset = dataset.prefetch(1)
 
             iterator = dataset.make_initializable_iterator()
             next_dict = iterator.get_next()

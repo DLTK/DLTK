@@ -83,7 +83,8 @@ class SlidingWindow(object):
 def sliding_window_segmentation_inference(session,
                                           ops_list,
                                           sample_dict,
-                                          batch_size=1):
+                                          batch_size=1,
+                                          striding=None):
     """
     Utility function to perform sliding window inference for segmentation
 
@@ -97,6 +98,9 @@ def sliding_window_segmentation_inference(session,
 
         batch_size (int, optional): Number of sliding windows to batch for
             calculation
+
+        striding (array_like): Striding of the sliding window. Can be used to
+            adjust overlap etc.
 
     Returns:
         list: List of np.arrays corresponding to the assembled outputs of
@@ -132,7 +136,9 @@ def sliding_window_segmentation_inference(session,
 
     f_bshape = list(padded_dict.values())[0].shape[1:-1]
 
-    striding = list(np.array(op_bshape) // 2) if all(out_diff == 0) else op_bshape
+    if not striding:
+        striding = (list(np.maximum(1, np.array(op_bshape) // 2))
+                    if all(out_diff == 0) else op_bshape)
 
     sw = SlidingWindow(f_bshape, pl_bshape, striding=striding)
     out_sw = SlidingWindow(inp_bshape, op_bshape, striding=striding)
