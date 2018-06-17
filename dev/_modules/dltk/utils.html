@@ -289,7 +289,8 @@
 <div class="viewcode-block" id="sliding_window_segmentation_inference"><a class="viewcode-back" href="../../api/dltk.html#dltk.utils.sliding_window_segmentation_inference">[docs]</a><span class="k">def</span> <span class="nf">sliding_window_segmentation_inference</span><span class="p">(</span><span class="n">session</span><span class="p">,</span>
                                           <span class="n">ops_list</span><span class="p">,</span>
                                           <span class="n">sample_dict</span><span class="p">,</span>
-                                          <span class="n">batch_size</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+                                          <span class="n">batch_size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                                          <span class="n">striding</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Utility function to perform sliding window inference for segmentation</span>
 
@@ -303,6 +304,9 @@
 
 <span class="sd">        batch_size (int, optional): Number of sliding windows to batch for</span>
 <span class="sd">            calculation</span>
+
+<span class="sd">        striding (array_like): Striding of the sliding window. Can be used to</span>
+<span class="sd">            adjust overlap etc.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        list: List of np.arrays corresponding to the assembled outputs of</span>
@@ -338,7 +342,9 @@
 
     <span class="n">f_bshape</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">padded_dict</span><span class="o">.</span><span class="n">values</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
 
-    <span class="n">striding</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">op_bshape</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span><span class="p">)</span> <span class="k">if</span> <span class="nb">all</span><span class="p">(</span><span class="n">out_diff</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="k">else</span> <span class="n">op_bshape</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">striding</span><span class="p">:</span>
+        <span class="n">striding</span> <span class="o">=</span> <span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">op_bshape</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span><span class="p">))</span>
+                    <span class="k">if</span> <span class="nb">all</span><span class="p">(</span><span class="n">out_diff</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="k">else</span> <span class="n">op_bshape</span><span class="p">)</span>
 
     <span class="n">sw</span> <span class="o">=</span> <span class="n">SlidingWindow</span><span class="p">(</span><span class="n">f_bshape</span><span class="p">,</span> <span class="n">pl_bshape</span><span class="p">,</span> <span class="n">striding</span><span class="o">=</span><span class="n">striding</span><span class="p">)</span>
     <span class="n">out_sw</span> <span class="o">=</span> <span class="n">SlidingWindow</span><span class="p">(</span><span class="n">inp_bshape</span><span class="p">,</span> <span class="n">op_bshape</span><span class="p">,</span> <span class="n">striding</span><span class="o">=</span><span class="n">striding</span><span class="p">)</span>
