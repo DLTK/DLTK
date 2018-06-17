@@ -25,8 +25,7 @@ If you use DLTK in your work please refer to this citation for the current versi
 If you use any application from the [DLTK Model Zoo](https://github.com/DLTK/models), additionally refer to the respective README.md files in the applications' folder to comply with its authors' instructions on referencing.
 
 ### Installation
-1. Setup a virtual environment and activate it. If you intend to run this on 
-machines with different system versions, use the --always-copy flag:
+1. Setup a virtual environment and activate it. Although DLTK<=0.2.1 supports and python 2.7, we will not support it future releases, similarly to our dependencies (i.e. SciPy, NumPy). We highly recommend using ptyhon3. If you intend to run this on machines with different system versions, use the --always-copy flag:
 
    ```shell
    virtualenv -p python3 --always-copy venv_tf
@@ -96,7 +95,7 @@ will install all necessary dependencies for testing. You can then run
  
 #### Building docs locally
 To run the tests on your machine, you can install the ``docs`` extras by 
-running `pip installe -e '.[docs]'` inside the DLTK root directory. This 
+running `pip install -e '.[docs]'` inside the DLTK root directory. This 
 will install all necessary dependencies for the documentation. You can then run 
 `make -C docs html` to build the documentation. You can access this 
 documentation in a webbrowser of your choice by pointing it at 

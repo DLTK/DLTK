@@ -84,7 +84,7 @@ def read_fn(file_references, mode, params=None):
                 n_examples=n_examples,
                 classes=9)
 
-            for e in range(n_examples):
+            for e in range(len(images)):
                 yield {'features': {'x': images[e].astype(np.float32)},
                        'labels': {'y': lbl[e].astype(np.int32)},
                        'subject_id': subject_id}
