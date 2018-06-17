@@ -35,11 +35,9 @@ def sparse_balanced_crossentropy(logits, labels):
         labels, minlength=num_classes, dtype=tf.float32))
 
     weights = (1. / (class_frequencies + tf.constant(1e-8)))
-    weights *= (tf.cast(tf.reduce_prod(tf.shape(labels)), tf.float32)
-                / tf.cast(num_classes, tf.float32))
+    weights *= (tf.cast(tf.reduce_prod(tf.shape(labels)), tf.float32) / tf.cast(num_classes, tf.float32))
 
-    new_shape = (([1, ] * len(labels.get_shape().as_list()))
-                 + [logits.get_shape().as_list()[-1]])
+    new_shape = (([1, ] * len(labels.get_shape().as_list())) + [logits.get_shape().as_list()[-1]])
 
     weights = tf.reshape(weights, new_shape)
 

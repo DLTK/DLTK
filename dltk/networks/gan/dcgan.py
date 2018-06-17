@@ -74,8 +74,7 @@ def dcgan_generator_3d(inputs,
             tf.logging.info('Generator at res_scale after up {} tensor '
                             'shape: {}'.format(res_scale, x.get_shape()))
 
-            x = tf.layers.batch_normalization(
-               x, training=mode == tf.estimator.ModeKeys.TRAIN)
+            x = tf.layers.batch_normalization(x, training=mode == tf.estimator.ModeKeys.TRAIN)
 
             x = leaky_relu(x, 0.2)
             tf.logging.info('Generator at res_scale {} tensor shape: '

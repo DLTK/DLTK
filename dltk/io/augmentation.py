@@ -196,9 +196,9 @@ def extract_class_balanced_example_array(image,
 
         for i in range(len(r_idx)):
             # Extract class-balanced examples from the original image
-            slicer = [slice(r_idx[i][dim]
-                            - ex_rad[dim][0], r_idx[i][dim]
-                            + ex_rad[dim][1]) for dim in range(rank)]
+            slicer = [slice(r_idx[i][dim] -
+                            ex_rad[dim][0], r_idx[i][dim] +
+                            ex_rad[dim][1]) for dim in range(rank)]
 
             ex_image = image[slicer][np.newaxis, :]
 
@@ -252,15 +252,15 @@ def extract_random_example_array(image_list,
 
     assert all([i_s >= e_s for i_s, e_s in zip(image_list[0].shape, example_size)]), \
         'Image must be bigger than example shape'
-    assert (image_list[0].ndim - 1 == len(example_size)
-            or image_list[0].ndim == len(example_size)), \
+    assert (image_list[0].ndim - 1 == len(example_size) or
+            image_list[0].ndim == len(example_size)), \
         'Example size doesnt fit image size'
 
     for i in image_list:
         if len(image_list) > 1:
-            assert (i.ndim - 1 == image_list[0].ndim
-                    or i.ndim == image_list[0].ndim
-                    or i.ndim + 1 == image_list[0].ndim), \
+            assert (i.ndim - 1 == image_list[0].ndim or
+                    i.ndim == image_list[0].ndim or
+                    i.ndim + 1 == image_list[0].ndim), \
                 'Example size doesnt fit image size'
 
             assert all([i0_s == i_s for i0_s, i_s in zip(image_list[0].shape, i.shape)]), \
