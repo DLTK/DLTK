@@ -294,7 +294,7 @@ each position</li>
 
 <dl class="function">
 <dt id="dltk.utils.sliding_window_segmentation_inference">
-<code class="descclassname">dltk.utils.</code><code class="descname">sliding_window_segmentation_inference</code><span class="sig-paren">(</span><em>session</em>, <em>ops_list</em>, <em>sample_dict</em>, <em>batch_size=1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dltk/utils.html#sliding_window_segmentation_inference"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dltk.utils.sliding_window_segmentation_inference" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">dltk.utils.</code><code class="descname">sliding_window_segmentation_inference</code><span class="sig-paren">(</span><em>session</em>, <em>ops_list</em>, <em>sample_dict</em>, <em>batch_size=1</em>, <em>striding=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dltk/utils.html#sliding_window_segmentation_inference"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dltk.utils.sliding_window_segmentation_inference" title="Permalink to this definition">¶</a></dt>
 <dd><p>Utility function to perform sliding window inference for segmentation</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -307,6 +307,8 @@ each position</li>
 <li><strong>placeholders to their respective input</strong></li>
 <li><strong>batch_size</strong> (<em>int, optional</em>) &#8211; Number of sliding windows to batch for
 calculation</li>
+<li><strong>striding</strong> (<em>array_like</em>) &#8211; Striding of the sliding window. Can be used to
+adjust overlap etc.</li>
 </ul>
 </td>
 </tr>
