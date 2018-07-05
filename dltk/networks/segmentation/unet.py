@@ -5,7 +5,7 @@ from __future__ import absolute_import
 
 import tensorflow as tf
 
-from dltk.core.residual_unit import vanilla_residual_unit_3d
+from dltk.core.units.residual_unit import vanilla_residual_unit_3d
 from dltk.core.upsample import linear_upsample_3d
 from dltk.core.activations import leaky_relu
 
