@@ -178,16 +178,17 @@ def residual_unit_3d(inputs,
 
     # Sub feature extraction units
     for i in range(num_convolutions):
-        with tf.variable_scope('sub_unit_{}'.format()):
+        with tf.variable_scope('sub_unit_{}'.format(i)):
 
             x = tf.layers.batch_normalization(
                 x, training=mode == tf.estimator.ModeKeys.TRAIN)
+            
             x = activation(x)
 
             x = tf.layers.conv3d(
                 inputs=x,
                 filters=out_filters,
-                kernel_size=k, strides=strides,
+                kernel_size=kernel_size,
                 **conv_params)
 
     # Add the residual
@@ -205,7 +206,6 @@ def residual_unit_3d(inputs,
                 inputs=orig_x,
                 filters=out_filters,
                 kernel_size=kernel_size,
-                strides=(1, 1, 1),
                 **conv_params)
         x += orig_x
 
