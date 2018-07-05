@@ -1,0 +1,385 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>dltk.networks.gan package &mdash; DLTK 0.2.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/theme_overrides.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="dltk.networks.regression_classification package" href="dltk.networks.regression_classification.html" />
+    <link rel="prev" title="dltk.networks.autoencoder package" href="dltk.networks.autoencoder.html" /> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html">
+          
+
+          
+            
+            <img src="../_static/logo-dltk.svg" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.2
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Home</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Package Reference</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="dltk.html">dltk package</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="dltk.core.html">dltk.core package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="dltk.core.html#module-dltk.core.activations">dltk.core.activations module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dltk.core.html#module-dltk.core.losses">dltk.core.losses module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dltk.core.html#module-dltk.core.metrics">dltk.core.metrics module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dltk.core.html#module-dltk.core.residual_unit">dltk.core.residual_unit module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dltk.core.html#module-dltk.core.upsample">dltk.core.upsample module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dltk.core.html#module-dltk.core">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="dltk.io.html">dltk.io package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="dltk.io.html#module-dltk.io.augmentation">dltk.io.augmentation module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dltk.io.html#module-dltk.io.preprocessing">dltk.io.preprocessing module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dltk.io.html#module-dltk.io.abstract_reader">dltk.core.io.abstract_reader module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dltk.io.html#module-dltk.io">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l2 current"><a class="reference internal" href="dltk.networks.html">dltk.networks package</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="dltk.networks.autoencoder.html">dltk.networks.autoencoder package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="dltk.networks.autoencoder.html#module-dltk.networks.autoencoder.convolutional_autoencoder">dltk.networks.autoencoder.convolutional_autoencoder module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dltk.networks.autoencoder.html#module-dltk.networks.autoencoder">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">dltk.networks.gan package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#module-dltk.networks.gan.dcgan">dltk.networks.gan.dcgan module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-dltk.networks.gan">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="dltk.networks.regression_classification.html">dltk.networks.regression_classification package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="dltk.networks.regression_classification.html#module-dltk.networks.regression_classification.resnet">dltk.networks.regression_classification.resnet module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dltk.networks.regression_classification.html#module-dltk.networks.regression_classification">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="dltk.networks.segmentation.html">dltk.networks.segmentation package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="dltk.networks.segmentation.html#module-dltk.networks.segmentation.deepmedic">dltk.networks.segmentation.deepmedic module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dltk.networks.segmentation.html#module-dltk.networks.segmentation.fcn">dltk.networks.segmentation.fcn module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dltk.networks.segmentation.html#module-dltk.networks.segmentation.unet">dltk.networks.segmentation.unet module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dltk.networks.segmentation.html#module-dltk.networks.segmentation">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="dltk.networks.super_resolution.html">dltk.networks.super_resolution package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="dltk.networks.super_resolution.html#module-dltk.networks.super_resolution.simple_super_resolution">dltk.networks.super_resolution.simple_super_resolution module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dltk.networks.super_resolution.html#module-dltk.networks.super_resolution">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="dltk.networks.html#module-dltk.networks">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="dltk.html#module-dltk.utils">dltk.utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dltk.html#module-dltk">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">DLTK</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="dltk.html">dltk package</a> &raquo;</li>
+        
+          <li><a href="dltk.networks.html">dltk.networks package</a> &raquo;</li>
+        
+      <li>dltk.networks.gan package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/api/dltk.networks.gan.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="dltk-networks-gan-package">
+<h1>dltk.networks.gan package<a class="headerlink" href="#dltk-networks-gan-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-dltk.networks.gan.dcgan">
+<span id="dltk-networks-gan-dcgan-module"></span><h2>dltk.networks.gan.dcgan module<a class="headerlink" href="#module-dltk.networks.gan.dcgan" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="dltk.networks.gan.dcgan.dcgan_discriminator_3d">
+<code class="descclassname">dltk.networks.gan.dcgan.</code><code class="descname">dcgan_discriminator_3d</code><span class="sig-paren">(</span><em>inputs</em>, <em>filters=(64</em>, <em>128</em>, <em>256</em>, <em>512)</em>, <em>strides=((2</em>, <em>2</em>, <em>2)</em>, <em>(2</em>, <em>2</em>, <em>2)</em>, <em>(1</em>, <em>2</em>, <em>2)</em>, <em>(1</em>, <em>2</em>, <em>2))</em>, <em>mode='eval'</em>, <em>use_bias=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dltk/networks/gan/dcgan.html#dcgan_discriminator_3d"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dltk.networks.gan.dcgan.dcgan_discriminator_3d" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deep convolutional generative adversarial network (DCGAN) discriminator
+network with num_convolutions on len(filters) resolution scales. The
+downsampling of features is done via strided convolutions. On each
+resolution scale s are num_convolutions with filter size = filters[s].
+strides[s] determine the downsampling factor at each resolution scale.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>inputs</strong> (<em>tf.Tensor</em>) &#8211; Input tensor to the network, required to be of
+rank 5.</li>
+<li><strong>num_convolutions</strong> (<em>int, optional</em>) &#8211; Number of convolutions per resolution
+scale.</li>
+<li><strong>filters</strong> (<em>tuple, optional</em>) &#8211; Number of filters for all convolutions at
+each resolution scale.</li>
+<li><strong>strides</strong> (<em>tuple, optional</em>) &#8211; Stride of the first convolution on a
+resolution scale.</li>
+<li><strong>mode</strong> (<em>TYPE, optional</em>) &#8211; One of the tf.estimator.ModeKeys strings: TRAIN,
+EVAL or PREDICT.</li>
+<li><strong>use_bias</strong> (<em>bool, optional</em>) &#8211; Boolean, whether the layer uses a bias.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">dictionary of output tensors</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dict</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="dltk.networks.gan.dcgan.dcgan_generator_3d">
+<code class="descclassname">dltk.networks.gan.dcgan.</code><code class="descname">dcgan_generator_3d</code><span class="sig-paren">(</span><em>inputs</em>, <em>filters=(256</em>, <em>128</em>, <em>64</em>, <em>32</em>, <em>1)</em>, <em>kernel_size=((4</em>, <em>4</em>, <em>4)</em>, <em>(3</em>, <em>3</em>, <em>3)</em>, <em>(3</em>, <em>3</em>, <em>3)</em>, <em>(3</em>, <em>3</em>, <em>3)</em>, <em>(4</em>, <em>4</em>, <em>4))</em>, <em>strides=((4</em>, <em>4</em>, <em>4)</em>, <em>(1</em>, <em>2</em>, <em>2)</em>, <em>(1</em>, <em>2</em>, <em>2)</em>, <em>(1</em>, <em>2</em>, <em>2)</em>, <em>(1</em>, <em>2</em>, <em>2))</em>, <em>mode='train'</em>, <em>use_bias=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dltk/networks/gan/dcgan.html#dcgan_generator_3d"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dltk.networks.gan.dcgan.dcgan_generator_3d" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deep convolutional generative adversial network (DCGAN) generator
+network. with num_convolutions on len(filters) resolution scales. The
+upsampling of features is done via strided transpose convolutions. On
+each resolution scale s are num_convolutions with filter size = filters[
+s]. strides[s] determine the upsampling factor at each resolution scale.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>inputs</strong> (<em>tf.Tensor</em>) &#8211; Input noise tensor to the network.</li>
+<li><strong>out_filters</strong> (<em>int</em>) &#8211; Number of output filters.</li>
+<li><strong>num_convolutions</strong> (<em>int, optional</em>) &#8211; Number of convolutions per resolution
+scale.</li>
+<li><strong>filters</strong> (<em>tuple, optional</em>) &#8211; Number of filters for all convolutions at
+each resolution scale.</li>
+<li><strong>strides</strong> (<em>tuple, optional</em>) &#8211; Stride of the first convolution on a
+resolution scale.</li>
+<li><strong>mode</strong> (<em>TYPE, optional</em>) &#8211; One of the tf.estimator.ModeKeys strings: TRAIN,
+EVAL or PREDICT</li>
+<li><strong>use_bias</strong> (<em>bool, optional</em>) &#8211; Boolean, whether the layer uses a bias.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">dictionary of output tensors</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dict</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-dltk.networks.gan">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-dltk.networks.gan" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="dltk.networks.regression_classification.html" class="btn btn-neutral float-right" title="dltk.networks.regression_classification package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="dltk.networks.autoencoder.html" class="btn btn-neutral" title="dltk.networks.autoencoder package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, DLTK contributors.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+        <span class="fa fa-book"> Other Versions</span>
+        v: feature_comparison
+        <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+        <dl>
+            <dt>Tags</dt>
+            <dd><a href="../../0.1.1/index.html">0.1.1</a></dd>
+            <dd><a href="../../0.2.0/api/dltk.networks.gan.html">0.2.0</a></dd>
+            <dd><a href="../../0.2.1/api/dltk.networks.gan.html">0.2.1</a></dd>
+        </dl>
+        <dl>
+            <dt>Branches</dt>
+            <dd><a href="../../dev/api/dltk.networks.gan.html">dev</a></dd>
+            <dd><a href="dltk.networks.gan.html">feature_comparison</a></dd>
+            <dd><a href="../../master/api/dltk.networks.gan.html">master</a></dd>
+        </dl>
+    </div>
+</div>
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.2.1',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

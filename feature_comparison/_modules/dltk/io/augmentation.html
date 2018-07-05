@@ -1,0 +1,577 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>dltk.io.augmentation &mdash; DLTK 0.2.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/theme_overrides.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html">
+          
+
+          
+            
+            <img src="../../../_static/logo-dltk.svg" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.2
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../index.html">Home</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Package Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/dltk.html">dltk package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/dltk.core.html">dltk.core package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/dltk.core.html#module-dltk.core.activations">dltk.core.activations module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/dltk.core.html#module-dltk.core.losses">dltk.core.losses module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/dltk.core.html#module-dltk.core.metrics">dltk.core.metrics module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/dltk.core.html#module-dltk.core.residual_unit">dltk.core.residual_unit module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/dltk.core.html#module-dltk.core.upsample">dltk.core.upsample module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/dltk.core.html#module-dltk.core">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/dltk.io.html">dltk.io package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/dltk.io.html#module-dltk.io.augmentation">dltk.io.augmentation module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/dltk.io.html#module-dltk.io.preprocessing">dltk.io.preprocessing module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/dltk.io.html#module-dltk.io.abstract_reader">dltk.core.io.abstract_reader module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/dltk.io.html#module-dltk.io">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/dltk.networks.html">dltk.networks package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/dltk.networks.autoencoder.html">dltk.networks.autoencoder package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/dltk.networks.autoencoder.html#module-dltk.networks.autoencoder.convolutional_autoencoder">dltk.networks.autoencoder.convolutional_autoencoder module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/dltk.networks.autoencoder.html#module-dltk.networks.autoencoder">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/dltk.networks.gan.html">dltk.networks.gan package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/dltk.networks.gan.html#module-dltk.networks.gan.dcgan">dltk.networks.gan.dcgan module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/dltk.networks.gan.html#module-dltk.networks.gan">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/dltk.networks.regression_classification.html">dltk.networks.regression_classification package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/dltk.networks.regression_classification.html#module-dltk.networks.regression_classification.resnet">dltk.networks.regression_classification.resnet module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/dltk.networks.regression_classification.html#module-dltk.networks.regression_classification">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/dltk.networks.segmentation.html">dltk.networks.segmentation package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/dltk.networks.segmentation.html#module-dltk.networks.segmentation.deepmedic">dltk.networks.segmentation.deepmedic module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/dltk.networks.segmentation.html#module-dltk.networks.segmentation.fcn">dltk.networks.segmentation.fcn module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/dltk.networks.segmentation.html#module-dltk.networks.segmentation.unet">dltk.networks.segmentation.unet module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/dltk.networks.segmentation.html#module-dltk.networks.segmentation">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/dltk.networks.super_resolution.html">dltk.networks.super_resolution package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/dltk.networks.super_resolution.html#module-dltk.networks.super_resolution.simple_super_resolution">dltk.networks.super_resolution.simple_super_resolution module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/dltk.networks.super_resolution.html#module-dltk.networks.super_resolution">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/dltk.networks.html#module-dltk.networks">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/dltk.html#module-dltk.utils">dltk.utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/dltk.html#module-dltk">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">DLTK</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>dltk.io.augmentation</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for dltk.io.augmentation</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">unicode_literals</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">absolute_import</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">scipy.ndimage.interpolation</span> <span class="k">import</span> <span class="n">map_coordinates</span>
+<span class="kn">from</span> <span class="nn">scipy.ndimage.filters</span> <span class="k">import</span> <span class="n">gaussian_filter</span>
+
+
+<div class="viewcode-block" id="flip"><a class="viewcode-back" href="../../../api/dltk.io.html#dltk.io.augmentation.flip">[docs]</a><span class="k">def</span> <span class="nf">flip</span><span class="p">(</span><span class="n">imagelist</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Randomly flip spatial dimensions</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        imagelist (np.ndarray or list or tuple): image(s) to be flipped</span>
+<span class="sd">        axis (int): axis along which to flip the images</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        np.ndarray or list or tuple: same as imagelist but randomly flipped</span>
+<span class="sd">            along axis</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Check if a single image or a list of images has been passed</span>
+    <span class="n">was_singular</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">imagelist</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+        <span class="n">imagelist</span> <span class="o">=</span> <span class="p">[</span><span class="n">imagelist</span><span class="p">]</span>
+        <span class="n">was_singular</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="c1"># With a probility of 0.5 flip the image(s) across `axis`</span>
+    <span class="n">do_flip</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">do_flip</span> <span class="o">&gt;</span> <span class="mf">0.5</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">imagelist</span><span class="p">)):</span>
+            <span class="n">imagelist</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span><span class="n">imagelist</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">was_singular</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">imagelist</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">imagelist</span></div>
+
+
+<div class="viewcode-block" id="add_gaussian_offset"><a class="viewcode-back" href="../../../api/dltk.io.html#dltk.io.augmentation.add_gaussian_offset">[docs]</a><span class="k">def</span> <span class="nf">add_gaussian_offset</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mf">0.1</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Add Gaussian offset to an image. Adds the offset to each channel</span>
+<span class="sd">    independently.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        image (np.ndarray): image to add noise to</span>
+<span class="sd">        sigma (float): stddev of the Gaussian distribution to generate noise</span>
+<span class="sd">            from</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        np.ndarray: same as image but with added offset to each channel</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">offsets</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="p">([</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">ndim</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="p">[</span><span class="n">image</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]))</span>
+    <span class="n">image</span> <span class="o">+=</span> <span class="n">offsets</span>
+    <span class="k">return</span> <span class="n">image</span></div>
+
+
+<div class="viewcode-block" id="add_gaussian_noise"><a class="viewcode-back" href="../../../api/dltk.io.html#dltk.io.augmentation.add_gaussian_noise">[docs]</a><span class="k">def</span> <span class="nf">add_gaussian_noise</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mf">0.05</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Add Gaussian noise to an image</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        image (np.ndarray): image to add noise to</span>
+<span class="sd">        sigma (float): stddev of the Gaussian distribution to generate noise</span>
+<span class="sd">            from</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        np.ndarray: same as image but with added offset to each channel</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">image</span> <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">image</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">image</span></div>
+
+
+<div class="viewcode-block" id="elastic_transform"><a class="viewcode-back" href="../../../api/dltk.io.html#dltk.io.augmentation.elastic_transform">[docs]</a><span class="k">def</span> <span class="nf">elastic_transform</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">sigma</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Elastic deformation of images as described in [1].</span>
+
+<span class="sd">    [1] Simard, Steinkraus and Platt, &quot;Best Practices for Convolutional</span>
+<span class="sd">        Neural Networks applied to Visual Document Analysis&quot;, in Proc. of the</span>
+<span class="sd">        International Conference on Document Analysis and Recognition, 2003.</span>
+
+<span class="sd">    Based on gist https://gist.github.com/erniejunior/601cdf56d2b424757de5</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        image (np.ndarray): image to be deformed</span>
+<span class="sd">        alpha (list): scale of transformation for each dimension, where larger</span>
+<span class="sd">            values have more deformation</span>
+<span class="sd">        sigma (list): Gaussian window of deformation for each dimension, where</span>
+<span class="sd">            smaller values have more localised deformation</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        np.ndarray: deformed image</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">alpha</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">sigma</span><span class="p">),</span> \
+        <span class="s2">&quot;Dimensions of alpha and sigma are different&quot;</span>
+
+    <span class="n">channelbool</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">ndim</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">alpha</span><span class="p">)</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">alpha</span><span class="p">)</span> <span class="o">+</span> <span class="n">channelbool</span><span class="p">,</span> <span class="p">)</span> <span class="o">+</span> <span class="n">image</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+
+    <span class="c1"># Generate a Gaussian filter, leaving channel dimensions zeroes</span>
+    <span class="k">for</span> <span class="n">jj</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">alpha</span><span class="p">)):</span>
+        <span class="n">array</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="o">*</span><span class="n">image</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">out</span><span class="p">[</span><span class="n">jj</span><span class="p">]</span> <span class="o">=</span> <span class="n">gaussian_filter</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="n">sigma</span><span class="p">[</span><span class="n">jj</span><span class="p">],</span>
+                                  <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;constant&quot;</span><span class="p">,</span> <span class="n">cval</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">*</span> <span class="n">alpha</span><span class="p">[</span><span class="n">jj</span><span class="p">]</span>
+
+    <span class="c1"># Map mask to indices</span>
+    <span class="n">shapes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="n">image</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
+    <span class="n">grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">broadcast_arrays</span><span class="p">(</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">ogrid</span><span class="p">[</span><span class="n">shapes</span><span class="p">])</span>
+    <span class="n">indices</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">((</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))),</span> <span class="n">grid</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">out</span><span class="p">)))</span>
+
+    <span class="c1"># Transform image based on masked indices</span>
+    <span class="n">transformed_image</span> <span class="o">=</span> <span class="n">map_coordinates</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">indices</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                                        <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;reflect&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">transformed_image</span></div>
+
+
+<div class="viewcode-block" id="extract_class_balanced_example_array"><a class="viewcode-back" href="../../../api/dltk.io.html#dltk.io.augmentation.extract_class_balanced_example_array">[docs]</a><span class="k">def</span> <span class="nf">extract_class_balanced_example_array</span><span class="p">(</span><span class="n">image</span><span class="p">,</span>
+                                         <span class="n">label</span><span class="p">,</span>
+                                         <span class="n">example_size</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="mi">64</span><span class="p">],</span>
+                                         <span class="n">n_examples</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                                         <span class="n">classes</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+                                         <span class="n">class_weights</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Extract training examples from an image (and corresponding label) subject</span>
+<span class="sd">        to class balancing. Returns an image example array and the</span>
+<span class="sd">        corresponding label array.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        image (np.ndarray): image to extract class-balanced patches from</span>
+<span class="sd">        label (np.ndarray): labels to use for balancing the classes</span>
+<span class="sd">        example_size (list or tuple): shape of the patches to extract</span>
+<span class="sd">        n_examples (int): number of patches to extract in total</span>
+<span class="sd">        classes (int or list or tuple): number of classes or list of classes</span>
+<span class="sd">            to extract</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        np.ndarray, np.ndarray: class-balanced patches extracted from full</span>
+<span class="sd">            images with the shape [batch, example_size..., image_channels]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="n">image</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">label</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="s1">&#39;Image and label shape must match&#39;</span>
+    <span class="k">assert</span> <span class="n">image</span><span class="o">.</span><span class="n">ndim</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">example_size</span><span class="p">),</span> \
+        <span class="s1">&#39;Example size doesnt fit image size&#39;</span>
+    <span class="k">assert</span> <span class="nb">all</span><span class="p">([</span><span class="n">i_s</span> <span class="o">&gt;=</span> <span class="n">e_s</span> <span class="k">for</span> <span class="n">i_s</span><span class="p">,</span> <span class="n">e_s</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">example_size</span><span class="p">)]),</span> \
+        <span class="s1">&#39;Image must be larger than example shape&#39;</span>
+    <span class="n">rank</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">example_size</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">classes</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="n">classes</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">classes</span><span class="p">))</span>
+    <span class="n">n_classes</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">classes</span><span class="p">)</span>
+
+    <span class="k">assert</span> <span class="n">n_examples</span> <span class="o">&gt;=</span> <span class="n">n_classes</span><span class="p">,</span> \
+        <span class="s1">&#39;n_examples need to be greater than n_classes&#39;</span>
+
+    <span class="k">if</span> <span class="n">class_weights</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">n_ex_per_class</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n_classes</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span> <span class="o">*</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">n_examples</span> <span class="o">/</span> <span class="n">n_classes</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">class_weights</span><span class="p">)</span> <span class="o">==</span> <span class="n">n_classes</span><span class="p">,</span> \
+            <span class="s1">&#39;Class_weights must match number of classes&#39;</span>
+        <span class="n">class_weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">class_weights</span><span class="p">)</span>
+        <span class="n">n_ex_per_class</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">((</span><span class="n">class_weights</span> <span class="o">/</span> <span class="n">class_weights</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span> <span class="o">*</span> <span class="n">n_examples</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+
+    <span class="c1"># Compute an example radius to define the region to extract around a</span>
+    <span class="c1"># center location</span>
+    <span class="n">ex_rad</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">example_size</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">),</span>
+                               <span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">example_size</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">))),</span>
+                      <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
+
+    <span class="n">class_ex_images</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">class_ex_lbls</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">min_ratio</span> <span class="o">=</span> <span class="mf">1.</span>
+    <span class="k">for</span> <span class="n">c_idx</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">classes</span><span class="p">):</span>
+        <span class="c1"># Get valid, random center locations belonging to that class</span>
+        <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argwhere</span><span class="p">(</span><span class="n">label</span> <span class="o">==</span> <span class="n">c</span><span class="p">)</span>
+
+        <span class="n">ex_images</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">ex_lbls</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">n_ex_per_class</span><span class="p">[</span><span class="n">c_idx</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">class_ex_images</span><span class="o">.</span><span class="n">append</span><span class="p">([])</span>
+            <span class="n">class_ex_lbls</span><span class="o">.</span><span class="n">append</span><span class="p">([])</span>
+            <span class="k">continue</span>
+
+        <span class="c1"># Extract random locations</span>
+        <span class="n">r_idx_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">idx</span><span class="p">),</span>
+                                     <span class="n">size</span><span class="o">=</span><span class="nb">min</span><span class="p">(</span><span class="n">n_ex_per_class</span><span class="p">[</span><span class="n">c_idx</span><span class="p">],</span> <span class="nb">len</span><span class="p">(</span><span class="n">idx</span><span class="p">)),</span>
+                                     <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+        <span class="n">r_idx</span> <span class="o">=</span> <span class="n">idx</span><span class="p">[</span><span class="n">r_idx_idx</span><span class="p">]</span>
+
+        <span class="c1"># Shift the random to valid locations if necessary</span>
+        <span class="n">r_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+            <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="nb">max</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="n">dim</span><span class="p">],</span> <span class="n">image</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="n">dim</span><span class="p">]</span> <span class="o">-</span> <span class="n">ex_rad</span><span class="p">[</span><span class="n">dim</span><span class="p">][</span><span class="mi">1</span><span class="p">]),</span>
+                           <span class="n">ex_rad</span><span class="p">[</span><span class="n">dim</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span> <span class="k">for</span> <span class="n">dim</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">rank</span><span class="p">)])</span>
+             <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">r_idx</span><span class="p">])</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">r_idx</span><span class="p">)):</span>
+            <span class="c1"># Extract class-balanced examples from the original image</span>
+            <span class="n">slicer</span> <span class="o">=</span> <span class="p">[</span><span class="nb">slice</span><span class="p">(</span><span class="n">r_idx</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">dim</span><span class="p">]</span> <span class="o">-</span>
+                            <span class="n">ex_rad</span><span class="p">[</span><span class="n">dim</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">r_idx</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">dim</span><span class="p">]</span> <span class="o">+</span>
+                            <span class="n">ex_rad</span><span class="p">[</span><span class="n">dim</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span> <span class="k">for</span> <span class="n">dim</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">rank</span><span class="p">)]</span>
+
+            <span class="n">ex_image</span> <span class="o">=</span> <span class="n">image</span><span class="p">[</span><span class="n">slicer</span><span class="p">][</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="p">:]</span>
+
+            <span class="n">ex_lbl</span> <span class="o">=</span> <span class="n">label</span><span class="p">[</span><span class="n">slicer</span><span class="p">][</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="p">:]</span>
+
+            <span class="c1"># Concatenate them and return the examples</span>
+            <span class="n">ex_images</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">ex_images</span><span class="p">,</span> <span class="n">ex_image</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> \
+                <span class="k">if</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ex_images</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="k">else</span> <span class="n">ex_image</span>
+            <span class="n">ex_lbls</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">ex_lbls</span><span class="p">,</span> <span class="n">ex_lbl</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> \
+                <span class="k">if</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ex_lbls</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="k">else</span> <span class="n">ex_lbl</span>
+
+        <span class="n">class_ex_images</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ex_images</span><span class="p">)</span>
+        <span class="n">class_ex_lbls</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ex_lbls</span><span class="p">)</span>
+
+        <span class="n">ratio</span> <span class="o">=</span> <span class="n">n_ex_per_class</span><span class="p">[</span><span class="n">c_idx</span><span class="p">]</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">ex_images</span><span class="p">)</span>
+        <span class="n">min_ratio</span> <span class="o">=</span> <span class="n">ratio</span> <span class="k">if</span> <span class="n">ratio</span> <span class="o">&lt;</span> <span class="n">min_ratio</span> <span class="k">else</span> <span class="n">min_ratio</span>
+
+    <span class="n">indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">n_ex_per_class</span> <span class="o">*</span> <span class="n">min_ratio</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+
+    <span class="n">ex_images</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">cimage</span><span class="p">[:</span><span class="n">idxs</span><span class="p">]</span> <span class="k">for</span> <span class="n">cimage</span><span class="p">,</span> <span class="n">idxs</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">class_ex_images</span><span class="p">,</span> <span class="n">indices</span><span class="p">)</span>
+                                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">cimage</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">ex_lbls</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">clbl</span><span class="p">[:</span><span class="n">idxs</span><span class="p">]</span> <span class="k">for</span> <span class="n">clbl</span><span class="p">,</span> <span class="n">idxs</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">class_ex_lbls</span><span class="p">,</span> <span class="n">indices</span><span class="p">)</span>
+                              <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">clbl</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">ex_images</span><span class="p">,</span> <span class="n">ex_lbls</span></div>
+
+
+<div class="viewcode-block" id="extract_random_example_array"><a class="viewcode-back" href="../../../api/dltk.io.html#dltk.io.augmentation.extract_random_example_array">[docs]</a><span class="k">def</span> <span class="nf">extract_random_example_array</span><span class="p">(</span><span class="n">image_list</span><span class="p">,</span>
+                                 <span class="n">example_size</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="mi">64</span><span class="p">],</span>
+                                 <span class="n">n_examples</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Randomly extract training examples from image (and a corresponding label).</span>
+<span class="sd">        Returns an image example array and the corresponding label array.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        image_list (np.ndarray or list or tuple): image(s) to extract random</span>
+<span class="sd">            patches from</span>
+<span class="sd">        example_size (list or tuple): shape of the patches to extract</span>
+<span class="sd">        n_examples (int): number of patches to extract in total</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        np.ndarray, np.ndarray: class-balanced patches extracted from full</span>
+<span class="sd">        images with the shape [batch, example_size..., image_channels]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">assert</span> <span class="n">n_examples</span> <span class="o">&gt;</span> <span class="mi">0</span>
+
+    <span class="n">was_singular</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">image_list</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+        <span class="n">image_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">image_list</span><span class="p">]</span>
+        <span class="n">was_singular</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="k">assert</span> <span class="nb">all</span><span class="p">([</span><span class="n">i_s</span> <span class="o">&gt;=</span> <span class="n">e_s</span> <span class="k">for</span> <span class="n">i_s</span><span class="p">,</span> <span class="n">e_s</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">image_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">example_size</span><span class="p">)]),</span> \
+        <span class="s1">&#39;Image must be bigger than example shape&#39;</span>
+    <span class="k">assert</span> <span class="p">(</span><span class="n">image_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">ndim</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">example_size</span><span class="p">)</span> <span class="ow">or</span>
+            <span class="n">image_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">example_size</span><span class="p">)),</span> \
+        <span class="s1">&#39;Example size doesnt fit image size&#39;</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">image_list</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">image_list</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">ndim</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">==</span> <span class="n">image_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">ndim</span> <span class="ow">or</span>
+                    <span class="n">i</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="n">image_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">ndim</span> <span class="ow">or</span>
+                    <span class="n">i</span><span class="o">.</span><span class="n">ndim</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">==</span> <span class="n">image_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">ndim</span><span class="p">),</span> \
+                <span class="s1">&#39;Example size doesnt fit image size&#39;</span>
+
+            <span class="k">assert</span> <span class="nb">all</span><span class="p">([</span><span class="n">i0_s</span> <span class="o">==</span> <span class="n">i_s</span> <span class="k">for</span> <span class="n">i0_s</span><span class="p">,</span> <span class="n">i_s</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">image_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">i</span><span class="o">.</span><span class="n">shape</span><span class="p">)]),</span> \
+                <span class="s1">&#39;Image shapes must match&#39;</span>
+
+    <span class="n">rank</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">example_size</span><span class="p">)</span>
+
+    <span class="c1"># Extract random examples from image and label</span>
+    <span class="n">valid_loc_range</span> <span class="o">=</span> <span class="p">[</span><span class="n">image_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">example_size</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">rank</span><span class="p">)]</span>
+
+    <span class="n">rnd_loc</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="n">valid_loc_range</span><span class="p">[</span><span class="n">dim</span><span class="p">],</span> <span class="n">size</span><span class="o">=</span><span class="n">n_examples</span><span class="p">)</span>
+               <span class="k">if</span> <span class="n">valid_loc_range</span><span class="p">[</span><span class="n">dim</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span>
+               <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_examples</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span> <span class="k">for</span> <span class="n">dim</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">rank</span><span class="p">)]</span>
+
+    <span class="n">examples</span> <span class="o">=</span> <span class="p">[[]]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">image_list</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_examples</span><span class="p">):</span>
+        <span class="n">slicer</span> <span class="o">=</span> <span class="p">[</span><span class="nb">slice</span><span class="p">(</span><span class="n">rnd_loc</span><span class="p">[</span><span class="n">dim</span><span class="p">][</span><span class="n">i</span><span class="p">],</span> <span class="n">rnd_loc</span><span class="p">[</span><span class="n">dim</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">example_size</span><span class="p">[</span><span class="n">dim</span><span class="p">])</span>
+                  <span class="k">for</span> <span class="n">dim</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">rank</span><span class="p">)]</span>
+
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">image_list</span><span class="p">)):</span>
+            <span class="n">ex_image</span> <span class="o">=</span> <span class="n">image_list</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">slicer</span><span class="p">][</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
+            <span class="c1"># Concatenate and return the examples</span>
+            <span class="n">examples</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">examples</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">ex_image</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> \
+                <span class="k">if</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">examples</span><span class="p">[</span><span class="n">j</span><span class="p">])</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="k">else</span> <span class="n">ex_image</span>
+
+    <span class="k">if</span> <span class="n">was_singular</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">examples</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">examples</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, DLTK contributors.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+        <span class="fa fa-book"> Other Versions</span>
+        v: feature_comparison
+        <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+        <dl>
+            <dt>Tags</dt>
+            <dd><a href="../../../../0.1.1/index.html">0.1.1</a></dd>
+            <dd><a href="../../../../0.2.0/index.html">0.2.0</a></dd>
+            <dd><a href="../../../../0.2.1/index.html">0.2.1</a></dd>
+        </dl>
+        <dl>
+            <dt>Branches</dt>
+            <dd><a href="../../../../dev/index.html">dev</a></dd>
+            <dd><a href="augmentation.html">feature_comparison</a></dd>
+            <dd><a href="../../../../master/index.html">master</a></dd>
+        </dl>
+    </div>
+</div>
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'0.2.1',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

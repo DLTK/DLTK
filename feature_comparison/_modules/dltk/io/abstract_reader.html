@@ -1,0 +1,453 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>dltk.io.abstract_reader &mdash; DLTK 0.2.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/theme_overrides.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html">
+          
+
+          
+            
+            <img src="../../../_static/logo-dltk.svg" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.2
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../index.html">Home</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Package Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/dltk.html">dltk package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/dltk.core.html">dltk.core package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/dltk.core.html#module-dltk.core.activations">dltk.core.activations module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/dltk.core.html#module-dltk.core.losses">dltk.core.losses module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/dltk.core.html#module-dltk.core.metrics">dltk.core.metrics module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/dltk.core.html#module-dltk.core.residual_unit">dltk.core.residual_unit module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/dltk.core.html#module-dltk.core.upsample">dltk.core.upsample module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/dltk.core.html#module-dltk.core">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/dltk.io.html">dltk.io package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/dltk.io.html#module-dltk.io.augmentation">dltk.io.augmentation module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/dltk.io.html#module-dltk.io.preprocessing">dltk.io.preprocessing module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/dltk.io.html#module-dltk.io.abstract_reader">dltk.core.io.abstract_reader module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/dltk.io.html#module-dltk.io">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/dltk.networks.html">dltk.networks package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/dltk.networks.autoencoder.html">dltk.networks.autoencoder package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/dltk.networks.autoencoder.html#module-dltk.networks.autoencoder.convolutional_autoencoder">dltk.networks.autoencoder.convolutional_autoencoder module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/dltk.networks.autoencoder.html#module-dltk.networks.autoencoder">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/dltk.networks.gan.html">dltk.networks.gan package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/dltk.networks.gan.html#module-dltk.networks.gan.dcgan">dltk.networks.gan.dcgan module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/dltk.networks.gan.html#module-dltk.networks.gan">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/dltk.networks.regression_classification.html">dltk.networks.regression_classification package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/dltk.networks.regression_classification.html#module-dltk.networks.regression_classification.resnet">dltk.networks.regression_classification.resnet module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/dltk.networks.regression_classification.html#module-dltk.networks.regression_classification">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/dltk.networks.segmentation.html">dltk.networks.segmentation package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/dltk.networks.segmentation.html#module-dltk.networks.segmentation.deepmedic">dltk.networks.segmentation.deepmedic module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/dltk.networks.segmentation.html#module-dltk.networks.segmentation.fcn">dltk.networks.segmentation.fcn module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/dltk.networks.segmentation.html#module-dltk.networks.segmentation.unet">dltk.networks.segmentation.unet module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/dltk.networks.segmentation.html#module-dltk.networks.segmentation">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/dltk.networks.super_resolution.html">dltk.networks.super_resolution package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/dltk.networks.super_resolution.html#module-dltk.networks.super_resolution.simple_super_resolution">dltk.networks.super_resolution.simple_super_resolution module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/dltk.networks.super_resolution.html#module-dltk.networks.super_resolution">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/dltk.networks.html#module-dltk.networks">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/dltk.html#module-dltk.utils">dltk.utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/dltk.html#module-dltk">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">DLTK</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>dltk.io.abstract_reader</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for dltk.io.abstract_reader</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">unicode_literals</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">absolute_import</span>
+
+<span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
+<span class="kn">import</span> <span class="nn">traceback</span>
+
+
+<div class="viewcode-block" id="IteratorInitializerHook"><a class="viewcode-back" href="../../../api/dltk.io.html#dltk.io.abstract_reader.IteratorInitializerHook">[docs]</a><span class="k">class</span> <span class="nc">IteratorInitializerHook</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">SessionRunHook</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Hook to initialise data iterator after Session is created.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">IteratorInitializerHook</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">iterator_initializer_func</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="IteratorInitializerHook.after_create_session"><a class="viewcode-back" href="../../../api/dltk.io.html#dltk.io.abstract_reader.IteratorInitializerHook.after_create_session">[docs]</a>    <span class="k">def</span> <span class="nf">after_create_session</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">session</span><span class="p">,</span> <span class="n">coord</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initialise the iterator after the session has been created.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">iterator_initializer_func</span><span class="p">(</span><span class="n">session</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="Reader"><a class="viewcode-back" href="../../../api/dltk.io.html#dltk.io.abstract_reader.Reader">[docs]</a><span class="k">class</span> <span class="nc">Reader</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Wrapper for dataset generation given a read function&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">read_fn</span><span class="p">,</span> <span class="n">dtypes</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Constructs a Reader instance</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            read_fn: Input function returning features which is a dictionary of</span>
+<span class="sd">                string feature name to `Tensor` or `SparseTensor`. If it</span>
+<span class="sd">                returns a tuple, first item is extracted as features.</span>
+<span class="sd">                Prediction continues until `input_fn` raises an end-of-input</span>
+<span class="sd">                exception (`OutOfRangeError` or `StopIteration`).</span>
+<span class="sd">            dtypes:  A nested structure of tf.DType objects corresponding to</span>
+<span class="sd">                each component of an element yielded by generator.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dtypes</span> <span class="o">=</span> <span class="n">dtypes</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">read_fn</span> <span class="o">=</span> <span class="n">read_fn</span>
+
+<div class="viewcode-block" id="Reader.get_inputs"><a class="viewcode-back" href="../../../api/dltk.io.html#dltk.io.abstract_reader.Reader.get_inputs">[docs]</a>    <span class="k">def</span> <span class="nf">get_inputs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                   <span class="n">file_references</span><span class="p">,</span>
+                   <span class="n">mode</span><span class="p">,</span>
+                   <span class="n">example_shapes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                   <span class="n">shuffle_cache_size</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+                   <span class="n">batch_size</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+                   <span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Function to provide the input_fn for a tf.Estimator.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            file_references: An array like structure that holds the reference</span>
+<span class="sd">                to the file to read. It can also be None if not needed.</span>
+<span class="sd">            mode: A tf.estimator.ModeKeys. It is passed on to `read_fn` to</span>
+<span class="sd">                trigger specific functions there.</span>
+<span class="sd">            example_shapes (optional): A nested structure of lists or tuples</span>
+<span class="sd">                corresponding to the shape of each component of an element</span>
+<span class="sd">                yielded by generator.</span>
+<span class="sd">            shuffle_cache_size (int, optional): An `int` determining the</span>
+<span class="sd">                number of examples that are held in the shuffle queue.</span>
+<span class="sd">            batch_size (int, optional): An `int` specifying the number of</span>
+<span class="sd">                examples returned in a batch.</span>
+<span class="sd">            params (dict, optional): A `dict` passed on to the `read_fn`.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            function: a handle to the `input_fn` to be passed the relevant</span>
+<span class="sd">                tf estimator functions.</span>
+<span class="sd">            tf.train.SessionRunHook: A hook to initialize the queue within</span>
+<span class="sd">                the dataset.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">iterator_initializer_hook</span> <span class="o">=</span> <span class="n">IteratorInitializerHook</span><span class="p">()</span>
+
+        <span class="k">def</span> <span class="nf">train_inputs</span><span class="p">():</span>
+            <span class="k">def</span> <span class="nf">f</span><span class="p">():</span>
+                <span class="k">def</span> <span class="nf">clean_ex</span><span class="p">(</span><span class="n">ex</span><span class="p">,</span> <span class="n">compare</span><span class="p">):</span>
+                    <span class="c1"># Clean example dictionary by recursively deleting</span>
+                    <span class="c1"># non-relevant entries. However, this does not look into</span>
+                    <span class="c1"># dictionaries nested into lists</span>
+                    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">ex</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+                        <span class="k">if</span> <span class="n">k</span> <span class="ow">not</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">compare</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+                            <span class="k">del</span> <span class="n">ex</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+                        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ex</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">compare</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="nb">dict</span><span class="p">):</span>
+                            <span class="n">clean_ex</span><span class="p">(</span><span class="n">ex</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">compare</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
+                        <span class="k">elif</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">ex</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">compare</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="nb">dict</span><span class="p">))</span> <span class="ow">or</span> \
+                             <span class="p">(</span><span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ex</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">compare</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="nb">dict</span><span class="p">)):</span>
+                            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Entries between example and &#39;</span>
+                                             <span class="s1">&#39;dtypes incompatible for key </span><span class="si">{}</span><span class="s1">&#39;</span>
+                                             <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">k</span><span class="p">))</span>
+                        <span class="k">elif</span> <span class="p">((</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">ex</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">compare</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="nb">list</span><span class="p">))</span> <span class="ow">or</span>
+                              <span class="p">(</span><span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ex</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">compare</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="nb">list</span><span class="p">))</span> <span class="ow">or</span>
+                              <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">ex</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">compare</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span>
+                               <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">ex</span><span class="p">[</span><span class="n">k</span><span class="p">])</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">compare</span><span class="p">[</span><span class="n">k</span><span class="p">]))):</span>
+                            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Entries between example and &#39;</span>
+                                             <span class="s1">&#39;dtypes incompatible for key </span><span class="si">{}</span><span class="s1">&#39;</span>
+                                             <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">k</span><span class="p">))</span>
+                    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">compare</span><span class="p">):</span>
+                        <span class="k">if</span> <span class="n">k</span> <span class="ow">not</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">ex</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+                            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Key </span><span class="si">{}</span><span class="s1"> not found in ex but is &#39;</span>
+                                             <span class="s1">&#39;present in dtypes. Found keys: &#39;</span>
+                                             <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">ex</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
+                    <span class="k">return</span> <span class="n">ex</span>
+
+                <span class="n">fn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">read_fn</span><span class="p">(</span><span class="n">file_references</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
+                <span class="c1"># iterate over all entries - this loop is terminated by the</span>
+                <span class="c1"># tf.errors.OutOfRangeError or StopIteration thrown by the</span>
+                <span class="c1"># read_fn</span>
+                <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="n">ex</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span>
+
+                        <span class="k">if</span> <span class="n">ex</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;labels&#39;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                            <span class="n">ex</span><span class="p">[</span><span class="s1">&#39;labels&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+                        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ex</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;The read_fn has to return &#39;</span>
+                                             <span class="s1">&#39;dictionaries&#39;</span><span class="p">)</span>
+
+                        <span class="n">ex</span> <span class="o">=</span> <span class="n">clean_ex</span><span class="p">(</span><span class="n">ex</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtypes</span><span class="p">)</span>
+                        <span class="k">yield</span> <span class="n">ex</span>
+                    <span class="k">except</span> <span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">errors</span><span class="o">.</span><span class="n">OutOfRangeError</span><span class="p">,</span> <span class="ne">StopIteration</span><span class="p">):</span>
+                        <span class="k">raise</span>
+                    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;got error `</span><span class="si">{}</span><span class="s1"> from `_read_sample`:&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="n">traceback</span><span class="o">.</span><span class="n">format_exc</span><span class="p">())</span>
+                        <span class="k">raise</span>
+
+            <span class="n">dataset</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Dataset</span><span class="o">.</span><span class="n">from_generator</span><span class="p">(</span>
+                <span class="n">f</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtypes</span><span class="p">,</span> <span class="n">example_shapes</span><span class="p">)</span>
+            <span class="n">dataset</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+            <span class="n">dataset</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">shuffle_cache_size</span><span class="p">)</span>
+            <span class="n">dataset</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">batch</span><span class="p">(</span><span class="n">batch_size</span><span class="p">)</span>
+            <span class="n">dataset</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">prefetch</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+            <span class="n">iterator</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">make_initializable_iterator</span><span class="p">()</span>
+            <span class="n">next_dict</span> <span class="o">=</span> <span class="n">iterator</span><span class="o">.</span><span class="n">get_next</span><span class="p">()</span>
+
+            <span class="c1"># Set runhook to initialize iterator</span>
+            <span class="n">iterator_initializer_hook</span><span class="o">.</span><span class="n">iterator_initializer_func</span> <span class="o">=</span> \
+                <span class="k">lambda</span> <span class="n">sess</span><span class="p">:</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">iterator</span><span class="o">.</span><span class="n">initializer</span><span class="p">)</span>
+
+            <span class="c1"># Return batched (features, labels)</span>
+            <span class="k">return</span> <span class="n">next_dict</span><span class="p">[</span><span class="s1">&#39;features&#39;</span><span class="p">],</span> <span class="n">next_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;labels&#39;</span><span class="p">)</span>
+
+        <span class="c1"># Return function and hook</span>
+        <span class="k">return</span> <span class="n">train_inputs</span><span class="p">,</span> <span class="n">iterator_initializer_hook</span></div>
+
+<div class="viewcode-block" id="Reader.serving_input_receiver_fn"><a class="viewcode-back" href="../../../api/dltk.io.html#dltk.io.abstract_reader.Reader.serving_input_receiver_fn">[docs]</a>    <span class="k">def</span> <span class="nf">serving_input_receiver_fn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">placeholder_shapes</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Build the serving inputs.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            placeholder_shapes: A nested structure of lists or tuples</span>
+<span class="sd">                corresponding to the shape of each component of the feature</span>
+<span class="sd">                elements yieled by the read_fn.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            function: A function to be passed to the tf.estimator.Estimator</span>
+<span class="sd">            instance when exporting a saved model with estimator.export_savedmodel.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">def</span> <span class="nf">f</span><span class="p">():</span>
+            <span class="n">inputs</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span>
+                <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">placeholder_shapes</span><span class="p">[</span><span class="s1">&#39;features&#39;</span><span class="p">][</span><span class="n">k</span><span class="p">]),</span>
+                <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dtypes</span><span class="p">[</span><span class="s1">&#39;features&#39;</span><span class="p">][</span><span class="n">k</span><span class="p">])</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dtypes</span><span class="p">[</span><span class="s1">&#39;features&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">())}</span>
+
+            <span class="k">return</span> <span class="n">tf</span><span class="o">.</span><span class="n">estimator</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">ServingInputReceiver</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">inputs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">f</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, DLTK contributors.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+        <span class="fa fa-book"> Other Versions</span>
+        v: feature_comparison
+        <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+        <dl>
+            <dt>Tags</dt>
+            <dd><a href="../../../../0.1.1/index.html">0.1.1</a></dd>
+            <dd><a href="../../../../0.2.0/index.html">0.2.0</a></dd>
+            <dd><a href="../../../../0.2.1/index.html">0.2.1</a></dd>
+        </dl>
+        <dl>
+            <dt>Branches</dt>
+            <dd><a href="../../../../dev/index.html">dev</a></dd>
+            <dd><a href="abstract_reader.html">feature_comparison</a></dd>
+            <dd><a href="../../../../master/index.html">master</a></dd>
+        </dl>
+    </div>
+</div>
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'0.2.1',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
