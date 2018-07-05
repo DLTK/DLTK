@@ -123,16 +123,16 @@ def vanilla_residual_unit_3d(inputs,
 
 
 def residual_unit_3d(inputs,
-                      out_filters,
-                      num_convolutions=2,
-                      kernel_size=(3, 3, 3),
-                      mode=tf.estimator.ModeKeys.EVAL,
-                      use_bias=False,
-                      activation=tf.nn.leaky_relu,
-                      kernel_initializer=tf.initializers.variance_scaling(distribution='uniform'),
-                      bias_initializer=tf.zeros_initializer(),
-                      kernel_regularizer=None,
-                      bias_regularizer=None):
+                     out_filters,
+                     num_convolutions=2,
+                     kernel_size=(3, 3, 3),
+                     mode=tf.estimator.ModeKeys.EVAL,
+                     use_bias=False,
+                     activation=tf.nn.leaky_relu,
+                     kernel_initializer=tf.initializers.variance_scaling(distribution='uniform'),
+                     bias_initializer=tf.zeros_initializer(),
+                     kernel_regularizer=None,
+                     bias_regularizer=None):
     """Implementation of a 3D residual unit according to [1]. This
         implementation supports strided convolutions and automatically
         handles different input and output filters.
@@ -144,11 +144,9 @@ def residual_unit_3d(inputs,
             have a rank of 5 (i.e. [batch, x, y, z, channels]).
         out_filters (int): Number of convolutional filters used in
             the sub units.
+        num_convolutions (int): Number of convolutions to skip over.
         kernel_size (tuple, optional): Size of the convoltional kernels
             used in the sub units
-        strides (tuple, optional): Convolution strides in (x,y,z) of sub
-            unit 0. Allows downsampling of the input tensor via strides
-            convolutions.
         mode (str, optional): One of the tf.estimator.ModeKeys: TRAIN, EVAL or
             PREDICT
         activation (optional): A function to use as activation function.
