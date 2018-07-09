@@ -9,6 +9,7 @@ import numpy as np
 
 def dense_unit_3d(inputs,
                   out_filters,
+                  growing_rate,
                   num_convolutions=2,
                   kernel_size=(3, 3, 3),
                   mode=tf.estimator.ModeKeys.EVAL,
@@ -22,13 +23,13 @@ def dense_unit_3d(inputs,
         implementation supports strided convolutions and automatically
         handles different input and output filters.
 
-    [1] K. He et al. Identity Mappings in Deep Residual Networks. ECCV 2016.
+    [1] G. Huang et al. Densely connected convolutional networks. CVPR 2017.
 
     Args:
         inputs (tf.Tensor): Input tensor to the residual unit. Is required to
             have a rank of 5 (i.e. [batch, x, y, z, channels]).
-        out_filters (int): Number of convolutional filters used in
-            the sub units.
+        out_filters (int): Number of convolutional filters to be produced.
+        growing_rate (int): Number of convolutional filters to grow by.
         num_convolutions (int): Number of convolutions in dense unit.
         kernel_size (tuple, optional): Size of the convoltional kernels
             used in the sub units
@@ -70,10 +71,14 @@ def dense_unit_3d(inputs,
 
             x = tf.layers.conv3d(
                 inputs=x,
-                filters=out_filters,
+                filters=growing_rate,
                 kernel_size=kernel_size,
                 **conv_params)
 
             previous_x += [x]
 
-    return tf.concat(previous_x, 4)
+    x = tf.concat(previous_x, 4)
+
+    x = tf.layers.conv3d(inputs=x, filters=out_filters, kernel_size=1)
+
+    return x
