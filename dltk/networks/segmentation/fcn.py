@@ -5,7 +5,7 @@ from __future__ import absolute_import
 
 import tensorflow as tf
 
-from dltk.core.units.residual_unit import vanilla_residual_unit_3d
+from dltk.core.units.residual_unit import residual_unit_3d, se_residual_unit_3d, resnext_unit_3d
 from dltk.core.upsample import linear_upsample_3d
 
 
@@ -173,27 +173,28 @@ def residual_fcn_3d(inputs,
     res_scales = [x]
     saved_strides = []
     for res_scale in range(1, len(filters)):
-
+        
         # Features are downsampled via strided convolutions. These are defined
         # in `strides` and subsequently saved
-        with tf.variable_scope('unit_{}_0'.format(res_scale)):
+        with tf.variable_scope('transition_unit_{}'.format(res_scale)):
 
-            x = vanilla_residual_unit_3d(
-                inputs=x,
-                out_filters=filters[res_scale],
-                strides=strides[res_scale],
-                activation=activation,
-                mode=mode)
-        saved_strides.append(strides[res_scale])
+            k = [s * 2 if s > 1 else k for k, s in zip((3,3,3), strides[res_scale])]
 
-        for i in range(1, num_res_units):
+            x = tf.layers.conv3d(inputs=x,
+                     filters=filters[res_scale],
+                     kernel_size=k,
+                     strides=strides[res_scale],
+                     padding='same',
+                     **conv_params)
+            saved_strides.append(strides[res_scale])
+
+        for i in range(0, num_res_units):
 
             with tf.variable_scope('unit_{}_{}'.format(res_scale, i)):
 
-                x = vanilla_residual_unit_3d(
+                x = resnext_unit_3d(
                     inputs=x,
                     out_filters=filters[res_scale],
-                    strides=(1, 1, 1),
                     activation=activation,
                     mode=mode)
         res_scales.append(x)

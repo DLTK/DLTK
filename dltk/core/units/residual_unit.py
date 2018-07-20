@@ -267,7 +267,7 @@ def se_residual_unit_3d(inputs,
 
     # Sub feature extraction units
     for i in range(num_convolutions):
-        with tf.variable_scope('sub_unit_{}'.format()):
+        with tf.variable_scope('sub_unit_{}'.format(i)):
 
             x = tf.layers.batch_normalization(
                 x, training=mode == tf.estimator.ModeKeys.TRAIN)
@@ -396,9 +396,11 @@ def resnext_unit_3d(inputs,
                     kernel_size=kernel_size,
                     **conv_params)
 
-                groups += [x]
+                groups.append(x)
 
-        x = tf.concat(groups, 5)
+        print(groups)
+        print(len(groups))
+        x = tf.concat(groups, axis=5)
 
         x = tf.layers.conv3d(
             inputs=x,
