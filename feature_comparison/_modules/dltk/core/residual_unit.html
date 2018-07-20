@@ -204,128 +204,15 @@
            <div itemprop="articleBody">
             
   <h1>Source code for dltk.core.residual_unit</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">unicode_literals</span>
-<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
-<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span>
-<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">absolute_import</span>
-
-<span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span></span><span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">from</span> <span class="nn">dltk.core.units</span> <span class="k">import</span> <span class="n">vanilla_residual_unit_3d</span> <span class="k">as</span> <span class="n">_res_unit</span>
 
 
-<div class="viewcode-block" id="vanilla_residual_unit_3d"><a class="viewcode-back" href="../../../api/dltk.core.html#dltk.core.residual_unit.vanilla_residual_unit_3d">[docs]</a><span class="k">def</span> <span class="nf">vanilla_residual_unit_3d</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span>
-                             <span class="n">out_filters</span><span class="p">,</span>
-                             <span class="n">kernel_size</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span>
-                             <span class="n">strides</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
-                             <span class="n">mode</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">estimator</span><span class="o">.</span><span class="n">ModeKeys</span><span class="o">.</span><span class="n">EVAL</span><span class="p">,</span>
-                             <span class="n">use_bias</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                             <span class="n">activation</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">relu6</span><span class="p">,</span>
-                             <span class="n">kernel_initializer</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">initializers</span><span class="o">.</span><span class="n">variance_scaling</span><span class="p">(</span><span class="n">distribution</span><span class="o">=</span><span class="s1">&#39;uniform&#39;</span><span class="p">),</span>
-                             <span class="n">bias_initializer</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">zeros_initializer</span><span class="p">(),</span>
-                             <span class="n">kernel_regularizer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                             <span class="n">bias_regularizer</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Implementation of a 3D residual unit according to [1]. This</span>
-<span class="sd">        implementation supports strided convolutions and automatically</span>
-<span class="sd">        handles different input and output filters.</span>
-
-<span class="sd">    [1] K. He et al. Identity Mappings in Deep Residual Networks. ECCV 2016.</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        inputs (tf.Tensor): Input tensor to the residual unit. Is required to</span>
-<span class="sd">            have a rank of 5 (i.e. [batch, x, y, z, channels]).</span>
-<span class="sd">        out_filters (int): Number of convolutional filters used in</span>
-<span class="sd">            the sub units.</span>
-<span class="sd">        kernel_size (tuple, optional): Size of the convoltional kernels</span>
-<span class="sd">            used in the sub units</span>
-<span class="sd">        strides (tuple, optional): Convolution strides in (x,y,z) of sub</span>
-<span class="sd">            unit 0. Allows downsampling of the input tensor via strides</span>
-<span class="sd">            convolutions.</span>
-<span class="sd">        mode (str, optional): One of the tf.estimator.ModeKeys: TRAIN, EVAL or</span>
-<span class="sd">            PREDICT</span>
-<span class="sd">        activation (optional): A function to use as activation function.</span>
-<span class="sd">        use_bias (bool, optional): Train a bias with each convolution.</span>
-<span class="sd">        kernel_initializer (TYPE, optional): Initialisation of convolution kernels</span>
-<span class="sd">        bias_initializer (TYPE, optional): Initialisation of bias</span>
-<span class="sd">        kernel_regularizer (None, optional): Additional regularisation op</span>
-<span class="sd">        bias_regularizer (None, optional): Additional regularisation op</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        tf.Tensor: Output of the residual unit</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="n">pool_op</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">max_pooling3d</span>
-
-    <span class="n">conv_params</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;padding&#39;</span><span class="p">:</span> <span class="s1">&#39;same&#39;</span><span class="p">,</span>
-                   <span class="s1">&#39;use_bias&#39;</span><span class="p">:</span> <span class="n">use_bias</span><span class="p">,</span>
-                   <span class="s1">&#39;kernel_initializer&#39;</span><span class="p">:</span> <span class="n">kernel_initializer</span><span class="p">,</span>
-                   <span class="s1">&#39;bias_initializer&#39;</span><span class="p">:</span> <span class="n">bias_initializer</span><span class="p">,</span>
-                   <span class="s1">&#39;kernel_regularizer&#39;</span><span class="p">:</span> <span class="n">kernel_regularizer</span><span class="p">,</span>
-                   <span class="s1">&#39;bias_regularizer&#39;</span><span class="p">:</span> <span class="n">bias_regularizer</span><span class="p">}</span>
-
-    <span class="n">in_filters</span> <span class="o">=</span> <span class="n">inputs</span><span class="o">.</span><span class="n">get_shape</span><span class="p">()</span><span class="o">.</span><span class="n">as_list</span><span class="p">()[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-    <span class="k">assert</span> <span class="n">in_filters</span> <span class="o">==</span> <span class="n">inputs</span><span class="o">.</span><span class="n">get_shape</span><span class="p">()</span><span class="o">.</span><span class="n">as_list</span><span class="p">()[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> \
-        <span class="s1">&#39;Module was initialised for a different input shape&#39;</span>
-
-    <span class="n">x</span> <span class="o">=</span> <span class="n">inputs</span>
-    <span class="n">orig_x</span> <span class="o">=</span> <span class="n">x</span>
-
-    <span class="c1"># Handle strided convolutions</span>
-    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">strides</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="n">orig_x</span> <span class="o">=</span> <span class="n">pool_op</span><span class="p">(</span><span class="n">inputs</span><span class="o">=</span><span class="n">orig_x</span><span class="p">,</span>
-                         <span class="n">pool_size</span><span class="o">=</span><span class="n">strides</span><span class="p">,</span>
-                         <span class="n">strides</span><span class="o">=</span><span class="n">strides</span><span class="p">,</span>
-                         <span class="n">padding</span><span class="o">=</span><span class="s1">&#39;valid&#39;</span><span class="p">)</span>
-
-    <span class="c1"># Sub unit 0</span>
-    <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">variable_scope</span><span class="p">(</span><span class="s1">&#39;sub_unit0&#39;</span><span class="p">):</span>
-
-        <span class="c1"># Adjust the strided conv kernel size to prevent losing information</span>
-        <span class="n">k</span> <span class="o">=</span> <span class="p">[</span><span class="n">s</span> <span class="o">*</span> <span class="mi">2</span> <span class="k">if</span> <span class="n">s</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">k</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">kernel_size</span><span class="p">,</span> <span class="n">strides</span><span class="p">)]</span>
-
-        <span class="n">x</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">batch_normalization</span><span class="p">(</span>
-            <span class="n">x</span><span class="p">,</span> <span class="n">training</span><span class="o">=</span><span class="n">mode</span> <span class="o">==</span> <span class="n">tf</span><span class="o">.</span><span class="n">estimator</span><span class="o">.</span><span class="n">ModeKeys</span><span class="o">.</span><span class="n">TRAIN</span><span class="p">)</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="n">activation</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-
-        <span class="n">x</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">conv3d</span><span class="p">(</span>
-            <span class="n">inputs</span><span class="o">=</span><span class="n">x</span><span class="p">,</span>
-            <span class="n">filters</span><span class="o">=</span><span class="n">out_filters</span><span class="p">,</span>
-            <span class="n">kernel_size</span><span class="o">=</span><span class="n">k</span><span class="p">,</span> <span class="n">strides</span><span class="o">=</span><span class="n">strides</span><span class="p">,</span>
-            <span class="o">**</span><span class="n">conv_params</span><span class="p">)</span>
-
-    <span class="c1"># Sub unit 1</span>
-    <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">variable_scope</span><span class="p">(</span><span class="s1">&#39;sub_unit1&#39;</span><span class="p">):</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">batch_normalization</span><span class="p">(</span>
-            <span class="n">x</span><span class="p">,</span> <span class="n">training</span><span class="o">=</span><span class="n">mode</span> <span class="o">==</span> <span class="n">tf</span><span class="o">.</span><span class="n">estimator</span><span class="o">.</span><span class="n">ModeKeys</span><span class="o">.</span><span class="n">TRAIN</span><span class="p">)</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="n">activation</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-
-        <span class="n">x</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">conv3d</span><span class="p">(</span>
-            <span class="n">inputs</span><span class="o">=</span><span class="n">x</span><span class="p">,</span>
-            <span class="n">filters</span><span class="o">=</span><span class="n">out_filters</span><span class="p">,</span>
-            <span class="n">kernel_size</span><span class="o">=</span><span class="n">kernel_size</span><span class="p">,</span>
-            <span class="n">strides</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
-            <span class="o">**</span><span class="n">conv_params</span><span class="p">)</span>
-
-    <span class="c1"># Add the residual</span>
-    <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">variable_scope</span><span class="p">(</span><span class="s1">&#39;sub_unit_add&#39;</span><span class="p">):</span>
-
-        <span class="c1"># Handle differences in input and output filter sizes</span>
-        <span class="k">if</span> <span class="n">in_filters</span> <span class="o">&lt;</span> <span class="n">out_filters</span><span class="p">:</span>
-            <span class="n">orig_x</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">pad</span><span class="p">(</span>
-                <span class="n">tensor</span><span class="o">=</span><span class="n">orig_x</span><span class="p">,</span>
-                <span class="n">paddings</span><span class="o">=</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]]</span> <span class="o">*</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">get_shape</span><span class="p">()</span><span class="o">.</span><span class="n">as_list</span><span class="p">())</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="p">[[</span>
-                    <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">((</span><span class="n">out_filters</span> <span class="o">-</span> <span class="n">in_filters</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.</span><span class="p">)),</span>
-                    <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">((</span><span class="n">out_filters</span> <span class="o">-</span> <span class="n">in_filters</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.</span><span class="p">))]])</span>
-
-        <span class="k">elif</span> <span class="n">in_filters</span> <span class="o">&gt;</span> <span class="n">out_filters</span><span class="p">:</span>
-            <span class="n">orig_x</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">conv3d</span><span class="p">(</span>
-                <span class="n">inputs</span><span class="o">=</span><span class="n">orig_x</span><span class="p">,</span>
-                <span class="n">filters</span><span class="o">=</span><span class="n">out_filters</span><span class="p">,</span>
-                <span class="n">kernel_size</span><span class="o">=</span><span class="n">kernel_size</span><span class="p">,</span>
-                <span class="n">strides</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
-                <span class="o">**</span><span class="n">conv_params</span><span class="p">)</span>
-        <span class="n">x</span> <span class="o">+=</span> <span class="n">orig_x</span>
-
-    <span class="k">return</span> <span class="n">x</span></div>
+<div class="viewcode-block" id="vanilla_residual_unit_3d"><a class="viewcode-back" href="../../../api/dltk.core.html#dltk.core.residual_unit.vanilla_residual_unit_3d">[docs]</a><span class="k">def</span> <span class="nf">vanilla_residual_unit_3d</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+        <span class="s1">&#39;This function moved to dltk.core.units.vanilla_residual_unit_3d&#39;</span><span class="p">,</span>
+        <span class="ne">DeprecationWarning</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">_res_unit</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 </pre></div>
 
            </div>
