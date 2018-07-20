@@ -24,6 +24,9 @@ If you use DLTK in your work please refer to this citation for the current versi
 
 If you use any application from the [DLTK Model Zoo](https://github.com/DLTK/models), additionally refer to the respective README.md files in the applications' folder to comply with its authors' instructions on referencing.
 
+### Introduction to Biomedical Image Analysis
+To ease into the subject, we wrote a quick overview [blog entry](https://medium.com/tensorflow/an-introduction-to-biomedical-image-analysis-with-tensorflow-and-dltk-2c25304e7c13) (12 min read) for the new [TensorFlow blog](https://medium.com/tensorflow). It covers some of the speciality information required for working with medical images and we suggest to read it, if you are new to the topic. The code we refer to in the blog can be found in [examples/tutorials](https://github.com/DLTK/DLTK/tree/master/examples/tutorials) and [examples/applications](https://github.com/DLTK/DLTK/tree/master/examples/applications).
+
 ### Installation
 1. Setup a virtual environment and activate it. Although DLTK<=0.2.1 supports and python 2.7, we will not support it future releases, similarly to our dependencies (i.e. SciPy, NumPy). We highly recommend using python3. If you intend to run this on machines with different system versions, use the --always-copy flag:
 
