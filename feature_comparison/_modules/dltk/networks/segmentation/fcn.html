@@ -94,7 +94,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/dltk.core.html#module-dltk.core.activations">dltk.core.activations module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/dltk.core.html#module-dltk.core.losses">dltk.core.losses module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/dltk.core.html#module-dltk.core.metrics">dltk.core.metrics module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../../api/dltk.core.html#module-dltk.core.residual_unit">dltk.core.residual_unit module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/dltk.core.html#dltk-core-residual-unit-module">dltk.core.residual_unit module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/dltk.core.html#module-dltk.core.upsample">dltk.core.upsample module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/dltk.core.html#module-dltk.core">Module contents</a></li>
 </ul>
@@ -211,7 +211,8 @@
 
 <span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
 
-<span class="kn">from</span> <span class="nn">dltk.core.units.residual_unit</span> <span class="k">import</span> <span class="n">vanilla_residual_unit_3d</span>
+<span class="c1"># residual_unit_3d, se_residual_unit_3d, resnext_unit_3d</span>
+<span class="kn">from</span> <span class="nn">dltk.core.units.residual_unit</span> <span class="k">import</span> <span class="n">se_resnext_unit_3d</span>
 <span class="kn">from</span> <span class="nn">dltk.core.upsample</span> <span class="k">import</span> <span class="n">linear_upsample_3d</span>
 
 
@@ -382,24 +383,25 @@
 
         <span class="c1"># Features are downsampled via strided convolutions. These are defined</span>
         <span class="c1"># in `strides` and subsequently saved</span>
-        <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">variable_scope</span><span class="p">(</span><span class="s1">&#39;unit_</span><span class="si">{}</span><span class="s1">_0&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">res_scale</span><span class="p">)):</span>
+        <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">variable_scope</span><span class="p">(</span><span class="s1">&#39;transition_unit_</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">res_scale</span><span class="p">)):</span>
 
-            <span class="n">x</span> <span class="o">=</span> <span class="n">vanilla_residual_unit_3d</span><span class="p">(</span>
-                <span class="n">inputs</span><span class="o">=</span><span class="n">x</span><span class="p">,</span>
-                <span class="n">out_filters</span><span class="o">=</span><span class="n">filters</span><span class="p">[</span><span class="n">res_scale</span><span class="p">],</span>
-                <span class="n">strides</span><span class="o">=</span><span class="n">strides</span><span class="p">[</span><span class="n">res_scale</span><span class="p">],</span>
-                <span class="n">activation</span><span class="o">=</span><span class="n">activation</span><span class="p">,</span>
-                <span class="n">mode</span><span class="o">=</span><span class="n">mode</span><span class="p">)</span>
-        <span class="n">saved_strides</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">strides</span><span class="p">[</span><span class="n">res_scale</span><span class="p">])</span>
+            <span class="n">k</span> <span class="o">=</span> <span class="p">[</span><span class="n">s</span> <span class="o">*</span> <span class="mi">2</span> <span class="k">if</span> <span class="n">s</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">k</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">strides</span><span class="p">[</span><span class="n">res_scale</span><span class="p">])]</span>
 
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_res_units</span><span class="p">):</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">conv3d</span><span class="p">(</span><span class="n">inputs</span><span class="o">=</span><span class="n">x</span><span class="p">,</span>
+                                 <span class="n">filters</span><span class="o">=</span><span class="n">filters</span><span class="p">[</span><span class="n">res_scale</span><span class="p">],</span>
+                                 <span class="n">kernel_size</span><span class="o">=</span><span class="n">k</span><span class="p">,</span>
+                                 <span class="n">strides</span><span class="o">=</span><span class="n">strides</span><span class="p">[</span><span class="n">res_scale</span><span class="p">],</span>
+                                 <span class="n">padding</span><span class="o">=</span><span class="s1">&#39;same&#39;</span><span class="p">,</span>
+                                 <span class="o">**</span><span class="n">conv_params</span><span class="p">)</span>
+            <span class="n">saved_strides</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">strides</span><span class="p">[</span><span class="n">res_scale</span><span class="p">])</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">num_res_units</span><span class="p">):</span>
 
             <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">variable_scope</span><span class="p">(</span><span class="s1">&#39;unit_</span><span class="si">{}</span><span class="s1">_</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">res_scale</span><span class="p">,</span> <span class="n">i</span><span class="p">)):</span>
 
-                <span class="n">x</span> <span class="o">=</span> <span class="n">vanilla_residual_unit_3d</span><span class="p">(</span>
+                <span class="n">x</span> <span class="o">=</span> <span class="n">se_resnext_unit_3d</span><span class="p">(</span>
                     <span class="n">inputs</span><span class="o">=</span><span class="n">x</span><span class="p">,</span>
                     <span class="n">out_filters</span><span class="o">=</span><span class="n">filters</span><span class="p">[</span><span class="n">res_scale</span><span class="p">],</span>
-                    <span class="n">strides</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
                     <span class="n">activation</span><span class="o">=</span><span class="n">activation</span><span class="p">,</span>
                     <span class="n">mode</span><span class="o">=</span><span class="n">mode</span><span class="p">)</span>
         <span class="n">res_scales</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
