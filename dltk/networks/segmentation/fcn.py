@@ -5,7 +5,7 @@ from __future__ import absolute_import
 
 import tensorflow as tf
 
-from dltk.core.units.residual_unit import residual_unit_3d, se_residual_unit_3d, resnext_unit_3d
+from dltk.core.units.residual_unit import residual_unit_3d, se_residual_unit_3d, resnext_unit_3d, se_resnext_unit_3d
 from dltk.core.upsample import linear_upsample_3d
 
 
@@ -192,7 +192,7 @@ def residual_fcn_3d(inputs,
 
             with tf.variable_scope('unit_{}_{}'.format(res_scale, i)):
 
-                x = resnext_unit_3d(
+                x = se_resnext_unit_3d(
                     inputs=x,
                     out_filters=filters[res_scale],
                     activation=activation,
