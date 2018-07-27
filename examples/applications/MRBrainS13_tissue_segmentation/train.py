@@ -11,7 +11,7 @@ import tensorflow as tf
 import numpy as np
 
 from dltk.core.metrics import dice
-from dltk.networks.segmentation.fcn import residual_fcn_3d
+from dltk.networks.segmentation.unet import residual_unet_3d
 from dltk.io.abstract_reader import Reader
 
 from reader import read_fn
@@ -53,7 +53,7 @@ def model_fn(features, labels, mode, params):
     """
 
     # 1. create a model and its outputs
-    net_output_ops = residual_fcn_3d(
+    net_output_ops = residual_unet_3d(
         inputs=features['x'],
         num_classes=NUM_CLASSES,
         num_res_units=2,
