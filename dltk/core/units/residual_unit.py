@@ -180,7 +180,7 @@ def residual_unit_3d(inputs,
 
             x = tf.layers.batch_normalization(
                 x, training=mode == tf.estimator.ModeKeys.TRAIN)
-            
+
             x = activation(x)
 
             x = tf.layers.conv3d(

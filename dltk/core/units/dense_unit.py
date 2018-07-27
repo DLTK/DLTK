@@ -4,7 +4,6 @@ from __future__ import division
 from __future__ import absolute_import
 
 import tensorflow as tf
-import numpy as np
 
 
 def dense_unit_3d(inputs,
