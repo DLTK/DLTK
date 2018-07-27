@@ -398,9 +398,7 @@ def resnext_unit_3d(inputs,
 
                 groups.append(x)
 
-        print(groups)
-        print(len(groups))
-        x = tf.concat(groups, axis=5)
+        x = tf.concat(groups, axis=-1)
 
         x = tf.layers.conv3d(
             inputs=x,
@@ -513,9 +511,9 @@ def se_resnext_unit_3d(inputs,
                     kernel_size=kernel_size,
                     **conv_params)
 
-                groups += [x]
+                groups.append(x)
 
-        x = tf.concat(groups, 5)
+        x = tf.concat(groups, axis=-1)
 
         x = tf.layers.conv3d(
             inputs=x,
