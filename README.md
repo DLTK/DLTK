@@ -39,7 +39,7 @@ To ease into the subject, we wrote a quick overview [blog entry](https://medium.
  as described [here](https://www.tensorflow.org/install/):
    
    ```shell
-   pip install tensorflow-gpu>=1.4.0
+   pip install "tensorflow-gpu>=1.4.0"
    ```
    
 3. Install DLTK:
