@@ -101,7 +101,7 @@ To run the tests on your machine, you can install the ``docs`` extras by
 running `pip install -e '.[docs]'` inside the DLTK root directory. This 
 will install all necessary dependencies for the documentation. You can then run 
 `make -C docs html` to build the documentation. You can access this 
-documentation in a webbrowser of your choice by pointing it at 
+documentation in a web browser of your choice by pointing it at 
 `docs/build/html/index.html`.
  
 ### The team

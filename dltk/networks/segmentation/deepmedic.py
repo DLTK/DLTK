@@ -151,8 +151,7 @@ def deepmedic_3d(inputs, num_classes,
         # add prev_x to first channels of x
 
         to_pad = [[0, 0]] * (len(x.get_shape().as_list()) - 1)
-        to_pad += [[0, x.get_shape().as_list()[-1] -
-                    prev_x.get_shape().as_list()[-1]]]
+        to_pad += [[0, x.get_shape().as_list()[-1] - prev_x.get_shape().as_list()[-1]]]
         prev_x = tf.pad(prev_x, to_pad)
 
         return x + prev_x
