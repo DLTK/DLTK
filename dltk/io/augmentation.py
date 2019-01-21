@@ -250,16 +250,13 @@ def extract_random_example_array(image_list,
 
     assert all([i_s >= e_s for i_s, e_s in zip(image_list[0].shape, example_size)]), \
         'Image must be bigger than example shape'
-    assert (image_list[0].ndim - 1 == len(example_size) or \
-            image_list[0].ndim == len(example_size)), \
+    assert (image_list[0].ndim - 1 == len(example_size) or image_list[0].ndim == len(example_size)), \
         'Example size doesnt fit image size'
 
     for i in image_list:
         if len(image_list) > 1:
-            assert (i.ndim - 1 == image_list[0].ndim or \
-                    i.ndim == image_list[0].ndim or \
-                    i.ndim + 1 == image_list[0].ndim), \
-                'Example size doesnt fit image size'
+            assert (i.ndim - 1 == image_list[0].ndim or i.ndim == image_list[0].ndim or
+                    i.ndim + 1 == image_list[0].ndim), 'Example size doesnt fit image size'
 
             assert all([i0_s == i_s for i0_s, i_s in zip(image_list[0].shape, i.shape)]), \
                 'Image shapes must match'
