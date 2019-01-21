@@ -96,7 +96,7 @@
 <li class="toctree-l3"><a class="reference internal" href="dltk.core.html#module-dltk.core.activations">dltk.core.activations module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="dltk.core.html#module-dltk.core.losses">dltk.core.losses module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="dltk.core.html#module-dltk.core.metrics">dltk.core.metrics module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="dltk.core.html#dltk-core-residual-unit-module">dltk.core.residual_unit module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dltk.core.html#module-dltk.core.residual_unit">dltk.core.residual_unit module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="dltk.core.html#module-dltk.core.upsample">dltk.core.upsample module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="dltk.core.html#module-dltk.core">Module contents</a></li>
 </ul>
@@ -482,6 +482,40 @@ each component of an element yielded by generator.</li>
 </tbody>
 </table>
 <dl class="method">
+<dt id="dltk.io.abstract_reader.Reader.get_dataset">
+<code class="descname">get_dataset</code><span class="sig-paren">(</span><em>file_references</em>, <em>mode</em>, <em>example_shapes=None</em>, <em>shuffle_cache_size=100</em>, <em>batch_size=4</em>, <em>params=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dltk/io/abstract_reader.html#Reader.get_dataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dltk.io.abstract_reader.Reader.get_dataset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to get a tf.data.Dataset from a python generator.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>file_references</strong> &#8211; An array like structure that holds the reference
+to the file to read. It can also be None if not needed.</li>
+<li><strong>mode</strong> &#8211; A tf.estimator.ModeKeys. It is passed on to <cite>read_fn</cite> to
+trigger specific functions there.</li>
+<li><strong>example_shapes</strong> (<em>optional</em>) &#8211; A nested structure of lists or tuples
+corresponding to the shape of each component of an element
+yielded by generator.</li>
+<li><strong>shuffle_cache_size</strong> (<em>int, optional</em>) &#8211; An <cite>int</cite> determining the
+number of examples that are held in the shuffle queue.</li>
+<li><strong>batch_size</strong> (<em>int, optional</em>) &#8211; An <cite>int</cite> specifying the number of
+examples returned in a batch.</li>
+<li><strong>params</strong> (<em>dict, optional</em>) &#8211; A <cite>dict</cite> passed on to the <cite>read_fn</cite>.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The dataset holding the data to look at.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">tf.data.Dataset</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="dltk.io.abstract_reader.Reader.get_inputs">
 <code class="descname">get_inputs</code><span class="sig-paren">(</span><em>file_references</em>, <em>mode</em>, <em>example_shapes=None</em>, <em>shuffle_cache_size=100</em>, <em>batch_size=4</em>, <em>params=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dltk/io/abstract_reader.html#Reader.get_inputs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dltk.io.abstract_reader.Reader.get_inputs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function to provide the input_fn for a tf.Estimator.</p>
@@ -572,7 +606,7 @@ instance when exporting a saved model with estimator.export_savedmodel.</td>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, DLTK contributors.
+        &copy; Copyright 2017, DLTK contributors
 
     </p>
   </div>
@@ -604,6 +638,7 @@ instance when exporting a saved model with estimator.export_savedmodel.</td>
             <dt>Branches</dt>
             <dd><a href="../../dev/api/dltk.io.html">dev</a></dd>
             <dd><a href="dltk.io.html">feature_comparison</a></dd>
+            <dd><a href="../../hotfix/api/dltk.io.html">hotfix</a></dd>
             <dd><a href="../../master/api/dltk.io.html">master</a></dd>
         </dl>
     </div>
@@ -612,21 +647,24 @@ instance when exporting a saved model with estimator.export_savedmodel.</td>
 
   
 
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'../',
-            VERSION:'0.2.1',
-            LANGUAGE:'None',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="../_static/jquery.js"></script>
-      <script type="text/javascript" src="../_static/underscore.js"></script>
-      <script type="text/javascript" src="../_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    
+      <script type="text/javascript">
+          var DOCUMENTATION_OPTIONS = {
+              URL_ROOT:'../',
+              VERSION:'0.2.1',
+              LANGUAGE:'None',
+              COLLAPSE_INDEX:false,
+              FILE_SUFFIX:'.html',
+              HAS_SOURCE:  true,
+              SOURCELINK_SUFFIX: '.txt'
+          };
+      </script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
 
   
 

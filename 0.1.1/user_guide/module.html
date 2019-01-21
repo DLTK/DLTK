@@ -226,10 +226,10 @@
            <div itemprop="articleBody">
             
   <div class="section" id="modules">
-<span id="modules"></span><h1>Modules<a class="headerlink" href="#modules" title="Permalink to this headline">¶</a></h1>
+<h1>Modules<a class="headerlink" href="#modules" title="Permalink to this headline">¶</a></h1>
 <p>Modules build the foundation of DLTK and are mostly used to implement layers of neural networks. Modules are implemented as objects which handle variable sharing. To do this we followed the style of <a class="reference external" href="https://github.com/deepmind/sonnet">Sonnet</a> and used <a class="reference external" href="https://www.tensorflow.org/api_docs/python/tf/make_template">tf.make_template</a>.
 To implement a new module you simply need to inherit from the  dltk.core.modules.base.AbstractModule class and overwrite the <code class="docutils literal"><span class="pre">__init__</span></code> and <code class="docutils literal"><span class="pre">build</span></code> methods.</p>
-<p>A simple example is the  dltk.core.modules.linear.Linear layer that implements a simple matrix multiplication. The <code class="docutils literal"><span class="pre">__init__</span></code> method stores all necessary parameters for the module like the number of output units and whether to add a bias or not. It then calls the super class&#8217; <code class="docutils literal"><span class="pre">__init__</span></code> function to build the template:</p>
+<p>A simple example is the  dltk.core.modules.linear.Linear layer that implements a simple matrix multiplication. The <code class="docutils literal"><span class="pre">__init__</span></code> method stores all necessary parameters for the module like the number of output units and whether to add a bias or not. It then calls the super class&#8216; <code class="docutils literal"><span class="pre">__init__</span></code> function to build the template:</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Linear</span><span class="p">(</span><span class="n">AbstractModule</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Linear layer module</span>
 
@@ -323,7 +323,7 @@ dltk.core.modules.base.AbstractModule class.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, DLTK contributors.
+        &copy; Copyright 2017, DLTK contributors
 
     </p>
   </div>
@@ -355,6 +355,7 @@ dltk.core.modules.base.AbstractModule class.</p>
             <dt>Branches</dt>
             <dd><a href="../../dev/index.html">dev</a></dd>
             <dd><a href="../../feature_comparison/index.html">feature_comparison</a></dd>
+            <dd><a href="../../hotfix/index.html">hotfix</a></dd>
             <dd><a href="../../master/index.html">master</a></dd>
         </dl>
     </div>
@@ -363,21 +364,24 @@ dltk.core.modules.base.AbstractModule class.</p>
 
   
 
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'../',
-            VERSION:'0.1a1',
-            LANGUAGE:'None',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="../_static/jquery.js"></script>
-      <script type="text/javascript" src="../_static/underscore.js"></script>
-      <script type="text/javascript" src="../_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    
+      <script type="text/javascript">
+          var DOCUMENTATION_OPTIONS = {
+              URL_ROOT:'../',
+              VERSION:'0.1a1',
+              LANGUAGE:'None',
+              COLLAPSE_INDEX:false,
+              FILE_SUFFIX:'.html',
+              HAS_SOURCE:  true,
+              SOURCELINK_SUFFIX: '.txt'
+          };
+      </script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
 
   
 

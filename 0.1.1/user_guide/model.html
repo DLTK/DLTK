@@ -226,7 +226,7 @@
            <div itemprop="articleBody">
             
   <div class="section" id="models">
-<span id="models"></span><h1>Models<a class="headerlink" href="#models" title="Permalink to this headline">¶</a></h1>
+<h1>Models<a class="headerlink" href="#models" title="Permalink to this headline">¶</a></h1>
 <p>Neural network architectures are called models in DLTK. The can be very specific like dltk.models.classification.lenet.LeNet5 or modular like dltk.models.classification.resnet.ResNet. Each model is implemented identically to modules. However, modules conventially return <code class="docutils literal"><span class="pre">tf.Tensor</span></code> objects whereas models return <code class="docutils literal"><span class="pre">dict</span></code> objects which hold the different outputs of a network. Because of this the structure of model implementations is again divided into the <code class="docutils literal"><span class="pre">__init__</span></code> and <code class="docutils literal"><span class="pre">_build</span></code> function. For dltk.models.classification.lenet.LeNet5 the init
 function is very simple:</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">LeNet5</span><span class="p">(</span><span class="n">AbstractModule</span><span class="p">):</span>
@@ -343,7 +343,7 @@ function is very simple:</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, DLTK contributors.
+        &copy; Copyright 2017, DLTK contributors
 
     </p>
   </div>
@@ -375,6 +375,7 @@ function is very simple:</p>
             <dt>Branches</dt>
             <dd><a href="../../dev/index.html">dev</a></dd>
             <dd><a href="../../feature_comparison/index.html">feature_comparison</a></dd>
+            <dd><a href="../../hotfix/index.html">hotfix</a></dd>
             <dd><a href="../../master/index.html">master</a></dd>
         </dl>
     </div>
@@ -383,21 +384,24 @@ function is very simple:</p>
 
   
 
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'../',
-            VERSION:'0.1a1',
-            LANGUAGE:'None',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="../_static/jquery.js"></script>
-      <script type="text/javascript" src="../_static/underscore.js"></script>
-      <script type="text/javascript" src="../_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    
+      <script type="text/javascript">
+          var DOCUMENTATION_OPTIONS = {
+              URL_ROOT:'../',
+              VERSION:'0.1a1',
+              LANGUAGE:'None',
+              COLLAPSE_INDEX:false,
+              FILE_SUFFIX:'.html',
+              HAS_SOURCE:  true,
+              SOURCELINK_SUFFIX: '.txt'
+          };
+      </script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
 
   
 

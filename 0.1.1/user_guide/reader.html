@@ -226,7 +226,7 @@
            <div itemprop="articleBody">
             
   <div class="section" id="reader">
-<span id="reader"></span><h1>Reader<a class="headerlink" href="#reader" title="Permalink to this headline">¶</a></h1>
+<h1>Reader<a class="headerlink" href="#reader" title="Permalink to this headline">¶</a></h1>
 <p>DLTK includes <code class="docutils literal"><span class="pre">readers</span></code> to provide data reading functionality. Those readers build queues to dynamically load data from the disk into memory. To implement a custom reader for your data you can simply inherit from the dltk.core.io.reader.AbstractReader class and overwrite the <code class="docutils literal"><span class="pre">__init__</span></code> and <code class="docutils literal"><span class="pre">_read_sample</span></code> functions.</p>
 <p>An example for a custom reader class is the <code class="docutils literal"><span class="pre">MRBrains</span></code> reader which reads NIFTI files and returns class-balanced patches for training a segmentation network.</p>
 <p>This reader does not need to overwrite the <code class="docutils literal"><span class="pre">__init__</span></code> function as there are no additional parameters to store. It then overwrites the <code class="docutils literal"><span class="pre">_read_sample</span></code> function which takes paths of directores with the MRBrains files and reads them with
@@ -346,7 +346,7 @@ list of directories to read from</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, DLTK contributors.
+        &copy; Copyright 2017, DLTK contributors
 
     </p>
   </div>
@@ -378,6 +378,7 @@ list of directories to read from</p>
             <dt>Branches</dt>
             <dd><a href="../../dev/index.html">dev</a></dd>
             <dd><a href="../../feature_comparison/index.html">feature_comparison</a></dd>
+            <dd><a href="../../hotfix/index.html">hotfix</a></dd>
             <dd><a href="../../master/index.html">master</a></dd>
         </dl>
     </div>
@@ -386,21 +387,24 @@ list of directories to read from</p>
 
   
 
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'../',
-            VERSION:'0.1a1',
-            LANGUAGE:'None',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="../_static/jquery.js"></script>
-      <script type="text/javascript" src="../_static/underscore.js"></script>
-      <script type="text/javascript" src="../_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    
+      <script type="text/javascript">
+          var DOCUMENTATION_OPTIONS = {
+              URL_ROOT:'../',
+              VERSION:'0.1a1',
+              LANGUAGE:'None',
+              COLLAPSE_INDEX:false,
+              FILE_SUFFIX:'.html',
+              HAS_SOURCE:  true,
+              SOURCELINK_SUFFIX: '.txt'
+          };
+      </script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
 
   
 

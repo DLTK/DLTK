@@ -94,7 +94,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../api/dltk.core.html#module-dltk.core.activations">dltk.core.activations module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/dltk.core.html#module-dltk.core.losses">dltk.core.losses module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/dltk.core.html#module-dltk.core.metrics">dltk.core.metrics module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../api/dltk.core.html#dltk-core-residual-unit-module">dltk.core.residual_unit module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/dltk.core.html#module-dltk.core.residual_unit">dltk.core.residual_unit module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/dltk.core.html#module-dltk.core.upsample">dltk.core.upsample module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/dltk.core.html#module-dltk.core">Module contents</a></li>
 </ul>
@@ -245,8 +245,101 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">read_fn</span> <span class="o">=</span> <span class="n">read_fn</span>
 
-<div class="viewcode-block" id="Reader.get_inputs"><a class="viewcode-back" href="../../../api/dltk.io.html#dltk.io.abstract_reader.Reader.get_inputs">[docs]</a>    <span class="k">def</span> <span class="nf">get_inputs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-                   <span class="n">file_references</span><span class="p">,</span>
+<div class="viewcode-block" id="Reader.get_dataset"><a class="viewcode-back" href="../../../api/dltk.io.html#dltk.io.abstract_reader.Reader.get_dataset">[docs]</a>    <span class="k">def</span> <span class="nf">get_dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_references</span><span class="p">,</span>
+                    <span class="n">mode</span><span class="p">,</span>
+                    <span class="n">example_shapes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                    <span class="n">shuffle_cache_size</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+                    <span class="n">batch_size</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+                    <span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+        <span class="sd">&quot;&quot;&quot;Function to get a tf.data.Dataset from a python generator.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            file_references: An array like structure that holds the reference</span>
+<span class="sd">                to the file to read. It can also be None if not needed.</span>
+<span class="sd">            mode: A tf.estimator.ModeKeys. It is passed on to `read_fn` to</span>
+<span class="sd">                trigger specific functions there.</span>
+<span class="sd">            example_shapes (optional): A nested structure of lists or tuples</span>
+<span class="sd">                corresponding to the shape of each component of an element</span>
+<span class="sd">                yielded by generator.</span>
+<span class="sd">            shuffle_cache_size (int, optional): An `int` determining the</span>
+<span class="sd">                number of examples that are held in the shuffle queue.</span>
+<span class="sd">            batch_size (int, optional): An `int` specifying the number of</span>
+<span class="sd">                examples returned in a batch.</span>
+<span class="sd">            params (dict, optional): A `dict` passed on to the `read_fn`.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            tf.data.Dataset: The dataset holding the data to look at.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">def</span> <span class="nf">f</span><span class="p">():</span>
+            <span class="k">def</span> <span class="nf">clean_ex</span><span class="p">(</span><span class="n">ex</span><span class="p">,</span> <span class="n">compare</span><span class="p">):</span>
+                <span class="c1"># Clean example dictionary by recursively deleting</span>
+                <span class="c1"># non-relevant entries. However, this does not look into</span>
+                <span class="c1"># dictionaries nested into lists</span>
+                <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">ex</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+                    <span class="k">if</span> <span class="n">k</span> <span class="ow">not</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">compare</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+                        <span class="k">del</span> <span class="n">ex</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+                    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ex</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">compare</span><span class="p">[</span><span class="n">k</span><span class="p">],</span>
+                                                                <span class="nb">dict</span><span class="p">):</span>
+                        <span class="n">clean_ex</span><span class="p">(</span><span class="n">ex</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">compare</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
+                    <span class="k">elif</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">ex</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">compare</span><span class="p">[</span><span class="n">k</span><span class="p">],</span>
+                                                                     <span class="nb">dict</span><span class="p">))</span> <span class="ow">or</span> \
+                            <span class="p">(</span><span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ex</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span>
+                                <span class="n">compare</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="nb">dict</span><span class="p">)):</span>
+                        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Entries between example and &#39;</span>
+                                         <span class="s1">&#39;dtypes incompatible for key </span><span class="si">{}</span><span class="s1">&#39;</span>
+                                         <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">k</span><span class="p">))</span>
+                    <span class="k">elif</span> <span class="p">((</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">ex</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span>
+                            <span class="n">compare</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="nb">list</span><span class="p">))</span> <span class="ow">or</span>
+                          <span class="p">(</span><span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ex</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span>
+                              <span class="n">compare</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="nb">list</span><span class="p">))</span> <span class="ow">or</span>
+                          <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">ex</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">compare</span><span class="p">[</span><span class="n">k</span><span class="p">],</span>
+                                                                  <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span>
+                           <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">ex</span><span class="p">[</span><span class="n">k</span><span class="p">])</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">compare</span><span class="p">[</span><span class="n">k</span><span class="p">]))):</span>
+                        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Entries between example and &#39;</span>
+                                         <span class="s1">&#39;dtypes incompatible for key </span><span class="si">{}</span><span class="s1">&#39;</span>
+                                         <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">k</span><span class="p">))</span>
+                <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">compare</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">k</span> <span class="ow">not</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">ex</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+                        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Key </span><span class="si">{}</span><span class="s1"> not found in ex but is &#39;</span>
+                                         <span class="s1">&#39;present in dtypes. Found keys: &#39;</span>
+                                         <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">ex</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
+                <span class="k">return</span> <span class="n">ex</span>
+
+            <span class="n">fn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">read_fn</span><span class="p">(</span><span class="n">file_references</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
+            <span class="c1"># iterate over all entries - this loop is terminated by the</span>
+            <span class="c1"># tf.errors.OutOfRangeError or StopIteration thrown by the</span>
+            <span class="c1"># read_fn</span>
+            <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">ex</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span>
+
+                    <span class="k">if</span> <span class="n">ex</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;labels&#39;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="n">ex</span><span class="p">[</span><span class="s1">&#39;labels&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+                    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ex</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;The read_fn has to return &#39;</span>
+                                         <span class="s1">&#39;dictionaries&#39;</span><span class="p">)</span>
+
+                    <span class="n">ex</span> <span class="o">=</span> <span class="n">clean_ex</span><span class="p">(</span><span class="n">ex</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtypes</span><span class="p">)</span>
+                    <span class="k">yield</span> <span class="n">ex</span>
+                <span class="k">except</span> <span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">errors</span><span class="o">.</span><span class="n">OutOfRangeError</span><span class="p">,</span> <span class="ne">StopIteration</span><span class="p">):</span>
+                    <span class="k">raise</span>
+                <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;got error `</span><span class="si">{}</span><span class="s1"> from `_read_sample`:&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="n">traceback</span><span class="o">.</span><span class="n">format_exc</span><span class="p">())</span>
+                    <span class="k">raise</span>
+
+        <span class="n">dataset</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Dataset</span><span class="o">.</span><span class="n">from_generator</span><span class="p">(</span>
+            <span class="n">f</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtypes</span><span class="p">,</span> <span class="n">example_shapes</span><span class="p">)</span>
+        <span class="n">dataset</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+        <span class="n">dataset</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">shuffle_cache_size</span><span class="p">)</span>
+        <span class="n">dataset</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">batch</span><span class="p">(</span><span class="n">batch_size</span><span class="p">)</span>
+        <span class="n">dataset</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">prefetch</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">contrib</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">AUTOTUNE</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">dataset</span></div>
+
+<div class="viewcode-block" id="Reader.get_inputs"><a class="viewcode-back" href="../../../api/dltk.io.html#dltk.io.abstract_reader.Reader.get_inputs">[docs]</a>    <span class="k">def</span> <span class="nf">get_inputs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_references</span><span class="p">,</span>
                    <span class="n">mode</span><span class="p">,</span>
                    <span class="n">example_shapes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                    <span class="n">shuffle_cache_size</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
@@ -277,67 +370,14 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">iterator_initializer_hook</span> <span class="o">=</span> <span class="n">IteratorInitializerHook</span><span class="p">()</span>
 
-        <span class="k">def</span> <span class="nf">train_inputs</span><span class="p">():</span>
-            <span class="k">def</span> <span class="nf">f</span><span class="p">():</span>
-                <span class="k">def</span> <span class="nf">clean_ex</span><span class="p">(</span><span class="n">ex</span><span class="p">,</span> <span class="n">compare</span><span class="p">):</span>
-                    <span class="c1"># Clean example dictionary by recursively deleting</span>
-                    <span class="c1"># non-relevant entries. However, this does not look into</span>
-                    <span class="c1"># dictionaries nested into lists</span>
-                    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">ex</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
-                        <span class="k">if</span> <span class="n">k</span> <span class="ow">not</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">compare</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
-                            <span class="k">del</span> <span class="n">ex</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
-                        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ex</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">compare</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="nb">dict</span><span class="p">):</span>
-                            <span class="n">clean_ex</span><span class="p">(</span><span class="n">ex</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">compare</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
-                        <span class="k">elif</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">ex</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">compare</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="nb">dict</span><span class="p">))</span> <span class="ow">or</span> \
-                             <span class="p">(</span><span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ex</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">compare</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="nb">dict</span><span class="p">)):</span>
-                            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Entries between example and &#39;</span>
-                                             <span class="s1">&#39;dtypes incompatible for key </span><span class="si">{}</span><span class="s1">&#39;</span>
-                                             <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">k</span><span class="p">))</span>
-                        <span class="k">elif</span> <span class="p">((</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">ex</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">compare</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="nb">list</span><span class="p">))</span> <span class="ow">or</span>
-                              <span class="p">(</span><span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ex</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">compare</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="nb">list</span><span class="p">))</span> <span class="ow">or</span>
-                              <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">ex</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">compare</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span>
-                               <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">ex</span><span class="p">[</span><span class="n">k</span><span class="p">])</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">compare</span><span class="p">[</span><span class="n">k</span><span class="p">]))):</span>
-                            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Entries between example and &#39;</span>
-                                             <span class="s1">&#39;dtypes incompatible for key </span><span class="si">{}</span><span class="s1">&#39;</span>
-                                             <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">k</span><span class="p">))</span>
-                    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">compare</span><span class="p">):</span>
-                        <span class="k">if</span> <span class="n">k</span> <span class="ow">not</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">ex</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
-                            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Key </span><span class="si">{}</span><span class="s1"> not found in ex but is &#39;</span>
-                                             <span class="s1">&#39;present in dtypes. Found keys: &#39;</span>
-                                             <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">ex</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
-                    <span class="k">return</span> <span class="n">ex</span>
+        <span class="k">def</span> <span class="nf">inputs</span><span class="p">():</span>
 
-                <span class="n">fn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">read_fn</span><span class="p">(</span><span class="n">file_references</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
-                <span class="c1"># iterate over all entries - this loop is terminated by the</span>
-                <span class="c1"># tf.errors.OutOfRangeError or StopIteration thrown by the</span>
-                <span class="c1"># read_fn</span>
-                <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
-                    <span class="k">try</span><span class="p">:</span>
-                        <span class="n">ex</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span>
-
-                        <span class="k">if</span> <span class="n">ex</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;labels&#39;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                            <span class="n">ex</span><span class="p">[</span><span class="s1">&#39;labels&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-
-                        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ex</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
-                            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;The read_fn has to return &#39;</span>
-                                             <span class="s1">&#39;dictionaries&#39;</span><span class="p">)</span>
-
-                        <span class="n">ex</span> <span class="o">=</span> <span class="n">clean_ex</span><span class="p">(</span><span class="n">ex</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtypes</span><span class="p">)</span>
-                        <span class="k">yield</span> <span class="n">ex</span>
-                    <span class="k">except</span> <span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">errors</span><span class="o">.</span><span class="n">OutOfRangeError</span><span class="p">,</span> <span class="ne">StopIteration</span><span class="p">):</span>
-                        <span class="k">raise</span>
-                    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-                        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;got error `</span><span class="si">{}</span><span class="s1"> from `_read_sample`:&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
-                        <span class="nb">print</span><span class="p">(</span><span class="n">traceback</span><span class="o">.</span><span class="n">format_exc</span><span class="p">())</span>
-                        <span class="k">raise</span>
-
-            <span class="n">dataset</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Dataset</span><span class="o">.</span><span class="n">from_generator</span><span class="p">(</span>
-                <span class="n">f</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtypes</span><span class="p">,</span> <span class="n">example_shapes</span><span class="p">)</span>
-            <span class="n">dataset</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
-            <span class="n">dataset</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">shuffle_cache_size</span><span class="p">)</span>
-            <span class="n">dataset</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">batch</span><span class="p">(</span><span class="n">batch_size</span><span class="p">)</span>
-            <span class="n">dataset</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">prefetch</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-
+            <span class="n">dataset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_dataset</span><span class="p">(</span><span class="n">file_references</span><span class="p">,</span>
+                                       <span class="n">mode</span><span class="p">,</span>
+                                       <span class="n">example_shapes</span><span class="p">,</span>
+                                       <span class="n">shuffle_cache_size</span><span class="p">,</span>
+                                       <span class="n">batch_size</span><span class="p">,</span>
+                                       <span class="n">params</span><span class="p">)</span>
             <span class="n">iterator</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">make_initializable_iterator</span><span class="p">()</span>
             <span class="n">next_dict</span> <span class="o">=</span> <span class="n">iterator</span><span class="o">.</span><span class="n">get_next</span><span class="p">()</span>
 
@@ -349,7 +389,7 @@
             <span class="k">return</span> <span class="n">next_dict</span><span class="p">[</span><span class="s1">&#39;features&#39;</span><span class="p">],</span> <span class="n">next_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;labels&#39;</span><span class="p">)</span>
 
         <span class="c1"># Return function and hook</span>
-        <span class="k">return</span> <span class="n">train_inputs</span><span class="p">,</span> <span class="n">iterator_initializer_hook</span></div>
+        <span class="k">return</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">iterator_initializer_hook</span></div>
 
 <div class="viewcode-block" id="Reader.serving_input_receiver_fn"><a class="viewcode-back" href="../../../api/dltk.io.html#dltk.io.abstract_reader.Reader.serving_input_receiver_fn">[docs]</a>    <span class="k">def</span> <span class="nf">serving_input_receiver_fn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">placeholder_shapes</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Build the serving inputs.</span>
@@ -383,7 +423,7 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, DLTK contributors.
+        &copy; Copyright 2017, DLTK contributors
 
     </p>
   </div>
@@ -415,6 +455,7 @@
             <dt>Branches</dt>
             <dd><a href="../../../../dev/index.html">dev</a></dd>
             <dd><a href="abstract_reader.html">feature_comparison</a></dd>
+            <dd><a href="../../../../hotfix/index.html">hotfix</a></dd>
             <dd><a href="../../../../master/index.html">master</a></dd>
         </dl>
     </div>
@@ -423,21 +464,24 @@
 
   
 
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'../../../',
-            VERSION:'0.2.1',
-            LANGUAGE:'None',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="../../../_static/jquery.js"></script>
-      <script type="text/javascript" src="../../../_static/underscore.js"></script>
-      <script type="text/javascript" src="../../../_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    
+      <script type="text/javascript">
+          var DOCUMENTATION_OPTIONS = {
+              URL_ROOT:'../../../',
+              VERSION:'0.2.1',
+              LANGUAGE:'None',
+              COLLAPSE_INDEX:false,
+              FILE_SUFFIX:'.html',
+              HAS_SOURCE:  true,
+              SOURCELINK_SUFFIX: '.txt'
+          };
+      </script>
+        <script type="text/javascript" src="../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../_static/doctools.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
 
   
 
