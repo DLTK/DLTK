@@ -89,8 +89,8 @@ class Reader(object):
                                              ''.format(k))
                         elif (isinstance(ex[k], list) and not isinstance(compare[k], list)) or \
                             (not isinstance(ex[k], list) and isinstance(compare[k], list)) or \
-                            (isinstance(ex[k], list) and isinstance(compare[k], list)
-                             and not len(ex[k]) == len(compare[k])):
+                                (isinstance(ex[k], list) and isinstance(compare[k], list) and not
+                                    len(ex[k]) == len(compare[k])):
                             raise ValueError('Entries between example and '
                                              'dtypes incompatible for key {}'
                                              ''.format(k))
