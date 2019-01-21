@@ -38,8 +38,7 @@ def predict(args):
     # From the model_path, parse the latest saved model and restore a
     # predictor from it
     export_dir = [os.path.join(args.model_path, o) for o in os.listdir(args.model_path)
-                  if os.path.isdir(os.path.join(args.model_path, o)) and
-                  o.isdigit()][-1]
+                  if os.path.isdir(os.path.join(args.model_path, o)) and o.isdigit()][-1]
     print('Loading from {}'.format(export_dir))
     my_predictor = predictor.from_saved_model(export_dir)
 
