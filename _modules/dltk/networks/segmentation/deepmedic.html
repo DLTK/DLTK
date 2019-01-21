@@ -357,8 +357,7 @@
         <span class="c1"># add prev_x to first channels of x</span>
 
         <span class="n">to_pad</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]]</span> <span class="o">*</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">get_shape</span><span class="p">()</span><span class="o">.</span><span class="n">as_list</span><span class="p">())</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
-        <span class="n">to_pad</span> <span class="o">+=</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="n">x</span><span class="o">.</span><span class="n">get_shape</span><span class="p">()</span><span class="o">.</span><span class="n">as_list</span><span class="p">()[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span>
-                    <span class="n">prev_x</span><span class="o">.</span><span class="n">get_shape</span><span class="p">()</span><span class="o">.</span><span class="n">as_list</span><span class="p">()[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]]</span>
+        <span class="n">to_pad</span> <span class="o">+=</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="n">x</span><span class="o">.</span><span class="n">get_shape</span><span class="p">()</span><span class="o">.</span><span class="n">as_list</span><span class="p">()[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">prev_x</span><span class="o">.</span><span class="n">get_shape</span><span class="p">()</span><span class="o">.</span><span class="n">as_list</span><span class="p">()[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]]</span>
         <span class="n">prev_x</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">pad</span><span class="p">(</span><span class="n">prev_x</span><span class="p">,</span> <span class="n">to_pad</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="n">prev_x</span>
@@ -550,7 +549,6 @@
             <dt>Branches</dt>
             <dd><a href="../../../../dev/index.html">dev</a></dd>
             <dd><a href="../../../../feature_comparison/index.html">feature_comparison</a></dd>
-            <dd><a href="../../../../hotfix/index.html">hotfix</a></dd>
             <dd><a href="../../../../master/_modules/dltk/networks/segmentation/deepmedic.html">master</a></dd>
         </dl>
     </div>
