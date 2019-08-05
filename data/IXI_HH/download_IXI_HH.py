@@ -147,10 +147,10 @@ if RESAMPLE_IMAGES:
         pd_fn = glob.glob('./orig/pd/{}*.nii.gz'.format(IXI_id))[0]
         mra_fn = glob.glob('./orig/mra/{}*.nii.gz'.format(IXI_id))[0]
 
-        t1 = sitk.ReadImage(t1_fn)
-        t2 = sitk.ReadImage(t2_fn)
-        pd = sitk.ReadImage(pd_fn)
-        mra = sitk.ReadImage(mra_fn)
+        t1 = sitk.ReadImage(t1_fn.encode('utf-8'))
+        t2 = sitk.ReadImage(t2_fn.encode('utf-8'))
+        pd = sitk.ReadImage(pd_fn.encode('utf-8'))
+        mra = sitk.ReadImage(mra_fn.encode('utf-8'))
 
         # Resample to 1mm isotropic resolution
         t2_1mm = resample_image(t2)
@@ -167,10 +167,10 @@ if RESAMPLE_IMAGES:
         print('PD: {} {}'.format(pd_1mm.GetSize(), pd_1mm.GetSpacing()))
         print('MRA: {} {}'.format(mra_1mm.GetSize(), mra_1mm.GetSpacing()))
 
-        sitk.WriteImage(t1_1mm, os.path.join(output_dir, 'T1_1mm.nii.gz'))
-        sitk.WriteImage(t2_1mm, os.path.join(output_dir, 'T2_1mm.nii.gz'))
-        sitk.WriteImage(pd_1mm, os.path.join(output_dir, 'PD_1mm.nii.gz'))
-        sitk.WriteImage(mra_1mm, os.path.join(output_dir, 'MRA_1mm.nii.gz'))
+        sitk.WriteImage(t1_1mm, os.path.join(output_dir, 'T1_1mm.nii.gz').encode('utf-8'))
+        sitk.WriteImage(t2_1mm, os.path.join(output_dir, 'T2_1mm.nii.gz').encode('utf-8'))
+        sitk.WriteImage(pd_1mm, os.path.join(output_dir, 'PD_1mm.nii.gz').encode('utf-8'))
+        sitk.WriteImage(mra_1mm, os.path.join(output_dir, 'MRA_1mm.nii.gz').encode('utf-8'))
 
         # Resample to 2mm isotropic resolution
         t2_2mm = resample_image(t2, out_spacing=[2.0, 2.0, 2.0])
@@ -187,10 +187,10 @@ if RESAMPLE_IMAGES:
         print('PD: {} {}'.format(pd_2mm.GetSize(), pd_2mm.GetSpacing()))
         print('MRA: {} {}'.format(mra_2mm.GetSize(), mra_2mm.GetSpacing()))
 
-        sitk.WriteImage(t1_2mm, os.path.join(output_dir, 'T1_2mm.nii.gz'))
-        sitk.WriteImage(t2_2mm, os.path.join(output_dir, 'T2_2mm.nii.gz'))
-        sitk.WriteImage(pd_2mm, os.path.join(output_dir, 'PD_2mm.nii.gz'))
-        sitk.WriteImage(mra_2mm, os.path.join(output_dir, 'MRA_2mm.nii.gz'))
+        sitk.WriteImage(t1_2mm, os.path.join(output_dir, 'T1_2mm.nii.gz').encode('utf-8'))
+        sitk.WriteImage(t2_2mm, os.path.join(output_dir, 'T2_2mm.nii.gz').encode('utf-8'))
+        sitk.WriteImage(pd_2mm, os.path.join(output_dir, 'PD_2mm.nii.gz').encode('utf-8'))
+        sitk.WriteImage(mra_2mm, os.path.join(output_dir, 'MRA_2mm.nii.gz').encode('utf-8'))
 
 
 if CLEAN_UP:
