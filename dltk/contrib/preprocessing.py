@@ -6,6 +6,7 @@ from __future__ import absolute_import
 import numpy as np
 import cv2
 
+
 def whitening(image):
     """Whitening. Normalises image to zero mean and unit variance."""
 
@@ -21,61 +22,64 @@ def whitening(image):
     return ret
 
 
-
-def erode_image(image, kernel_dims=(5,5), num_iterations=1):
+def erode_image(image, kernel_dims=(5, 5), num_iterations=1):
     """ Eroding image, dims boundaries of background object. """
     if kernel_dims[0] != kernel_dims[1]:
-       raise ValueError('kernel dimensions do not match')
+        raise ValueError('kernel dimensions do not match')
     kernel = np.ones(kernel_dims, np.uint8)
     erosion = cv2.erode(image, kernel, iterations=num_iterations)
     return erosion
 
 
-def dilate_image(image, kernel_dims=(5,5), num_iterations=1):
+def dilate_image(image, kernel_dims=(5, 5), num_iterations=1):
     """ Dilating image, enlarges boundaries of background object. """
     if kernel_dims[0] != kernel_dims[1]:
-       raise ValueError('kernel dimensions do not match')
+        raise ValueError('kernel dimensions do not match')
     kernel = np.ones(kernel_dims, np.uint8)
     dilation = cv2.dilate(image, kernel, iterations=num_iterations)
     return dilation
 
 
-def open_image(image, kernel_dims=(5,5)):
+def open_image(image, kernel_dims=(5, 5)):
     """ Erosion followed by dilation. """
     if kernel_dims[0] != kernel_dims[1]:
-       raise ValueError('kernel dimensions do not match')
+        raise ValueError('kernel dimensions do not match')
     kernel = np.ones(kernel_dims, np.uint8)
     opening = cv2.morphologyEx(image, cv2.MORPH_OPEN, kernel)
     return opening
 
-def close_image(image, kernel_dims=(5,5)):
+
+def close_image(image, kernel_dims=(5, 5)):
     """ Dilation followed by erosion. """
     if kernel_dims[0] != kernel_dims[1]:
-       raise ValueError('kernel dimensions do not match')
+        raise ValueError('kernel dimensions do not match')
     kernel = np.ones(kernel_dims, np.uint8)
     closing = cv2.morphologyEx(image, cv2.MORPH_CLOSE, kernel)
     return closing
 
-def morph_gradient_image(image, kernel_dims=(5,5)):
+
+def morph_gradient_image(image, kernel_dims=(5, 5)):
     """ Difference between opening and closing. """
     if kernel_dims[0] != kernel_dims[1]:
-       raise ValueError('kernel dimensions do not match')
+        raise ValueError('kernel dimensions do not match')
     kernel = np.ones(kernel_dims, np.uint8)
     gradient = cv2.morphologyEx(image, cv2.MORPH_GRADIENT, kernel)
     return gradient
 
-def top_hat_image(image, kernel_dims=(5,5)):
+
+def top_hat_image(image, kernel_dims=(5, 5)):
     """ Difference between input image and opening of the same image. """
     if kernel_dims[0] != kernel_dims[1]:
-       raise ValueError('kernel dimensions do not match')
+        raise ValueError('kernel dimensions do not match')
     kernel = np.ones(kernel_dims, np.uint8)
     top_hat = cv2.morphologyEx(image, cv2.MORPH_TOPHAT, kernel)
     return top_hat
 
-def black_hat_image(image, kernel_dims=(5,5)):
+
+def black_hat_image(image, kernel_dims=(5, 5)):
     """ Difference between closing of the input image and the image. """
     if kernel_dims[0] != kernel_dims[1]:
-       raise ValueError('kernel dimensions do not match')
+        raise ValueError('kernel dimensions do not match')
     kernel = np.ones(kernel_dims, np.uint8)
     black_hat = cv2.morphologyEx(image, cv2.MORPH_BLACKHAT, kernel)
     return black_hat
