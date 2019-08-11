@@ -84,7 +84,7 @@ def black_hat_image(image, kernel_dims=(5, 5)):
     black_hat = cv2.morphologyEx(image, cv2.MORPH_BLACKHAT, kernel)
     return black_hat
 
-    
+
 def normalise_zero_one(image):
     """Image normalisation. Normalises image to fit [0, 1] range."""
 
