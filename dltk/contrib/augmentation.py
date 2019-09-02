@@ -98,7 +98,6 @@ def elastic_transform(image_list, alpha, sigma, random_seed=None):
 
     if random_seed is not None:
         np.random.seed(random_seed)
-        
     transformed_image_list = []            
     for image in image_list:
         channelbool = image.ndim - len(alpha)
@@ -197,9 +196,7 @@ def extract_class_balanced_example_array(image,
 
         for i in range(len(r_idx)):
             # Extract class-balanced examples from the original image
-            slicer = [slice(r_idx[i][dim]
-                            - ex_rad[dim][0], r_idx[i][dim]
-                            + ex_rad[dim][1]) for dim in range(rank)]
+            slicer = [slice(r_idx[i][dim] - ex_rad[dim][0], r_idx[i][dim] + ex_rad[dim][1]) for dim in range(rank)]
 
             ex_image = image[slicer][np.newaxis, :]
 
