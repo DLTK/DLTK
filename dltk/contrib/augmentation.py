@@ -98,7 +98,7 @@ def elastic_transform(image_list, alpha, sigma, random_seed=None):
 
     if random_seed is not None:
         np.random.seed(random_seed)
-    transformed_image_list = []            
+    transformed_image_list = []
     for image in image_list:
         channelbool = image.ndim - len(alpha)
         out = np.zeros((len(alpha) + channelbool, ) + image.shape)
@@ -113,7 +113,6 @@ def elastic_transform(image_list, alpha, sigma, random_seed=None):
             # Transform image based on masked indices
             transformed_image = map_coordinates(image, indices, order=0, mode='reflect').reshape(image.shape)
             transformed_image_list.append(transformed_image)
-            
     return transformed_image_list
 
 
@@ -250,15 +249,12 @@ def extract_random_example_array(image_list,
 
     assert all([i_s >= e_s for i_s, e_s in zip(image_list[0].shape, example_size)]), \
         'Image must be bigger than example shape'
-    assert (image_list[0].ndim - 1 == len(example_size)
-            or image_list[0].ndim == len(example_size)), \
+    assert (image_list[0].ndim - 1 == len(example_size) or image_list[0].ndim == len(example_size)), \
         'Example size doesnt fit image size'
 
     for i in image_list:
         if len(image_list) > 1:
-            assert (i.ndim - 1 == image_list[0].ndim
-                    or i.ndim == image_list[0].ndim
-                    or i.ndim + 1 == image_list[0].ndim), \
+            assert (i.ndim - 1 == image_list[0].ndim or i.ndim == image_list[0].ndim or i.ndim + 1 == image_list[0].ndim), \
                 'Example size doesnt fit image size'
 
             assert all([i0_s == i_s for i0_s, i_s in zip(image_list[0].shape, i.shape)]), \
