@@ -104,7 +104,7 @@ def elastic_transform(image_list, alpha, sigma, random_seed=None):
         
             channelbool = image.ndim - len(alpha)
             out = np.zeros((len(alpha) + channelbool, ) + image.shape)
-        # Generate a Gaussian filter, leaving channel dimensions zeroes
+            # Generate a Gaussian filter, leaving channel dimensions zeroes
             for jj in range(len(alpha)):
                 array = (np.random.rand(*image.shape) * 2 - 1)
                 out[jj] = gaussian_filter(array, sigma[jj],
