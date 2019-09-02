@@ -97,27 +97,22 @@ def elastic_transform(image_list, alpha, sigma, random_seed=None):
         "Dimensions of alpha and sigma are different"
 
     if random_seed is not None:
-         np.random.seed(random_seed)
-            
+        np.random.seed(random_seed)
+        
     transformed_image_list = []            
     for image in image_list:
-        
-            channelbool = image.ndim - len(alpha)
-            out = np.zeros((len(alpha) + channelbool, ) + image.shape)
-            # Generate a Gaussian filter, leaving channel dimensions zeroes
-            for jj in range(len(alpha)):
-                array = (np.random.rand(*image.shape) * 2 - 1)
-                out[jj] = gaussian_filter(array, sigma[jj],
-                                  mode="constant", cval=0) * alpha[jj]
-
+        channelbool = image.ndim - len(alpha)
+        out = np.zeros((len(alpha) + channelbool, ) + image.shape)
+        # Generate a Gaussian filter, leaving channel dimensions zeroes
+        for jj in range(len(alpha)):
+            array = (np.random.rand(*image.shape) * 2 - 1)
+            out[jj] = gaussian_filter(array, sigma[jj], mode="constant", cval=0) * alpha[jj]
             # Map mask to indices
             shapes = list(map(lambda x: slice(0, x, None), image.shape))
             grid = np.broadcast_arrays(*np.ogrid[shapes])
             indices = list(map((lambda x: np.reshape(x, (-1, 1))), grid + np.array(out)))
-
             # Transform image based on masked indices
-            transformed_image = map_coordinates(image, indices, order=0,
-                                        mode='reflect').reshape(image.shape)
+            transformed_image = map_coordinates(image, indices, order=0, mode='reflect').reshape(image.shape)
             transformed_image_list.append(transformed_image)
             
     return transformed_image_list
