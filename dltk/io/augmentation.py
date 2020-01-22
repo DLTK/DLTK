@@ -214,7 +214,13 @@ def extract_class_balanced_example_array(image,
 
         for i in range(len(r_idx)):
             # Extract class-balanced examples from the original image
-            slicer = [slice(r_idx[i][dim] - ex_rad[dim][0], r_idx[i][dim] + ex_rad[dim][1]) for dim in range(rank)]
+            slicer = [
+                slice(
+                    r_idx[i][dim] - ex_rad[dim][0],
+                    r_idx[i][dim] + ex_rad[dim][1]
+                )
+                for dim in range(rank)
+            ]
             slices.append(slicer)
             ex_image = image[slicer][np.newaxis, :]
 
