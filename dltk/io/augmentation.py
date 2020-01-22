@@ -50,7 +50,10 @@ def add_gaussian_offset(image, sigma=0.1):
         np.ndarray: same as image but with added offset to each channel
     """
 
-    offsets = np.random.normal(0, sigma, ([1] * (image.ndim - 1) + [image.shape[-1]]))
+    offsets = np.random.normal(
+        0,
+        sigma,
+        ([1] * (image.ndim - 1) + [image.shape[-1]]))
     image += offsets
     return image
 
@@ -108,7 +111,9 @@ def elastic_transform(image, alpha, sigma):
     # Map mask to indices
     shapes = list(map(lambda x: slice(0, x, None), image.shape))
     grid = np.broadcast_arrays(*np.ogrid[shapes])
-    indices = list(map((lambda x: np.reshape(x, (-1, 1))), grid + np.array(out)))
+    indices = list(
+        map((lambda x: np.reshape(x, (-1, 1))), grid + np.array(out))
+    )
 
     # Transform image based on masked indices
     transformed_image = map_coordinates(image, indices, order=0,
@@ -135,7 +140,7 @@ def extract_class_balanced_example_array(image,
         n_examples (int): number of patches to extract in total
         classes (int or list or tuple): number of classes or list of classes
             to extract
-        return_slices (bool): boolean value to return the slices of the patches 
+        return_slices (bool): boolean value to return the slices of the patches
         to be extracted rather than the patches themselves
 
     Returns:
@@ -144,7 +149,7 @@ def extract_class_balanced_example_array(image,
 
         OR
 
-        list: list of slices to extract from the image/label of length 
+        list: list of slices to extract from the image/label of length
         n_examples
     """
     assert image.shape[:-1] == label.shape, 'Image and label shape must match'
@@ -162,12 +167,16 @@ def extract_class_balanced_example_array(image,
         'n_examples need to be greater than n_classes'
 
     if class_weights is None:
-        n_ex_per_class = np.ones(n_classes).astype(int) * int(np.round(n_examples / n_classes))
+        n_ex_per_class = np.ones(n_classes).astype(int) * int(
+            np.round(n_examples / n_classes)
+        )
     else:
         assert len(class_weights) == n_classes, \
             'Class_weights must match number of classes'
         class_weights = np.array(class_weights)
-        n_ex_per_class = np.round((class_weights / class_weights.sum()) * n_examples).astype(int)
+        n_ex_per_class = np.round(
+            (class_weights / class_weights.sum()) * n_examples
+        ).astype(int)
 
     # Compute an example radius to define the region to extract around a
     # center location
@@ -203,7 +212,6 @@ def extract_class_balanced_example_array(image,
                            ex_rad[dim][0]) for dim in range(rank)])
              for r in r_idx])
 
-
         for i in range(len(r_idx)):
             # Extract class-balanced examples from the original image
             slicer = [slice(r_idx[i][dim] - ex_rad[dim][0], r_idx[i][dim] + ex_rad[dim][1]) for dim in range(rank)]
@@ -229,26 +237,26 @@ def extract_class_balanced_example_array(image,
     if return_slices:
         return slices
 
-    ex_images = np.concatenate([cimage[:idxs] for cimage, idxs in zip(class_ex_images, indices)
-                                if len(cimage) > 0], axis=0)
-    ex_lbls = np.concatenate([clbl[:idxs] for clbl, idxs in zip(class_ex_lbls, indices)
-                              if len(clbl) > 0], axis=0)
+    ex_images = np.concatenate([cimage[:idxs] for cimage, idxs in zip(class_ex_images, indices) if len(cimage) > 0], axis=0)
+    ex_lbls = np.concatenate([clbl[:idxs] for clbl, idxs in zip(class_ex_lbls, indices) if len(clbl) > 0], axis=0)
 
     return ex_images, ex_lbls
 
+
 def extract_class_balanced_example_multiarray(image_list,
                                               label,
-                                              example_size=[1,64,64],
+                                              example_size=[1, 64, 64],
                                               n_examples=1,
                                               classes=2,
-                                              class_weights=None):
+                                              class_weights=None,
+                                              return_slices=False):
     """
-    Same function as `extract_class_balanced_example_array` but for the use case where 
-    the user wants to extract the same patch from multiple images for use in a network
-    that accepts multiple images as input.
+    Same function as `extract_class_balanced_example_array` but for the use
+    case where the user wants to extract the same patch from multiple
+    images for use in a network that accepts multiple images as input.
     Args:
-        image_list (list): list of np.ndarray of images, will extract the same patches
-        from each image in the list
+        image_list (list): list of np.ndarray of images, will extract the
+        same patches from each image in the list
         label (np.ndarray): labels to use for balancing the patches
         example_size (list or tuple): shape of the patches to extract
         n_examples (int): number of patches to extract in total
@@ -256,8 +264,8 @@ def extract_class_balanced_example_multiarray(image_list,
             to extract
 
     Returns:
-        list(of tuples of np.ndarray), np.ndarray class balanced patches of of size
-        n_examples(len(image_list)), 
+        list(of tuples of np.ndarray), np.ndarray class balanced
+        patches of of size n_examples(len(image_list))
 
     """
     # check to make sure the shape of each image is the same
@@ -270,12 +278,14 @@ def extract_class_balanced_example_multiarray(image_list,
         assert image.shape[:-1] == label.shape
 
     # use the first image and the label to generate slices
-    slices = extract_class_balanced_example_array(image_list[0], 
-                                                  label, example_size, 
-                                                  n_examples,classes, 
-                                                  class_weights, 
+    slices = extract_class_balanced_example_array(image_list[0],
+                                                  label, example_size,
+                                                  n_examples,
+                                                  classes,
+                                                  class_weights,
                                                   return_slices=True)
-
+    if return_slices:
+        return slices
     # now that we have the slices, slice up each image in the list
     ex_images = []
     ex_lbls = []
@@ -285,8 +295,8 @@ def extract_class_balanced_example_multiarray(image_list,
             ex_im_slices.append(image[s][np.newaxis, :])
         ex_images.append(tuple(ex_im_slices))
         ex_lbls = label[s][np.newaxis, :]
-    
     return ex_images, ex_lbls
+
 
 def extract_random_example_array(image_list,
                                  example_size=[1, 64, 64],
