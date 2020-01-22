@@ -243,8 +243,14 @@ def extract_class_balanced_example_array(image,
     if return_slices:
         return slices
 
-    ex_images = np.concatenate([cimage[:idxs] for cimage, idxs in zip(class_ex_images, indices) if len(cimage) > 0], axis=0)
-    ex_lbls = np.concatenate([clbl[:idxs] for clbl, idxs in zip(class_ex_lbls, indices) if len(clbl) > 0], axis=0)
+    ex_images = np.concatenate(
+        [cimage[:idxs] for cimage, idxs in zip(class_ex_images, indices)
+            if len(cimage) > 0], axis=0
+    )
+    ex_lbls = np.concatenate(
+        [clbl[:idxs] for clbl, idxs in zip(class_ex_lbls, indices)
+            if len(clbl) > 0], axis=0
+    )
 
     return ex_images, ex_lbls
 
@@ -328,23 +334,35 @@ def extract_random_example_array(image_list,
         image_list = [image_list]
         was_singular = True
 
-    assert all([i_s >= e_s for i_s, e_s in zip(image_list[0].shape, example_size)]), \
+    assert all(
+        [i_s >= e_s for i_s, e_s in zip(image_list[0].shape, example_size)]
+        ), \
         'Image must be bigger than example shape'
-    assert (image_list[0].ndim - 1 == len(example_size) or image_list[0].ndim == len(example_size)), \
+    assert (image_list[0].ndim - 1 == len(example_size) or
+            image_list[0].ndim == len(example_size)), \
         'Example size doesnt fit image size'
 
     for i in image_list:
         if len(image_list) > 1:
-            assert (i.ndim - 1 == image_list[0].ndim or i.ndim == image_list[0].ndim or i.ndim + 1 == image_list[0].ndim),\
+            assert (
+                i.ndim - 1 == image_list[0].ndim or
+                i.ndim == image_list[0].ndim or
+                i.ndim + 1 == image_list[0].ndim
+            ),\
                 'Example size doesnt fit image size'
 
-            assert all([i0_s == i_s for i0_s, i_s in zip(image_list[0].shape, i.shape)]), \
+            assert all(
+                [i0_s == i_s for i0_s, i_s in
+                    zip(image_list[0].shape, i.shape)]
+                ), \
                 'Image shapes must match'
 
     rank = len(example_size)
 
     # Extract random examples from image and label
-    valid_loc_range = [image_list[0].shape[i] - example_size[i] for i in range(rank)]
+    valid_loc_range = [
+        image_list[0].shape[i] - example_size[i] for i in range(rank)
+    ]
 
     rnd_loc = [np.random.randint(valid_loc_range[dim], size=n_examples)
                if valid_loc_range[dim] > 0
