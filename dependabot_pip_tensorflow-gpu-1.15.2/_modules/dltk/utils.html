@@ -1,0 +1,470 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>dltk.utils &mdash; DLTK 0.2.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript">
+          var DOCUMENTATION_OPTIONS = {
+              URL_ROOT:'../../',
+              VERSION:'0.2.1',
+              LANGUAGE:'None',
+              COLLAPSE_INDEX:false,
+              FILE_SUFFIX:'.html',
+              HAS_SOURCE:  true,
+              SOURCELINK_SUFFIX: '.txt'
+          };
+      </script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/theme_overrides.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html">
+          
+
+          
+            
+            <img src="../../_static/logo-dltk.svg" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.2
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Home</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Package Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../api/dltk.html">dltk package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../api/dltk.core.html">dltk.core package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api/dltk.core.html#module-dltk.core.activations">dltk.core.activations module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/dltk.core.html#module-dltk.core.losses">dltk.core.losses module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/dltk.core.html#module-dltk.core.metrics">dltk.core.metrics module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/dltk.core.html#module-dltk.core.residual_unit">dltk.core.residual_unit module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/dltk.core.html#module-dltk.core.upsample">dltk.core.upsample module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/dltk.core.html#module-dltk.core">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/dltk.io.html">dltk.io package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api/dltk.io.html#module-dltk.io.augmentation">dltk.io.augmentation module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/dltk.io.html#module-dltk.io.preprocessing">dltk.io.preprocessing module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/dltk.io.html#module-dltk.io.abstract_reader">dltk.core.io.abstract_reader module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/dltk.io.html#module-dltk.io">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/dltk.networks.html">dltk.networks package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api/dltk.networks.autoencoder.html">dltk.networks.autoencoder package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api/dltk.networks.autoencoder.html#module-dltk.networks.autoencoder.convolutional_autoencoder">dltk.networks.autoencoder.convolutional_autoencoder module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/dltk.networks.autoencoder.html#module-dltk.networks.autoencoder">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/dltk.networks.gan.html">dltk.networks.gan package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api/dltk.networks.gan.html#module-dltk.networks.gan.dcgan">dltk.networks.gan.dcgan module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/dltk.networks.gan.html#module-dltk.networks.gan">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/dltk.networks.regression_classification.html">dltk.networks.regression_classification package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api/dltk.networks.regression_classification.html#module-dltk.networks.regression_classification.resnet">dltk.networks.regression_classification.resnet module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/dltk.networks.regression_classification.html#module-dltk.networks.regression_classification">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/dltk.networks.segmentation.html">dltk.networks.segmentation package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api/dltk.networks.segmentation.html#module-dltk.networks.segmentation.deepmedic">dltk.networks.segmentation.deepmedic module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/dltk.networks.segmentation.html#module-dltk.networks.segmentation.fcn">dltk.networks.segmentation.fcn module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/dltk.networks.segmentation.html#module-dltk.networks.segmentation.unet">dltk.networks.segmentation.unet module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/dltk.networks.segmentation.html#module-dltk.networks.segmentation">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/dltk.networks.super_resolution.html">dltk.networks.super_resolution package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api/dltk.networks.super_resolution.html#module-dltk.networks.super_resolution.simple_super_resolution">dltk.networks.super_resolution.simple_super_resolution module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/dltk.networks.super_resolution.html#module-dltk.networks.super_resolution">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/dltk.networks.html#module-dltk.networks">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/dltk.html#module-dltk.utils">dltk.utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/dltk.html#module-dltk">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">DLTK</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>dltk.utils</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for dltk.utils</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">unicode_literals</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+
+<div class="viewcode-block" id="SlidingWindow"><a class="viewcode-back" href="../../api/dltk.html#dltk.utils.SlidingWindow">[docs]</a><span class="k">class</span> <span class="nc">SlidingWindow</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;SlidingWindow</span>
+<span class="sd">    Sliding window iterator which produces slice objects to slice in a sliding</span>
+<span class="sd">    window. This is useful for inference.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img_shape</span><span class="p">,</span> <span class="n">window_shape</span><span class="p">,</span> <span class="n">has_batch_dim</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                 <span class="n">striding</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Constructs a sliding window iterator</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            img_shape (array_like): shape of the image to slide over</span>
+
+<span class="sd">            window_shape (array_like): shape of the window to extract</span>
+
+<span class="sd">            has_batch_dim (bool, optional): flag to indicate whether a batch</span>
+<span class="sd">                dimension is present</span>
+
+<span class="sd">            striding (array_like, optional): amount to move the window between</span>
+<span class="sd">                each position</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">img_shape</span> <span class="o">=</span> <span class="n">img_shape</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">window_shape</span> <span class="o">=</span> <span class="n">window_shape</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rank</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">img_shape</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">curr_pos</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">rank</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">end_pos</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">rank</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">done</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">striding</span> <span class="o">=</span> <span class="n">window_shape</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">has_batch_dim</span> <span class="o">=</span> <span class="n">has_batch_dim</span>
+        <span class="k">if</span> <span class="n">striding</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">striding</span> <span class="o">=</span> <span class="n">striding</span>
+
+    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="c1"># py 2.* compatability hack</span>
+<div class="viewcode-block" id="SlidingWindow.next"><a class="viewcode-back" href="../../api/dltk.html#dltk.utils.SlidingWindow.next">[docs]</a>    <span class="k">def</span> <span class="nf">next</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__next__</span><span class="p">()</span></div>
+
+    <span class="k">def</span> <span class="fm">__next__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">done</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">StopIteration</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_batch_dim</span><span class="p">:</span>
+            <span class="n">slicer</span> <span class="o">=</span> <span class="p">[</span><span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">)]</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rank</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">slicer</span> <span class="o">=</span> <span class="p">[</span><span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">)]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">rank</span>
+
+        <span class="n">move_dim</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">for</span> <span class="n">dim</span><span class="p">,</span> <span class="n">pos</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">curr_pos</span><span class="p">):</span>
+            <span class="n">low</span> <span class="o">=</span> <span class="n">pos</span>
+            <span class="n">high</span> <span class="o">=</span> <span class="n">pos</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">window_shape</span><span class="p">[</span><span class="n">dim</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">move_dim</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">high</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">img_shape</span><span class="p">[</span><span class="n">dim</span><span class="p">]:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">curr_pos</span><span class="p">[</span><span class="n">dim</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+                    <span class="n">move_dim</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">curr_pos</span><span class="p">[</span><span class="n">dim</span><span class="p">]</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">striding</span><span class="p">[</span><span class="n">dim</span><span class="p">]</span>
+                    <span class="n">move_dim</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="k">if</span> <span class="n">high</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">img_shape</span><span class="p">[</span><span class="n">dim</span><span class="p">]:</span>
+                <span class="n">low</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">img_shape</span><span class="p">[</span><span class="n">dim</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">window_shape</span><span class="p">[</span><span class="n">dim</span><span class="p">]</span>
+                <span class="n">high</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">img_shape</span><span class="p">[</span><span class="n">dim</span><span class="p">]</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_batch_dim</span><span class="p">:</span>
+                <span class="n">slicer</span><span class="p">[</span><span class="n">dim</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="n">low</span><span class="p">,</span> <span class="n">high</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">slicer</span><span class="p">[</span><span class="n">dim</span><span class="p">]</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="n">low</span><span class="p">,</span> <span class="n">high</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">curr_pos</span><span class="p">)</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">end_pos</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">done</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="n">slicer</span></div>
+
+
+<div class="viewcode-block" id="sliding_window_segmentation_inference"><a class="viewcode-back" href="../../api/dltk.html#dltk.utils.sliding_window_segmentation_inference">[docs]</a><span class="k">def</span> <span class="nf">sliding_window_segmentation_inference</span><span class="p">(</span><span class="n">session</span><span class="p">,</span>
+                                          <span class="n">ops_list</span><span class="p">,</span>
+                                          <span class="n">sample_dict</span><span class="p">,</span>
+                                          <span class="n">batch_size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                                          <span class="n">striding</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Utility function to perform sliding window inference for segmentation</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        session (tf.Session): TensorFlow session to run ops with</span>
+
+<span class="sd">        ops_list (array_like): Operators to fetch assemble with sliding window</span>
+
+<span class="sd">        sample_dict (dict): Dictionary with tf.Placeholder keys mapping the</span>
+<span class="sd">        placeholders to their respective input</span>
+
+<span class="sd">        batch_size (int, optional): Number of sliding windows to batch for</span>
+<span class="sd">            calculation</span>
+
+<span class="sd">        striding (array_like): Striding of the sliding window. Can be used to</span>
+<span class="sd">            adjust overlap etc.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        list: List of np.arrays corresponding to the assembled outputs of</span>
+<span class="sd">            ops_list</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># TODO: asserts</span>
+    <span class="k">assert</span> <span class="n">batch_size</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;Batch size has to be 1 or bigger&#39;</span>
+
+    <span class="n">pl_shape</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">sample_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get_shape</span><span class="p">()</span><span class="o">.</span><span class="n">as_list</span><span class="p">()</span>
+
+    <span class="n">pl_bshape</span> <span class="o">=</span> <span class="n">pl_shape</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="n">inp_shape</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">sample_dict</span><span class="o">.</span><span class="n">values</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+    <span class="n">inp_bshape</span> <span class="o">=</span> <span class="n">inp_shape</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="n">out_dummies</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span>
+        <span class="p">[</span><span class="n">inp_shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="p">]</span> <span class="o">+</span> <span class="n">inp_bshape</span> <span class="o">+</span> <span class="p">[</span><span class="n">op</span><span class="o">.</span><span class="n">get_shape</span><span class="p">()</span><span class="o">.</span><span class="n">as_list</span><span class="p">()[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">op</span><span class="o">.</span><span class="n">get_shape</span><span class="p">()</span><span class="o">.</span><span class="n">as_list</span><span class="p">())</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">inp_shape</span><span class="p">)</span> <span class="k">else</span> <span class="p">[])</span> <span class="k">for</span> <span class="n">op</span> <span class="ow">in</span> <span class="n">ops_list</span><span class="p">]</span>
+
+    <span class="n">out_dummy_counter</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">o</span><span class="p">)</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">out_dummies</span><span class="p">]</span>
+
+    <span class="n">op_shape</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">ops_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get_shape</span><span class="p">()</span><span class="o">.</span><span class="n">as_list</span><span class="p">())</span>
+    <span class="n">op_bshape</span> <span class="o">=</span> <span class="n">op_shape</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="n">out_diff</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">pl_bshape</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">op_bshape</span><span class="p">)</span>
+
+    <span class="n">padding</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]]</span> <span class="o">+</span> <span class="p">[[</span><span class="n">diff</span> <span class="o">//</span> <span class="mi">2</span><span class="p">,</span> <span class="n">diff</span> <span class="o">-</span> <span class="n">diff</span> <span class="o">//</span> <span class="mi">2</span><span class="p">]</span> <span class="k">for</span> <span class="n">diff</span>
+                          <span class="ow">in</span> <span class="n">out_diff</span><span class="p">]</span> <span class="o">+</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]]</span>
+
+    <span class="n">padded_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">pad</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">padding</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;constant&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span>
+                   <span class="ow">in</span> <span class="n">sample_dict</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+
+    <span class="n">f_bshape</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">padded_dict</span><span class="o">.</span><span class="n">values</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">striding</span><span class="p">:</span>
+        <span class="n">striding</span> <span class="o">=</span> <span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">op_bshape</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span><span class="p">))</span>
+                    <span class="k">if</span> <span class="nb">all</span><span class="p">(</span><span class="n">out_diff</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="k">else</span> <span class="n">op_bshape</span><span class="p">)</span>
+
+    <span class="n">sw</span> <span class="o">=</span> <span class="n">SlidingWindow</span><span class="p">(</span><span class="n">f_bshape</span><span class="p">,</span> <span class="n">pl_bshape</span><span class="p">,</span> <span class="n">striding</span><span class="o">=</span><span class="n">striding</span><span class="p">)</span>
+    <span class="n">out_sw</span> <span class="o">=</span> <span class="n">SlidingWindow</span><span class="p">(</span><span class="n">inp_bshape</span><span class="p">,</span> <span class="n">op_bshape</span><span class="p">,</span> <span class="n">striding</span><span class="o">=</span><span class="n">striding</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">batch_size</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">slicers</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">out_slicers</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="n">done</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">slicer</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">sw</span><span class="p">)</span>
+            <span class="n">out_slicer</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">out_sw</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">StopIteration</span><span class="p">:</span>
+            <span class="n">done</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="k">if</span> <span class="n">batch_size</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">sw_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span><span class="p">[</span><span class="n">slicer</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">padded_dict</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+            <span class="n">op_parts</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">ops_list</span><span class="p">,</span> <span class="n">feed_dict</span><span class="o">=</span><span class="n">sw_dict</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">op_parts</span><span class="p">)):</span>
+                <span class="n">out_dummies</span><span class="p">[</span><span class="n">idx</span><span class="p">][</span><span class="n">out_slicer</span><span class="p">]</span> <span class="o">+=</span> <span class="n">op_parts</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+                <span class="n">out_dummy_counter</span><span class="p">[</span><span class="n">idx</span><span class="p">][</span><span class="n">out_slicer</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">slicers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">slicer</span><span class="p">)</span>
+            <span class="n">out_slicers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">out_slicer</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">slicers</span><span class="p">)</span> <span class="o">==</span> <span class="n">batch_size</span> <span class="ow">or</span> <span class="n">done</span><span class="p">:</span>
+                <span class="n">slices_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span>
+                    <span class="p">[</span><span class="n">v</span><span class="p">[</span><span class="n">slicer</span><span class="p">]</span> <span class="k">for</span> <span class="n">slicer</span> <span class="ow">in</span> <span class="n">slicers</span><span class="p">],</span> <span class="mi">0</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">padded_dict</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+
+                <span class="n">all_op_parts</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">ops_list</span><span class="p">,</span> <span class="n">feed_dict</span><span class="o">=</span><span class="n">slices_dict</span><span class="p">)</span>
+
+                <span class="n">zipped_parts</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">array_split</span><span class="p">(</span><span class="n">part</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">slicers</span><span class="p">))</span> <span class="k">for</span>
+                                     <span class="n">part</span> <span class="ow">in</span> <span class="n">all_op_parts</span><span class="p">])</span>
+
+                <span class="k">for</span> <span class="n">out_slicer</span><span class="p">,</span> <span class="n">op_parts</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">out_slicers</span><span class="p">,</span> <span class="n">zipped_parts</span><span class="p">):</span>
+                    <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">op_parts</span><span class="p">)):</span>
+                        <span class="n">out_dummies</span><span class="p">[</span><span class="n">idx</span><span class="p">][</span><span class="n">out_slicer</span><span class="p">]</span> <span class="o">+=</span> <span class="n">op_parts</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+                        <span class="n">out_dummy_counter</span><span class="p">[</span><span class="n">idx</span><span class="p">][</span><span class="n">out_slicer</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+
+                <span class="n">slicers</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="n">out_slicers</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">if</span> <span class="n">done</span><span class="p">:</span>
+            <span class="k">break</span>
+
+    <span class="k">return</span> <span class="p">[</span><span class="n">o</span> <span class="o">/</span> <span class="n">c</span> <span class="k">for</span> <span class="n">o</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">out_dummies</span><span class="p">,</span> <span class="n">out_dummy_counter</span><span class="p">)]</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, DLTK contributors
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+        <span class="fa fa-book"> Other Versions</span>
+        v: dependabot/pip/tensorflow-gpu-1.15.2
+        <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+        <dl>
+            <dt>Tags</dt>
+            <dd><a href="../../../0.1.1/index.html">0.1.1</a></dd>
+            <dd><a href="../../../0.2.0/index.html">0.2.0</a></dd>
+            <dd><a href="../../../0.2.1/index.html">0.2.1</a></dd>
+        </dl>
+        <dl>
+            <dt>Branches</dt>
+            <dd><a href="utils.html">dependabot/pip/tensorflow-gpu-1.15.2</a></dd>
+            <dd><a href="../../../dev/index.html">dev</a></dd>
+            <dd><a href="../../../feature_comparison/index.html">feature_comparison</a></dd>
+            <dd><a href="../../../master/index.html">master</a></dd>
+        </dl>
+    </div>
+</div>
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
