@@ -119,7 +119,7 @@ class Reader(object):
                         ex = clean_ex(ex, self.dtypes)
                         yield ex
                     except (tf.errors.OutOfRangeError, StopIteration):
-                        raise
+                        return
                     except Exception as e:
                         print('got error `{} from `_read_sample`:'.format(e))
                         print(traceback.format_exc())
