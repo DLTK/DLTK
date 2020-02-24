@@ -304,9 +304,9 @@ def extract_class_balanced_example_multiarray(image_list,
     for s in slices:
         ex_im_slices = []
         for image in image_list:
-            ex_im_slices.append(image[s][np.newaxis, :])
+            ex_im_slices.append(image[s])
         ex_images.append(tuple(ex_im_slices))
-        ex_lbls.append(label[s][np.newaxis, :])
+        ex_lbls.append(label[s])
     return ex_images, ex_lbls
 
 
