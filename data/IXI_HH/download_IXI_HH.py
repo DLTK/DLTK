@@ -136,7 +136,7 @@ if RESAMPLE_IMAGES:
     # Resample the IXI HH T2 images to 1mm isotropic and reslice all
     # others to it
     df = pd.read_csv('demographic_HH.csv', dtype=object, keep_default_na=False,
-                     na_values=[]).as_matrix()
+                     na_values=[]).values
 
     for i in df:
         IXI_id = i[0]
