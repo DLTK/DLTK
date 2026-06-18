@@ -72,7 +72,7 @@ def add_gaussian_noise(image, sigma=0.05):
     return image
 
 
-def elastic_transform(image, alpha, sigma):
+def elastic_transform(imagelist, alpha, sigma):
     """
     Elastic deformation of images as described in [1].
 
@@ -82,39 +82,62 @@ def elastic_transform(image, alpha, sigma):
 
     Based on gist https://gist.github.com/erniejunior/601cdf56d2b424757de5
 
+    Applies the **same** random displacement field to every image in the
+    input, so that an image and its corresponding mask (or label map) are
+    deformed identically.  A single ``np.ndarray`` is still accepted for
+    backward compatibility.
+
     Args:
-        image (np.ndarray): image to be deformed
-        alpha (list): scale of transformation for each dimension, where larger
-            values have more deformation
-        sigma (list): Gaussian window of deformation for each dimension, where
-            smaller values have more localised deformation
+        imagelist (np.ndarray or list or tuple): image(s) to be deformed.
+            All images must share the same spatial shape.
+        alpha (list): scale of transformation for each dimension, where
+            larger values have more deformation
+        sigma (list): Gaussian window of deformation for each dimension,
+            where smaller values have more localised deformation
 
     Returns:
-        np.ndarray: deformed image
+        np.ndarray or list or tuple: deformed image(s), same type as
+            *imagelist*
     """
 
     assert len(alpha) == len(sigma), \
         "Dimensions of alpha and sigma are different"
 
-    channelbool = image.ndim - len(alpha)
-    out = np.zeros((len(alpha) + channelbool, ) + image.shape)
+    # Handle single-image input for backward compatibility
+    was_singular = False
+    if isinstance(imagelist, np.ndarray):
+        imagelist = [imagelist]
+        was_singular = True
+
+    # Use the first image to determine spatial shape and generate the
+    # displacement field (all images must share the same spatial dims).
+    ref_image = imagelist[0]
+    rank = len(alpha)
+    channelbool = ref_image.ndim - rank
+    out = np.zeros((rank + channelbool, ) + ref_image.shape)
 
     # Generate a Gaussian filter, leaving channel dimensions zeroes
-    for jj in range(len(alpha)):
-        array = (np.random.rand(*image.shape) * 2 - 1)
+    for jj in range(rank):
+        array = (np.random.rand(*ref_image.shape) * 2 - 1)
         out[jj] = gaussian_filter(array, sigma[jj],
                                   mode="constant", cval=0) * alpha[jj]
 
-    # Map mask to indices
-    shapes = list(map(lambda x: slice(0, x, None), image.shape))
+    # Map mask to indices (computed once, shared across all images)
+    shapes = list(map(lambda x: slice(0, x, None), ref_image.shape))
     grid = np.broadcast_arrays(*np.ogrid[shapes])
-    indices = list(map((lambda x: np.reshape(x, (-1, 1))), grid + np.array(out)))
+    indices = list(map((lambda x: np.reshape(x, (-1, 1))),
+                       grid + np.array(out)))
 
-    # Transform image based on masked indices
-    transformed_image = map_coordinates(image, indices, order=0,
-                                        mode='reflect').reshape(image.shape)
+    # Apply the same transformation to every image
+    transformed = []
+    for image in imagelist:
+        transformed_image = map_coordinates(
+            image, indices, order=0, mode='reflect').reshape(image.shape)
+        transformed.append(transformed_image)
 
-    return transformed_image
+    if was_singular:
+        return transformed[0]
+    return transformed
 
 
 def extract_class_balanced_example_array(image,
