@@ -105,6 +105,11 @@ if EXTRACT_IMAGES:
             t = tarfile.open(fname, 'r')
             for member in t.getmembers():
                 if '-HH-' in member.name:
+                    root = os.path.realpath(output_dir)
+                    target = os.path.realpath(os.path.join(root, member.name))
+                    if (not member.isfile() or
+                            not target.startswith(os.path.join(root, ""))):
+                        raise ValueError("Unsafe archive member: {}".format(member.name))
                     t.extract(member, output_dir)
 
 
